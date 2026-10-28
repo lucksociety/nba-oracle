@@ -1,0 +1,21 @@
+{
+ "season": 2026,
+ "sampleGames": 1231,
+ "method": "Ridge regression (lambda=2) on prior-season final scores: margin ~ team ratings + home court + back-to-back differential. Fit on in-sample actual results only; no market inputs.",
+ "homeCourtPts": 1.72,
+ "backToBackPts": 2.08,
+ "marginResidualSD": 14,
+ "marginResidualKurtosis": 3.19,
+ "totalResidualSD": 18.36,
+ "meanTotal": 231.2,
+ "baseRates": {
+  "absMarginGE10": 0.5695,
+  "absMarginGE15": 0.3712,
+  "absMarginGE20": 0.2283,
+  "absMarginGE30": 0.078,
+  "absMarginLE5": 0.2445,
+  "overtime": 0.0439,
+  "homeWin": 0.5548
+ },
+ "meanAbsMargin": 13.27
+}

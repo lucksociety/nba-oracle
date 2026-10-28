@@ -1,0 +1,41 @@
+name: Update data & deploy Pages
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # every 30 minutes (GitHub may delay scheduled runs)
+  workflow_dispatch:
+  push:
+    branches: [main]
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: data-and-pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Fetch independent basketball data (market fields stripped)
+        run: node scripts/build-data.mjs
+      - name: Firewall self-test
+        run: node test/firewall.test.mjs
+      - name: Commit data if changed
+        run: |
+          git config user.name "nba-oracle-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data
+          if git diff --cached --quiet; then echo "no data changes"; else git commit -m "data: refresh $(date -u +%Y-%m-%dT%H:%MZ)" && git push; fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}

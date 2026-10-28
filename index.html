@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NBA ORACLE V1.2 — Score Prediction Dashboard</title>
+<meta name="description" content="Independent, zero-market NBA score predictions: possession-level four-factors Monte Carlo.">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo">🏀</div>
+    <div>
+      <h1>NBA ORACLE <span>V1.2</span></h1>
+      <p class="sub">Autonomous NBA prediction engine · possession-level four-factors Monte Carlo</p>
+    </div>
+  </div>
+  <div class="badges">
+    <span class="badge fw" title="No odds, spreads, totals, moneylines, picks or other models are fetched, used or shown. ESPN odds fields are stripped at ingestion.">🛡️ Zero-market firewall ON</span>
+    <span class="badge warn" title="No chronological walk-forward calibration has been run yet.">Probabilities provisional · uncalibrated</span>
+  </div>
+</header>
+
+<main>
+  <section class="controls card">
+    <div class="field"><label for="date">Game date (ET)</label><input type="date" id="date"></div>
+    <div class="field"><label for="sims">Simulations / game</label>
+      <select id="sims"><option value="100000" selected>100,000</option><option value="300000">300,000</option><option value="500000">500,000</option></select></div>
+    <div class="field"><label for="seed">Random seed</label><input type="text" id="seed" placeholder="auto: oracle-YYYY-MM-DD"></div>
+    <button id="simulate" class="sim-btn"><span class="ball">🏀</span> SIMULATE</button>
+  </section>
+
+  <section id="progress" class="card hidden">
+    <div class="prog-text" id="progText">Loading…</div>
+    <div class="bar"><div id="progBar"></div></div>
+  </section>
+
+  <section id="error" class="card error hidden"></section>
+
+  <section id="results" class="hidden">
+    <div class="card" id="integrity"></div>
+    <div class="card">
+      <h2>Slate forecast <small>ranked by predicted-winner probability</small></h2>
+      <div class="table-wrap"><table id="slate"></table></div>
+    </div>
+    <div class="grid2">
+      <div class="card" id="leans"></div>
+      <div class="card">
+        <h2>Google Sheets list <small>schedule order</small></h2>
+        <textarea id="sheet" readonly rows="6"></textarea>
+        <button id="copy" class="small-btn">Copy</button>
+      </div>
+    </div>
+    <h2 class="section-title">Game forecasts</h2>
+    <div id="games"></div>
+  </section>
+
+  <section class="card about">
+    <h2>About this build</h2>
+    <p>Each click fetches the day's schedule and the injury report live from ESPN's public API (falling back to a repository snapshot refreshed every 30 minutes by GitHub Actions), rebuilds opponent-adjusted team ratings with early-season Bayesian shrinkage toward regressed prior-season ratings, applies home court, rest/back-to-back/travel and scenario-weighted injury effects, and runs a seeded possession-by-possession Monte Carlo (shared pace, team shooting shocks with fat tails, game-state feedback, garbage time, late-game fouling, overtime) in a Web Worker.</p>
+    <p><strong>Honesty notes:</strong> probabilities are <em>provisional model estimates</em>; no walk-forward backtest or calibration has been performed. There is no tracking, lineup-level or play-by-play data; player impact is a simple box-score estimate. See the <a href="https://github.com/lucksociety/nba-oracle#readme" target="_blank" rel="noopener">README</a> for exactly what is implemented, simplified, or missing.</p>
+  </section>
+</main>
+<footer>NBA ORACLE V1.2 · data: ESPN public site API (basketball fields only) · <a href="https://github.com/lucksociety/nba-oracle" target="_blank" rel="noopener">source</a></footer>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
