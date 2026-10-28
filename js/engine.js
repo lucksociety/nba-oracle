@@ -3,7 +3,7 @@
 // late-game fouling and overtime. All inputs are independent basketball data (see firewall.js).
 // Nothing in this file reads, accepts or produces sportsbook / market information.
 
-export const MODEL_VERSION = 'NBA ORACLE V1.2 (web build 1.2.0)';
+export const MODEL_VERSION = 'NBA ORACLE V1.2 (web build 1.2.1)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
 export const PRIORS = {
@@ -291,9 +291,11 @@ export function prepareGame(ev, ctx) {
     id: ev.id, pace, home: { f: fH, k: kH, dppp: (analyticPPP(fH, kH + 0.005) - analyticPPP(fH, kH - 0.005)) / 0.01 * 100 },
     away: { f: fA, k: kA, dppp: (analyticPPP(fA, kA + 0.005) - analyticPPP(fA, kA - 0.005)) / 0.01 * 100 },
     uncHome: iH.unc, uncAway: iA.unc, priors: PRIORS, expMarginPerPoss: (tH - tA) / 100,
+    targetPts: { home: tH * pace / 100, away: tA * pace / 100 }, // expected points with all listed players available as sampled below
   };
   // expected injury effect incl. uncertain players (for reporting)
-  const expUnc = (u) => u.reduce((s, x) => s + (1 - x.p) * (1 - PRIORS.restrictedProb * 0) * (x.off + x.def), 0);
+  // fix v1.2.1: include the restricted-minutes scenario the simulator samples (previously omitted from the report)
+  const expUnc = (u) => u.reduce((s, x) => s + ((1 - x.p) + (x.p < 0.9 ? x.p * PRIORS.restrictedProb * (1 - PRIORS.restrictedMinFrac) : 0)) * (x.off + x.def), 0);
   const factors = {
     strengthMarginHome: (ratingH - ratingA) * pace / 100,
     netH: H.adjO - H.adjD, netA: A.adjO - A.adjD,
@@ -318,7 +320,27 @@ function fourFactorEdges(fH, fA, lgF, calk, pace) {
 }
 
 // ---------------- Monte Carlo ----------------
-export function simulate(params, N, seed, onProgress) {
+// End-game calibration (fix, v1.2.1): the regulation possession engine is solved so its points per possession hit the
+// rating targets, but team ratings and pace are measured from real box scores that ALREADY include late-game
+// intentional fouling and overtime. Simulating those on top double-counted them (+0.8 pts per team, ~+1.6 on the
+// total). A seeded pilot run (no availability sampling) measures the simulated mean points against the targets and
+// shifts each team's shooting calibration so the full simulation's mean equals the model's expected points.
+export function simulate(params, N, seed, onProgress, opts = {}) {
+  let adj = { h: 0, a: 0 };
+  if (params.targetPts && !opts.noCalibration) {
+    const pilotN = Math.min(40000, Math.max(10000, N >> 2));
+    for (let it = 0; it < 2; it++) {
+      const pil = runSim(params, pilotN, (seed ^ 0x5bd1e995) + it, null, adj, true);
+      let sh = 0, sa = 0; for (let i = 0; i < pilotN; i++) { sh += pil.homePts[i]; sa += pil.awayPts[i]; }
+      const dH = params.targetPts.home - sh / pilotN, dA = params.targetPts.away - sa / pilotN;
+      adj = { h: adj.h + (dH * 100 / params.pace) / params.home.dppp, a: adj.a + (dA * 100 / params.pace) / params.away.dppp };
+    }
+  }
+  const sim = runSim(params, N, seed, onProgress, adj, !!opts.noAvailability);
+  sim.calibration = { kAdjHome: adj.h, kAdjAway: adj.a };
+  return sim;
+}
+function runSim(params, N, seed, onProgress, adj, noAvail) {
   const P = params.overridePriors ? { ...params.priors, ...params.overridePriors } : params.priors; const rnd = mulberry32(seed);
   let spare = null;
   const gauss = () => { if (spare !== null) { const s = spare; spare = null; return s; } let u, v, s; do { u = 2 * rnd() - 1; v = 2 * rnd() - 1; s = u * u + v * v; } while (s >= 1 || s === 0); const m = Math.sqrt(-2 * Math.log(s) / s); spare = v * m; return u * m; };
@@ -357,8 +379,8 @@ export function simulate(params, N, seed, onProgress) {
   }
   const chunk = Math.max(1, Math.floor(N / 20));
   for (let i = 0; i < N; i++) {
-    const [hO, hD] = availabilityShift(params.uncHome), [aO, aD] = availabilityShift(params.uncAway);
-    const kH = H.k + (-hO + aD) / H.dppp, kA = A.k + (-aO + hD) / A.dppp;
+    const [hO, hD] = noAvail ? [0, 0] : availabilityShift(params.uncHome), [aO, aD] = noAvail ? [0, 0] : availabilityShift(params.uncAway);
+    const kH = H.k + adj.h + (-hO + aD) / H.dppp, kA = A.k + adj.a + (-aO + hD) / A.dppp;
     const env = gauss() * P.envSD, whistle = gauss() * P.whistleSD;
     const th = team(H, kH, env + tdist() * P.shootSD, gauss() * P.threeSD, gauss() * P.tovSD, gauss() * P.orbSD, whistle + gauss() * P.ftrTeamSD);
     const ta = team(A, kA, env + tdist() * P.shootSD, gauss() * P.threeSD, gauss() * P.tovSD, gauss() * P.orbSD, whistle + gauss() * P.ftrTeamSD);

@@ -1,3 +1,6 @@
 node_modules/
 *.png
 !assets/brand/*.png
+out/
+discord/node_modules/
+discord/.wrangler/

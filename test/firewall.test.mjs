@@ -14,3 +14,11 @@ for (const f of await fs.readdir(new URL('../data/', import.meta.url))) {
   assertNoMarketData(JSON.parse(await fs.readFile(new URL('../data/' + f, import.meta.url), 'utf8')));
 }
 console.log('firewall tests passed');
+
+// Stage separation: no prediction-engine file may import the market-comparison module or contact a market host.
+const ENGINE_FILES = ['js/engine.js', 'js/pipeline.js', 'js/firewall.js', 'js/app.js', 'js/worker.js', 'scripts/predict.mjs', 'scripts/sim-thread.mjs', 'scripts/build-data.mjs'];
+for (const f of ENGINE_FILES) {
+  const src = await fs.readFile(new URL('../' + f, import.meta.url), 'utf8');
+  assert.equal(/markets-jupiter|jup\.ag|polymarket|kalshi|compare\.mjs|bets\.json/i.test(src), false, `${f} references market code/hosts`);
+}
+console.log('stage-separation tests passed');

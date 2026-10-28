@@ -1,4 +1,7 @@
-import { loadInputs, prepareSlate, etToday } from './pipeline.js';
+import { loadInputs, prepareSlate, etToday, ESPN } from './pipeline.js';
+// Live schedule/injuries go through our Cloudflare Worker (ESPN can refuse browser requests from github.io);
+// direct ESPN is tried next, then the repo snapshot (refreshed ~every 30 min).
+const LIVE_PROXY = 'https://nba-oracle-discord.dreiss324.workers.dev/espn';
 import { buildReport, hashSeed, MODEL_VERSION } from './engine.js';
 
 const $ = s => document.querySelector(s);
@@ -42,7 +45,10 @@ async function run() {
   const clickAt = new Date().toISOString();
   try {
     progress('Fetching schedule, injury report and team data… (market fields are stripped at ingestion)', 0.02);
-    const inputs = await loadInputs(date, getJSON, 'data');
+    const inputs = await loadInputs(date, getJSON, 'data', [
+      { base: LIVE_PROXY, label: 'live via NBA Oracle Cloudflare proxy (market fields stripped at the proxy and again here)' },
+      { base: ESPN, label: 'live, direct from ESPN' },
+    ]);
     const cutoff = new Date().toISOString();
     progress('Rebuilding team strength, rotations and schedule context…', 0.05);
     const slate = prepareSlate(date, inputs);

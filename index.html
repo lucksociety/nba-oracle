@@ -34,7 +34,7 @@
   <section class="controls card">
     <div class="field"><label for="date">Game date (ET)</label><input type="date" id="date"></div>
     <div class="field"><label for="sims">Simulations / game</label>
-      <select id="sims"><option value="100000" selected>100,000</option><option value="300000">300,000</option><option value="500000">500,000</option></select></div>
+      <select id="sims"><option value="100000">100,000</option><option value="300000" selected>300,000</option><option value="500000">500,000</option></select></div>
     <div class="field"><label for="seed">Random seed</label><input type="text" id="seed" placeholder="auto: oracle-YYYY-MM-DD"></div>
     <button id="simulate" class="sim-btn"><span class="ball">🍀</span><span class="sim-label">SIMULATE SLATE</span></button>
   </section>
@@ -66,7 +66,7 @@
 
   <section class="card about">
     <h2>About this build</h2>
-    <p>Each click fetches the day's schedule and the injury report live from ESPN's public API (falling back to a repository snapshot refreshed every 30 minutes by GitHub Actions), rebuilds opponent-adjusted team ratings with early-season Bayesian shrinkage toward regressed prior-season ratings, applies home court, rest/back-to-back/travel and scenario-weighted injury effects, and runs a seeded possession-by-possession Monte Carlo (shared pace, team shooting shocks with fat tails, game-state feedback, garbage time, late-game fouling, overtime) in a Web Worker.</p>
+    <p>Each click fetches the day's schedule and the injury report live from ESPN's public API through the NBA Oracle Cloudflare proxy (which strips market fields), then directly from ESPN if the proxy is unreachable, and only then falls back to a repository snapshot refreshed about every 30 minutes by GitHub Actions; the data-sources panel shows which source was actually used on every run, rebuilds opponent-adjusted team ratings with early-season Bayesian shrinkage toward regressed prior-season ratings, applies home court, rest/back-to-back/travel and scenario-weighted injury effects, and runs a seeded possession-by-possession Monte Carlo (shared pace, team shooting shocks with fat tails, game-state feedback, garbage time, late-game fouling, overtime) in a Web Worker.</p>
     <p><strong>Honesty notes:</strong> probabilities are <em>provisional model estimates</em>; no walk-forward backtest or calibration has been performed. There is no tracking, lineup-level or play-by-play data; player impact is a simple box-score estimate. See the <a href="https://github.com/lucksociety/nba-oracle#readme" target="_blank" rel="noopener">README</a> for exactly what is implemented, simplified, or missing.</p>
   </section>
 </main>

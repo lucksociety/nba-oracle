@@ -1,0 +1,68 @@
+name: Discord /nba
+run-name: "/nba ${{ inputs.date || 'today' }}"
+on:
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'ET date YYYY-MM-DD (blank = today in America/New_York)'
+        required: false
+        default: ''
+      relay:
+        description: 'Encrypted interaction relay from the Cloudflare Worker (blank = post to channel webhook)'
+        required: false
+        default: ''
+      sims:
+        description: 'Simulations per game'
+        required: false
+        default: '300000'
+permissions:
+  contents: read
+jobs:
+  nba:
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Decrypt interaction relay
+        env:
+          RELAY_PAYLOAD: ${{ inputs.relay }}
+          RELAY_KEY: ${{ secrets.RELAY_KEY }}
+        run: node scripts/relay-decrypt.mjs
+      - name: "Stage 0: firewall + simulator self-tests"
+        run: node test/firewall.test.mjs
+      - name: "Stage 1: NBA ORACLE V1.2 predictions (zero-market, frozen + hashed)"
+        run: node scripts/predict.mjs "${{ inputs.date }}" "${{ inputs.sims }}"
+      - name: "Stage 2: Jupiter comparison (after freeze)"
+        continue-on-error: true
+        env:
+          JUPITER_API_KEY: ${{ secrets.JUPITER_API_KEY }}
+        run: node scripts/compare.mjs
+      - name: "Stage 3: post to Discord"
+        env:
+          DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        run: node scripts/discord-post.mjs
+      - name: Report failure to Discord
+        if: failure()
+        env:
+          DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node -e '
+          const body = JSON.stringify({ content: "⚠️ NBA Oracle run failed — see " + process.env.RUN_URL, allowed_mentions: { parse: [] } });
+          const h = { "Content-Type": "application/json" };
+          const a = process.env.DISCORD_APPLICATION_ID, t = process.env.INTERACTION_TOKEN, w = process.env.DISCORD_WEBHOOK_URL;
+          (async () => {
+            if (a && t) { const r = await fetch(`https://discord.com/api/v10/webhooks/${a}/${t}/messages/@original`, { method: "PATCH", headers: h, body }); if (r.ok) return; }
+            if (w) await fetch(w, { method: "POST", headers: h, body });
+          })();'
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nba-oracle-${{ github.run_id }}
+          path: out/
+          retention-days: 14

@@ -16,14 +16,21 @@ const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba';
 
 const NBA30 = new Set(['ATL','BOS','BKN','CHA','CHI','CLE','DAL','DEN','DET','GS','HOU','IND','LAC','LAL','MEM','MIA','MIL','MIN','NO','NY','OKC','ORL','PHI','PHX','POR','SAC','SA','TOR','UTAH','WSH']);
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-async function getJSON(url, tries = 4) {
+// ESPN occasionally returns an empty / truncated 200 body. Read as text, validate, and retry with exponential backoff
+// + jitter and a cache-busting parameter (8 attempts over ~1 minute) before giving up.
+async function getJSON(url, tries = 8) {
+  let lastErr;
   for (let i = 0; i < tries; i++) {
     try {
-      const r = await fetch(url, { headers: { 'User-Agent': 'nba-oracle-data-builder' } });
+      const u = i ? url + (url.includes('?') ? '&' : '?') + `_r=${Date.now()}` : url;
+      const r = await fetch(u, { headers: { 'User-Agent': 'nba-oracle-data-builder' }, signal: AbortSignal.timeout(20000) });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
-      return await r.json();
-    } catch (e) { if (i === tries - 1) throw new Error(`${url}: ${e.message}`); await sleep(800 * (i + 1)); }
+      const text = await r.text();
+      if (!text || !text.trim()) throw new Error('empty response body');
+      return JSON.parse(text);
+    } catch (e) { lastErr = e; if (i < tries - 1) await sleep(Math.min(15000, 600 * 2 ** i) + Math.random() * 400); }
   }
+  throw new Error(`${url}: ${lastErr?.message} (after ${tries} attempts)`);
 }
 async function readJSON(f, dflt) { try { return JSON.parse(await fs.readFile(f, 'utf8')); } catch { return dflt; } }
 async function writeJSON(f, obj, pretty = false) {
@@ -93,8 +100,11 @@ async function buildSeason(season, now, teamMeta) {
   const cacheFile = path.join(CACHE, `lines-${season}.json`);
   const cache = await readJSON(cacheFile, {});
   const events = [];
+  const failedMonths = new Set();
   for (const m of seasonMonths(season, now)) {
-    const sb = await getJSON(`${BASE}/scoreboard?dates=${m}&limit=500`);
+    let sb;
+    try { sb = await getJSON(`${BASE}/scoreboard?dates=${m}&limit=500`); }
+    catch (e) { console.warn(`season ${season}: month ${m} unavailable, keeping cached games (${e.message})`); failedMonths.add(String(m).slice(0, 6)); continue; }
     for (const e of sanitizeScoreboard(sb)) {
       if (!e.home || !e.away || !NBA30.has(e.home.abbr) || !NBA30.has(e.away.abbr)) continue; // excludes All-Star / exhibition teams
       for (const side of ['home', 'away']) if (e[side]) teamMeta[e[side].id] = { abbr: e[side].abbr, name: e[side].name, short: e[side].short, logo: e[side].logo, color: e[side].color, alt: e[side].alt };
@@ -116,7 +126,7 @@ async function buildSeason(season, now, teamMeta) {
   await writeJSON(cacheFile, cache);
 
   // Compact game lines for the client: [id, etDate, homeId, awayId, hs, as, periods, neutral, homeBox[10], awayBox[10]]
-  for (const id of Object.keys(cache)) if (!events.some(e => e.id === id)) delete cache[id];
+  for (const id of Object.keys(cache)) if (!events.some(e => e.id === id) && !failedMonths.has(String(cache[id].d).replaceAll('-', '').slice(0, 6))) delete cache[id];
   await writeJSON(cacheFile, cache);
   const games = Object.entries(cache).map(([id, g]) => [id, g.d, g.h, g.a, g.hs, g.as, g.per, g.n, g.hb, g.ab]).sort((x, y) => x[1].localeCompare(y[1]));
   // Player aggregates per team: [athId, name, gp, min, pts, fgm, fga, f3m, f3a, ftm, fta, oreb, dreb, ast, stl, blk, tov, pf, pm, starts, lastDate]
@@ -199,10 +209,17 @@ async function main() {
   // Snapshot of schedule (yesterday..+3 days) and injuries, sanitized, as a fallback if the live ESPN fetch fails in the browser.
   const today = etDate(now.toISOString());
   const days = [-3, -2, -1, 0, 1, 2, 3].map(k => etDate(new Date(Date.parse(today + 'T12:00:00Z') + k * 864e5).toISOString()));
-  const schedule = {};
-  for (const d of days) schedule[d] = sanitizeScoreboard(await getJSON(`${BASE}/scoreboard?dates=${ymd(d)}`));
-  const injuries = sanitizeInjuries(await getJSON(`${BASE}/injuries`));
-  await writeJSON(path.join(DATA, 'snapshot.json'), { fetchedAt: now.toISOString(), schedule, injuries });
+  // A single failed day/injury fetch no longer fails the whole refresh: keep that piece from the previous snapshot.
+  const prev = await readJSON(path.join(DATA, 'snapshot.json'), {});
+  const schedule = {}; const stale = [];
+  for (const d of days) {
+    try { schedule[d] = sanitizeScoreboard(await getJSON(`${BASE}/scoreboard?dates=${ymd(d)}`)); }
+    catch (e) { console.warn(`snapshot: schedule ${d} kept from previous snapshot (${e.message})`); schedule[d] = prev.schedule?.[d] || []; stale.push(`schedule ${d}`); }
+  }
+  let injuries;
+  try { injuries = sanitizeInjuries(await getJSON(`${BASE}/injuries`)); }
+  catch (e) { console.warn(`snapshot: injuries kept from previous snapshot (${e.message})`); injuries = prev.injuries || { timestamp: null, teams: {} }; stale.push('injuries'); }
+  await writeJSON(path.join(DATA, 'snapshot.json'), { fetchedAt: now.toISOString(), schedule, injuries, ...(stale.length ? { staleParts: stale } : {}) });
   await writeJSON(path.join(DATA, 'teams.json'), teamMeta, true);
   await writeJSON(path.join(DATA, 'meta.json'), { ...meta, builtAt: now.toISOString(), currentSeason: cur, priorSeason: prior, currentGames: curGames.length, priorGames: priorGames.length, source: 'ESPN public site API (scoreboard, summary boxscore, injuries); market fields stripped' }, true);
   console.log('ok', { cur: curGames.length, prior: priorGames.length, cal });

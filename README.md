@@ -2,7 +2,7 @@
 
 **Live:** https://lucksociety.github.io/nba-oracle/
 
-A static (HTML/JS, no backend) dashboard. Pick a date (defaults to today, America/New_York) and press **SIMULATE**: the page pulls that day's schedule and the injury report, rebuilds team strength, and runs a seeded possession-level Monte Carlo (100,000 games per matchup by default; 300k/500k selectable) inside Web Workers. It outputs the full NBA ORACLE V1.2 Section 16 per-game report and the Section 17 slate view.
+A static (HTML/JS, no backend) dashboard. Pick a date (defaults to today, America/New_York) and press **SIMULATE**: the page pulls that day's schedule and the injury report, rebuilds team strength, and runs a seeded possession-level Monte Carlo (300,000 games per matchup by default; 100k/500k selectable) inside Web Workers. It outputs the full NBA ORACLE V1.2 Section 16 per-game report and the Section 17 slate view.
 
 ## Zero-market firewall (Section 1)
 * The model **never** fetches, reads, uses or displays odds, spreads, totals, moneylines, implied probabilities, line movement, betting percentages, picks, consensus, power indexes or other models' predictions.
@@ -10,14 +10,14 @@ A static (HTML/JS, no backend) dashboard. Pick a date (defaults to today, Americ
 * `test/firewall.test.mjs` runs in CI on every data refresh and fails the build if any committed data file contains a market-like key.
 * Historical calibration uses **actual final scores only**.
 
-## Data sources (free, public, CORS-enabled)
+## Data sources (free, public)
 | Data | Source | When |
 |---|---|---|
-| Schedule, tip times, venues, status (selected date and 3 prior days for rest) | ESPN `site.api.espn.com/.../nba/scoreboard?dates=YYYYMMDD` | Live in browser on each click; repo snapshot fallback |
-| Injury report | ESPN `/nba/injuries` | Live in browser on each click; repo snapshot fallback |
+| Schedule, tip times, venues, status (selected date and 3 prior days for rest) | ESPN `site.api.espn.com/.../nba/scoreboard?dates=YYYYMMDD` | Live on each click via the Worker proxy → direct ESPN → repo snapshot |
+| Injury report | ESPN `/nba/injuries` | Live on each click via the Worker proxy → direct ESPN → repo snapshot |
 | Team & player box scores (2025-26 full regular season + 2026-27 to date) | ESPN `/nba/summary?event=ID` → `boxscore` only | GitHub Actions every 30 min → `data/*.json` |
 
-ESPN returns `Access-Control-Allow-Origin: *`, so live fetches work from the browser. The Actions workflow (`.github/workflows/update-data.yml`) refreshes box-score data, a sanitized schedule/injury snapshot, and the historical calibration, then redeploys Pages.
+The page fetches live data through the NBA Oracle Cloudflare Worker (`/espn/scoreboard`, `/espn/injuries` only; market-like fields deleted at the proxy and again by the page's sanitizer, 60 s edge cache), then tries ESPN directly, and only then uses the snapshot. The data-sources panel shows which one was used. `scripts/build-data.mjs` retries empty/invalid ESPN responses (8 attempts, exponential backoff) and keeps the previous snapshot piece instead of failing the whole refresh. The Actions workflow (`.github/workflows/update-data.yml`) refreshes box-score data, a sanitized schedule/injury snapshot, and the historical calibration, then redeploys Pages.
 
 ## What the engine does (`js/engine.js`)
 1. **Team strength (S3):** per-season possessions, ORtg/DRtg and four factors (2P%, 3P%, 3PA rate, TOV%, ORB%, FT rate, FT%) for offense and defense; iterative **opponent adjustment** with home court neutralised.
@@ -50,3 +50,20 @@ python3 -m http.server 8000           # then open http://localhost:8000
 ```
 
 *Not betting advice. This project deliberately ignores betting markets.*
+
+## Discord `/nba` + Jupiter best bets
+
+```
+Discord /nba ─► Cloudflare Worker (discord/worker.js)  verify Ed25519 · defer (type 5) · AES-GCM-encrypt interaction token
+              └► GitHub Actions workflow_dispatch (.github/workflows/discord-nba.yml)
+                   1. test/firewall.test.mjs          engine files may not reference any market source
+                   2. scripts/predict.mjs             300k sims/game (worker_threads) → out/predictions.json + SHA-256 (frozen)
+                   3. scripts/compare.mjs             verify hash → only now fetch Jupiter prediction markets → out/bets.json
+                   4. scripts/discord-post.mjs        interaction follow-ups (fallback: channel webhook)
+```
+
+* Engine never sees odds; predictions are hashed before the market stage runs.
+* Jupiter: `GET https://api.jup.ag/prediction/v1/events?category=sports&subcategory=nba&includeMarkets=true` and `GET /orderbook/{marketId}`. Moneyline, spread and total markets are evaluated both sides at Jupiter's exact lines from the simulated margin/total distributions.
+* Edge = model probability − (ask price + fee), fee = 0.07·p·(1−p) rounded up to the cent. A bet is shown only if model probability > 50 %, edge > 0, bid/ask spread ≤ 10¢ and ≥ 10 contracts at the ask; otherwise **NO BET**. Edges above 15 points are flagged as likely model blind spots.
+* Secrets: Worker — `GITHUB_TOKEN`, `RELAY_KEY`, `DISCORD_BOT_TOKEN`, `DISCORD_WEBHOOK_URL`; repo Actions — `RELAY_KEY`, `DISCORD_APPLICATION_ID`, `DISCORD_WEBHOOK_URL`, `DISCORD_BOT_TOKEN`, optional `JUPITER_API_KEY`. Nothing secret is committed.
+* Local: `node scripts/predict.mjs 2026-10-28 && node scripts/compare.mjs && DRY_RUN=1 node scripts/discord-post.mjs`; `node test/sanity.mjs` for simulator verification.

@@ -1,0 +1,13 @@
+name = "nba-oracle-discord"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+workers_dev = true
+
+[vars]
+DISCORD_APPLICATION_ID = "1564803252552335420"
+DISCORD_PUBLIC_KEY = "828e1ac7c2dd9f6c5af36cca08d2770727666a8475f424024602c9c35ab5cd1d"
+GITHUB_REPO = "lucksociety/nba-oracle"
+GITHUB_WORKFLOW = "discord-nba.yml"
+GITHUB_REF = "main"
+SIMS = "300000"
+# Secrets (set with `wrangler secret put`): GITHUB_TOKEN, RELAY_KEY, DISCORD_BOT_TOKEN
