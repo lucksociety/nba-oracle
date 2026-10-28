@@ -6,6 +6,8 @@
 //    encrypted (RELAY_KEY) because workflow inputs in a public repo are not secret.
 // The Worker itself runs no simulation (Workers CPU limits) and never touches odds.
 
+import { dateChoices, parseDateOption } from './dates.js';
+
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'Content-Type': 'application/json' } });
 const hex = (h) => new Uint8Array(h.match(/.{2}/g).map((b) => parseInt(b, 16)));
 const b64url = (u8) => btoa(String.fromCharCode(...u8)).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -34,8 +36,7 @@ async function editOriginal(env, token, content) {
 }
 
 async function dispatch(env, interaction) {
-  const opt = (interaction.data.options || []).find((o) => o.name === 'date');
-  const date = opt && /^\d{4}-\d{2}-\d{2}$/.test(opt.value) ? opt.value : '';
+  const date = interaction.resolvedDate; // validated YYYY-MM-DD (ET), today when omitted
   const user = interaction.member?.user?.username || interaction.user?.username || '';
   const relay = await encryptRelay({ token: interaction.token, ts: Date.now(), user }, env.RELAY_KEY);
   const r = await fetch(`https://api.github.com/repos/${env.GITHUB_REPO}/actions/workflows/${env.GITHUB_WORKFLOW}/dispatches`, {
@@ -48,7 +49,7 @@ async function dispatch(env, interaction) {
     await editOriginal(env, interaction.token, `⚠️ Could not start the NBA Oracle run (GitHub ${r.status}). ${t}`);
     return;
   }
-  await editOriginal(env, interaction.token, `🏀 Running NBA ORACLE V1.2 for ${date || 'today (ET)'} — ${Number(env.SIMS || 300000).toLocaleString('en-US')} simulations per game, then comparing to Jupiter. Results in ~1–2 min…`);
+  await editOriginal(env, interaction.token, `🏀 Running NBA ORACLE V1.2 for ${date}${date === parseDateOption('today') ? ' (today, ET)' : ''} — ${Number(env.SIMS || 300000).toLocaleString('en-US')} simulations per game, then comparing to Jupiter. Results in ~1–2 min…`);
 }
 
 // ---- Read-only ESPN proxy for the GitHub Pages dashboard (schedule + injuries only) ----
@@ -93,7 +94,15 @@ export default {
     if (!(await verify(req, body, env.DISCORD_PUBLIC_KEY))) return new Response('invalid request signature', { status: 401 });
     const i = JSON.parse(body);
     if (i.type === 1) return json({ type: 1 }); // PING
+    if (i.type === 4 && i.data?.name === 'nba') { // APPLICATION_COMMAND_AUTOCOMPLETE for the date option
+      const focused = (i.data.options || []).find((o) => o.focused);
+      return json({ type: 8, data: { choices: dateChoices(focused?.value || '') } });
+    }
     if (i.type === 2 && i.data?.name === 'nba') {
+      const raw = (i.data.options || []).find((o) => o.name === 'date')?.value;
+      const resolved = parseDateOption(raw);
+      if (!resolved) return json({ type: 4, data: { content: `⚠️ Couldn't read the date "${String(raw).slice(0, 40)}". Pick Today/Tomorrow from the list, or type YYYY-MM-DD.`, flags: 64 } });
+      i.resolvedDate = resolved;
       if (!env.GITHUB_TOKEN || !env.RELAY_KEY) return json({ type: 4, data: { content: '⚠️ NBA Oracle is not fully configured (missing GITHUB_TOKEN / RELAY_KEY secret).' } });
       ctx.waitUntil(dispatch(env, i));
       return json({ type: 5 }); // deferred: "NBA Oracle is thinking…"
