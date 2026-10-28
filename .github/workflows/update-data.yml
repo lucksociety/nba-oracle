@@ -29,7 +29,7 @@ jobs:
           git config user.name "nba-oracle-bot"
           git config user.email "actions@users.noreply.github.com"
           git add data
-          if git diff --cached --quiet; then echo "no data changes"; else git commit -m "data: refresh $(date -u +%Y-%m-%dT%H:%MZ)" && git push; fi
+          if git diff --cached --quiet; then echo "no data changes"; else git commit -m "data: refresh $(date -u +%Y-%m-%dT%H:%MZ)" && (git push || (git pull --rebase -X theirs && git push)); fi
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
