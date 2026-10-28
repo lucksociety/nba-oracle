@@ -7,7 +7,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import crypto from 'node:crypto';
 import { Worker } from 'node:worker_threads';
-import { loadInputs, prepareSlate, etToday } from '../js/pipeline.js';
+import { loadInputs, prepareSlate, etToday, ESPN, DIRECT_LINEUPS } from '../js/pipeline.js';
 import { buildReport, hashSeed, MODEL_VERSION } from '../js/engine.js';
 import { assertNoMarketData } from '../js/firewall.js';
 
@@ -16,12 +16,14 @@ const N = Number(process.argv[3] || process.env.SIMS || 300000);
 const ROOT = new URL('../', import.meta.url);
 const getJSON = async (u) => {
   if (u.startsWith('data/')) return JSON.parse(await fs.readFile(new URL(u.split('?')[0], ROOT), 'utf8'));
-  for (let i = 0; i < 3; i++) { try { const r = await fetch(u); if (!r.ok) throw new Error('HTTP ' + r.status); return await r.json(); } catch (e) { if (i === 2) throw e; await new Promise(r => setTimeout(r, 700)); } }
+  for (let i = 0; i < 3; i++) { try { const r = await fetch(u, { headers: /stats\.nba\.com/.test(u) ? { 'User-Agent': 'Mozilla/5.0', Referer: 'https://www.nba.com/' } : {}, signal: AbortSignal.timeout(15000) }); if (!r.ok) throw new Error('HTTP ' + r.status); return await r.json(); } catch (e) { if (i === 2) throw e; await new Promise(r => setTimeout(r, 700)); } }
 };
 export const canonical = (o) => JSON.stringify(o);
 
 const t0 = Date.now();
-const inputs = await loadInputs(date, getJSON, 'data');
+// Lineups: NBA.com directly, then via our Cloudflare Worker in case stats.nba.com refuses the runner's IP.
+const LINEUP_PROXY = process.env.LINEUP_PROXY || 'https://nba-oracle-discord.dreiss324.workers.dev/nba/lineups';
+const inputs = await loadInputs(date, getJSON, 'data', undefined, [...DIRECT_LINEUPS, { url: ymd => `${LINEUP_PROXY}/${ymd}`, label: 'via NBA Oracle Cloudflare proxy' }]);
 const cutoff = new Date().toISOString();
 const slate = prepareSlate(date, inputs);
 const seedBase = `oracle-${date}`;
@@ -51,7 +53,9 @@ const games = slate.games.map((g, i) => {
     homeWin: s.homeWin, awayWin: s.awayWin, otProb: s.otProb, close5: s.close5,
     expAway: s.expAway, expHome: s.expHome, expMarginHome: s.expMarginHome, medMarginHome: s.medMarginHome,
     expTotal: s.expTotal, medTotal: s.medTotal, iTotal: s.iTotal, iMarginHome: s.iMarginHome, sdMargin: s.sdMargin, sdTotal: s.sdTotal,
-    confidence: r.confidence, lineupStatus: r.lineupStatus, keyFactors: r.keyFactors.map(k => `${k.label}: ${k.text}`), uncertainty: r.uncertainty,
+    confidence: r.confidence, lineupStatus: r.lineupStatus,
+    lineups: r.lineups ? Object.fromEntries(['away', 'home'].map(k => [k, { status: r.lineups[k].status, starters: r.lineups[k].starters, inactive: r.lineups[k].inactive, updatedAt: r.lineups[k].updatedAt, source: r.lineups[k].source }])) : null,
+    availability: Object.fromEntries([['away', prep.injA], ['home', prep.injH]].map(([k, l]) => [k, l.filter(p => p.override || p.p < 1).map(p => ({ name: p.name, label: p.label, p: p.p, netPG: +(p.netPG * p.presence).toFixed(2), lineupOverride: !!p.override }))])), keyFactors: r.keyFactors.map(k => `${k.label}: ${k.text}`), uncertainty: r.uncertainty,
     sims: s.N, seed: jobs[i].seed, ms: s.ms, convergence: { seHomeWinPct: s.convergence.winProbSE * 100, splitHalfDiffPct: s.convergence.splitHalfDiff * 100 }, endgameCalibration: s.calibration,
     marginHist, totalHist,
   };

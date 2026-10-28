@@ -2,6 +2,8 @@ import { loadInputs, prepareSlate, etToday, ESPN } from './pipeline.js';
 // Live schedule/injuries go through our Cloudflare Worker (ESPN can refuse browser requests from github.io);
 // direct ESPN is tried next, then the repo snapshot (refreshed ~every 30 min).
 const LIVE_PROXY = 'https://nba-oracle-discord.dreiss324.workers.dev/espn';
+// NBA.com's official lineups file sends no CORS header, so the browser reads it through the same Worker.
+const LINEUP_PROXY = 'https://nba-oracle-discord.dreiss324.workers.dev/nba/lineups';
 import { buildReport, hashSeed, MODEL_VERSION } from './engine.js';
 
 const $ = s => document.querySelector(s);
@@ -48,7 +50,7 @@ async function run() {
     const inputs = await loadInputs(date, getJSON, 'data', [
       { base: LIVE_PROXY, label: 'live via NBA Oracle Cloudflare proxy (market fields stripped at the proxy and again here)' },
       { base: ESPN, label: 'live, direct from ESPN' },
-    ]);
+    ], [{ url: ymd => `${LINEUP_PROXY}/${ymd}`, label: 'live via NBA Oracle Cloudflare proxy' }]);
     const cutoff = new Date().toISOString();
     progress('Rebuilding team strength, rotations and schedule context…', 0.05);
     const slate = prepareSlate(date, inputs);
@@ -111,8 +113,12 @@ function gameCard(g) {
   const { ev, s, r, prep } = g; const F = prep.factors;
   const homeWins = r.fin.home > r.fin.away;
   const bo = s.blowouts; const mH = s.expMarginHome;
-  const injRows = (team, list) => list.filter(p => p.p < 0.999).map(p => `<tr><td>${esc(team)}</td><td>${esc(p.name)}</td><td>${esc(p.label)}</td><td>${(p.p * 100).toFixed(0)}%</td><td>${p.mpg ? f1(p.mpg) : '—'}</td><td>${f1(p.netPG * p.presence)}</td><td class="muted">${esc(p.comment?.slice(0, 140) || p.note || '')}</td></tr>`).join('');
+  const injRows = (team, list) => list.filter(p => p.p < 0.999 || p.override).map(p => `<tr><td>${esc(team)}</td><td>${esc(p.name)}</td><td>${esc(p.label)}</td><td>${(p.p * 100).toFixed(0)}%</td><td>${p.mpg ? f1(p.mpg) : '—'}</td><td>${f1(p.netPG * p.presence)}</td><td class="muted">${esc(p.comment?.slice(0, 140) || p.note || '')}</td></tr>`).join('');
   const inj = injRows(ev.away.abbr, prep.injA) + injRows(ev.home.abbr, prep.injH);
+  const LU = r.lineups; const luTag = { CONFIRMED: 'Confirmed', EXPECTED: 'Expected', NONE: 'Not posted' };
+  const luRow = (t, L) => `<div class="kv"><span>${esc(t.abbr)} <span class="status ${L.status === 'CONFIRMED' ? 'CONFIRMED' : L.status === 'EXPECTED' ? 'PROBABLE' : 'UNCERTAIN'}">${luTag[L.status] || esc(L.status)}</span></span><span>${L.starters.length ? L.starters.map(p => `${esc(p.name)} <span class="muted">${esc(p.pos)}</span>`).join(' · ') : '<span class="muted">no official lineup yet</span>'}</span></div>`;
+  const lineupBlk = LU ? `<div class="blk span2"><h3>Starting lineups <span class="muted" style="font-weight:400">· NBA.com official</span></h3>${luRow(ev.away, LU.away)}${luRow(ev.home, LU.home)}${[LU.away, LU.home].some(L => L.inactive.length) ? `<div class="muted" style="font-size:12px">Inactive: ${esc([[ev.away.abbr, LU.away], [ev.home.abbr, LU.home]].filter(([, L]) => L.inactive.length).map(([a, L]) => `${a} ${L.inactive.join(', ')}`).join(' · '))}</div>` : ''}</div>` : '';
+  const luTime = LU ? [[ev.away.abbr, LU.away], [ev.home.abbr, LU.home]].map(([a, L]) => `${a} ${luTag[L.status] || L.status}${L.updatedAt ? ' @ ' + fmtET(L.updatedAt) : ''}`).join(' · ') + ` — ${LU.away.source || ''}` : 'no official lineup used (historical date or source unavailable)';
   const actual = ev.status.completed ? `<div class="actual">Actual: ${esc(ev.away.abbr)} ${ev.away.score} – ${esc(ev.home.abbr)} ${ev.home.score} (${esc(ev.status.detail)}) · forecast frozen from pre-date data</div>` : (ev.status.state === 'in' ? `<div class="actual" style="color:var(--warn)">In progress at data cutoff (${esc(ev.status.detail)}) — model uses no in-game info</div>` : '');
   return `<article class="game" style="--ca:${esc(ev.away.color || '#1d2742')}55;--ch:${esc(ev.home.color || '#1d2742')}55">
   <div class="game-head">
@@ -151,6 +157,7 @@ function gameCard(g) {
       <ol>${s.topScores.map(t => `<li>${esc(ev.away.abbr)} ${t.away} – ${esc(ev.home.abbr)} ${t.home} <span class="muted">${(t.p * 100).toFixed(2)}%</span></li>`).join('')}</ol>
       <div class="muted" style="font-size:12px">${s.distinctScores.toLocaleString()} distinct final scores simulated; the official pick uses medians, not the mode.</div>
     </div>
+    ${lineupBlk}
     <div class="blk span2"><h3>G · Five most important matchup factors</h3>
       <ol>${r.keyFactors.map(k => `<li><strong>${esc(k.label)}</strong>: ${esc(k.text)} <span class="muted">— ${esc(k.detail)}</span></li>`).join('')}</ol>
       <div class="muted" style="font-size:12px">Effects in points of expected margin. Four-factor rows decompose team strength (they overlap, not additive).</div>
@@ -160,7 +167,7 @@ function gameCard(g) {
       <div class="kv"><span>Confidence</span><span><span class="tier ${r.confidence}">${r.confidence}</span></span></div>
       <div class="kv"><span>Simulations executed</span><span>${s.N.toLocaleString()} · seed ${g.seed} · ${s.ms} ms</span></div>
       <div class="kv"><span>Convergence</span><span>win-prob SE ±${(s.convergence.winProbSE * 100).toFixed(2)} pts · split-half diff ${(s.convergence.splitHalfDiff * 100).toFixed(2)} pts</span></div>
-      <div class="kv"><span>Lineup verification</span><span>${r.lineupStatus} (no verified starting-lineup feed)</span></div>
+      <div class="kv"><span>Lineup verification</span><span>${r.lineupStatus} · ${esc(luTime)}</span></div>
       <div class="kv"><span>Schedule</span><span>${esc(ev.away.abbr)}: ${F.sA.rest}d rest${F.sA.b2b ? ', B2B' : ''}${F.sA.travelMi ? `, ${F.sA.travelMi} mi since last game` : ''} · ${esc(ev.home.abbr)}: ${F.sH.rest}d rest${F.sH.b2b ? ', B2B' : ''}</span></div>
       <div class="kv"><span>Ratings sample</span><span>${esc(ev.away.abbr)} ${prep.A.gCur} gp (${Math.round(prep.A.wCur * 100)}% weight) · ${esc(ev.home.abbr)} ${prep.H.gCur} gp (${Math.round(prep.H.wCur * 100)}% weight)</span></div>
       <div class="kv"><span>Score selection</span><span>${esc(r.fin.rule)}</span></div>

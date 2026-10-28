@@ -83,11 +83,30 @@ async function espnProxy(url, ctx) {
   return new Response(hit.body, { headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store', 'X-Market-Fields': 'stripped' } });
 }
 
+// NBA.com official daily starting lineups (no CORS upstream). Basketball data only; still key-scanned and cached 60 s.
+async function lineupsProxy(url, ctx) {
+  const ymd = url.pathname.slice('/nba/lineups/'.length);
+  if (!/^\d{8}$/.test(ymd)) return new Response('bad date', { status: 400, headers: CORS });
+  const target = `https://stats.nba.com/js/data/leaders/00_daily_lineups_${ymd}.json`;
+  const cache = caches.default; const key = new Request(target);
+  let hit = await cache.match(key);
+  if (!hit) {
+    const r = await fetch(target, { headers: { 'User-Agent': 'Mozilla/5.0 (nba-oracle-proxy)', Referer: 'https://www.nba.com/', Accept: 'application/json' }, redirect: 'manual', signal: AbortSignal.timeout(8000) }).catch(e => new Response(null, { status: 504 }));
+    if (r.status !== 200) return new Response(`upstream ${r.status} (lineups not posted for this date or source unavailable)`, { status: [301, 302, 403, 404].includes(r.status) ? 404 : 502, headers: CORS });
+    let data; try { data = await r.json(); } catch { return new Response('upstream returned non-JSON', { status: 502, headers: CORS }); }
+    const body = JSON.stringify(strip(data));
+    hit = new Response(body, { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' } });
+    ctx.waitUntil(cache.put(key, hit.clone()));
+  }
+  return new Response(hit.body, { headers: { ...CORS, 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
+}
+
 export default {
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
     if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
     if (req.method === 'GET' && url.pathname.startsWith('/espn/')) return espnProxy(url, ctx);
+    if (req.method === 'GET' && url.pathname.startsWith('/nba/lineups/')) return lineupsProxy(url, ctx);
     if (req.method === 'GET') return new Response('NBA Oracle Discord interactions endpoint: OK\n', { headers: { 'Content-Type': 'text/plain' } });
     if (req.method !== 'POST') return new Response('Method not allowed', { status: 405 });
     const body = await req.text();

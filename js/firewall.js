@@ -95,3 +95,20 @@ export function sanitizeInjuries(raw) {
   assertNoMarketData(out);
   return out;
 }
+
+/** Whitelist-sanitize NBA.com's official daily lineups file (stats.nba.com/js/data/leaders/00_daily_lineups_YYYYMMDD.json).
+ *  Only player identity, starting position, lineup status (Expected/Confirmed), roster status (Active/Inactive) and the
+ *  update timestamp are kept. The file carries no market data; the scan below enforces that anyway. */
+export function sanitizeLineups(raw, fetchedAt = new Date().toISOString()) {
+  stripMarketFields(raw);
+  const team = (t) => t ? {
+    nbaTeamId: t.teamId ?? null, abbr: t.teamAbbreviation || null,
+    players: (t.players || []).map(p => ({
+      personId: p.personId ?? null, name: p.playerName || [p.firstName, p.lastName].filter(Boolean).join(' '),
+      lineupStatus: p.lineupStatus || null, pos: p.position || '', rosterStatus: p.rosterStatus || null, timestamp: p.timestamp || null,
+    })),
+  } : null;
+  const out = { fetchedAt, games: (raw.games || []).map(g => ({ gameId: g.gameId ?? null, gameStatus: g.gameStatus ?? null, statusText: g.gameStatusText || null, home: team(g.homeTeam), away: team(g.awayTeam) })) };
+  assertNoMarketData(out);
+  return out;
+}

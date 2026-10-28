@@ -7,7 +7,8 @@
 // Firewall: see js/firewall.js. Every output file is scanned by assertNoMarketData before writing.
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { sanitizeScoreboard, sanitizeInjuries, assertNoMarketData } from '../js/firewall.js';
+import { sanitizeScoreboard, sanitizeInjuries, sanitizeLineups, assertNoMarketData } from '../js/firewall.js';
+import { NBA_LINEUPS_URL } from '../js/lineups.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const DATA = path.join(ROOT, 'data');
@@ -219,7 +220,15 @@ async function main() {
   let injuries;
   try { injuries = sanitizeInjuries(await getJSON(`${BASE}/injuries`)); }
   catch (e) { console.warn(`snapshot: injuries kept from previous snapshot (${e.message})`); injuries = prev.injuries || { timestamp: null, teams: {} }; stale.push('injuries'); }
-  await writeJSON(path.join(DATA, 'snapshot.json'), { fetchedAt: now.toISOString(), schedule, injuries, ...(stale.length ? { staleParts: stale } : {}) });
+  // Official NBA.com starting lineups for today (fallback for the dashboard if the Worker proxy is down).
+  let lineups = null;
+  try {
+    const r = await fetch(NBA_LINEUPS_URL(today), { headers: { 'User-Agent': 'Mozilla/5.0', Referer: 'https://www.nba.com/' }, signal: AbortSignal.timeout(15000) });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    lineups = { date: today, data: sanitizeLineups(await r.json()) };
+    console.log(`snapshot: lineups ${today}: ${lineups.data.games.length} games`);
+  } catch (e) { console.warn(`snapshot: lineups ${today} unavailable (${e.message})`); if (prev.lineups?.date === today) lineups = prev.lineups; stale.push('lineups'); }
+  await writeJSON(path.join(DATA, 'snapshot.json'), { fetchedAt: now.toISOString(), schedule, injuries, lineups, ...(stale.length ? { staleParts: stale } : {}) });
   await writeJSON(path.join(DATA, 'teams.json'), teamMeta, true);
   await writeJSON(path.join(DATA, 'meta.json'), { ...meta, builtAt: now.toISOString(), currentSeason: cur, priorSeason: prior, currentGames: curGames.length, priorGames: priorGames.length, source: 'ESPN public site API (scoreboard, summary boxscore, injuries); market fields stripped' }, true);
   console.log('ok', { cur: curGames.length, prior: priorGames.length, cal });

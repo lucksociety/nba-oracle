@@ -3,6 +3,8 @@
 // late-game fouling and overtime. All inputs are independent basketball data (see firewall.js).
 // Nothing in this file reads, accepts or produces sportsbook / market information.
 
+import { lineupsForEvent, applyLineup, gameLineupStatus } from './lineups.js';
+
 export const MODEL_VERSION = 'NBA ORACLE V1.2 (web build 1.2.1)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
@@ -192,7 +194,10 @@ export function injuryImpacts(teamId, injList, data, model, repl) {
   const team = model.teams[teamId]; const w = team?.wCur ?? 0;
   const out = [];
   for (const inj of injList || []) {
-    const av = parseAvailability(inj);
+    const rep = parseAvailability(inj); const o = inj.override;
+    // official lineup overrides the injury report (floor = only raises P(play), e.g. expected starter)
+    const av = !o ? rep : o.floor && rep.label === 'OUT' && o.label === 'EXPECTED STARTER' ? { p: PRIORS.availability.questionable, label: 'CONFLICT: listed Out, expected starter', basis: 'ESPN report Out vs NBA.com expected lineup — treated as questionable until confirmed' }
+      : o.floor && rep.p >= o.p ? { ...rep, label: `${rep.label} · ${o.label}` } : { p: o.p, label: o.label, basis: o.basis, reportLabel: rep.label };
     const cRow = pc.find(r => r[0] === inj.athleteId);
     const pAll = priorAll[inj.athleteId];
     const pRow = pAll ? pAll.rows.reduce((s, r) => s ? s.map((v, i) => (typeof v === 'number' ? v + r[i] : v)) : r.slice(), null) : null;
@@ -244,6 +249,8 @@ function scheduleMarginPenalty(s, cal) {
 // ---------------- Game preparation ----------------
 export function prepareGame(ev, ctx) {
   const { model, data, injuries, recentGames, applyInjuries, repl } = ctx;
+  const lineup = applyInjuries && ctx.lineups ? lineupsForEvent(ctx.lineups, ev) : null;
+  const rows = (id) => data.playersCurrent?.teams?.[id] || [];
   const H = model.teams[ev.home.id], A = model.teams[ev.away.id];
   if (!H || !A) throw new Error(`No ratings for ${ev.shortName}`);
   const lg = model.lg;
@@ -268,8 +275,8 @@ export function prepareGame(ev, ctx) {
   const pH = scheduleMarginPenalty(sH, model.cal), pA = scheduleMarginPenalty(sA, model.cal);
   const ctxMarginHome = hca + altitude - pH.pts + pA.pts; // margin points in home team's favour
   // injuries
-  const injH = applyInjuries ? injuryImpacts(ev.home.id, injuries?.teams?.[ev.home.id], data, model, repl) : [];
-  const injA = applyInjuries ? injuryImpacts(ev.away.id, injuries?.teams?.[ev.away.id], data, model, repl) : [];
+  const injH = applyInjuries ? injuryImpacts(ev.home.id, applyLineup(injuries?.teams?.[ev.home.id], lineup?.home, rows(ev.home.id)), data, model, repl) : [];
+  const injA = applyInjuries ? injuryImpacts(ev.away.id, applyLineup(injuries?.teams?.[ev.away.id], lineup?.away, rows(ev.away.id)), data, model, repl) : [];
   const split = (list) => {
     let fixedOff = 0, fixedDef = 0; const unc = [];
     for (const p of list) {
@@ -306,7 +313,7 @@ export function prepareGame(ev, ctx) {
     fourFactorEdges: fourFactorEdges(fH, fA, lgF, calk, pace),
     targetOrtgHome: tH, targetOrtgAway: tA, ratingH, ratingA, interH, interA,
   };
-  return { params, factors, injH, injA, H, A, fH, fA };
+  return { params, factors, injH, injA, H, A, fH, fA, lineup };
 }
 
 function fourFactorEdges(fH, fA, lgF, calk, pace) {
@@ -498,12 +505,16 @@ export function buildReport(ev, prep, s, opts) {
 
   // lineup status & confidence
   const lineupSwing = unc.filter(u => /to play/.test(u.text)).reduce((m, u) => Math.max(m, u.score), 0);
-  const lineupStatus = !opts.applyInjuries || opts.injuryNotToday || lineupSwing >= 1.5 ? 'UNCERTAIN' : 'PROBABLE';
+  // Section 2: CONFIRMED only from an officially confirmed lineup for both teams; PROBABLE needs at least the official
+  // expected lineup for both teams and no large unresolved availability swing; otherwise UNCERTAIN.
+  const offStatus = gameLineupStatus(prep.lineup);
+  const lineupStatus = !opts.applyInjuries || opts.injuryNotToday || !offStatus || offStatus === 'UNCERTAIN' ? 'UNCERTAIN'
+    : offStatus === 'CONFIRMED' ? 'CONFIRMED' : lineupSwing >= 1.5 ? 'UNCERTAIN' : 'PROBABLE';
   let confidence = 'LOW';
   if (favP >= 0.64 && lineupSwing < 3 && minG >= 0) confidence = 'MODERATE';
   const confidenceNote = 'HIGH tier is withheld: probabilities are provisional and not yet validated by chronological walk-forward calibration (Section 13).';
   return {
-    fin, homeFav, fav, dog, favP, keyFactors, uncertainty, lineupStatus, confidence, confidenceNote,
+    fin, homeFav, fav, dog, favP, keyFactors, uncertainty, lineupStatus, lineups: prep.lineup, confidence, confidenceNote,
     finalLine: `FINAL: ${ev.away.abbr} ${fin.away}, ${ev.home.abbr} ${fin.home}`,
     sheetLine: `${ev.away.abbr} ${fin.away} - ${ev.home.abbr} ${fin.home}`,
   };

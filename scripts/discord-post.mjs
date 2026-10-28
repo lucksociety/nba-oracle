@@ -23,6 +23,8 @@ export function buildMessages() {
   const msgs = [];
   const n = pred.games.length;
   const recs = pred.games.filter(g => betOf(g)?.best).length;
+  const etHM = (iso) => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' }).format(new Date(iso));
+  const luSrc = (pred.sources || []).find(x => /Starting lineups/.test(x.what));
   // ---- message 1: header + slate table
   const rows = pred.games.map(g => {
     const b = betOf(g); const fav = g.homeWin >= 0.5 ? g.home.abbr : g.away.abbr;
@@ -36,6 +38,7 @@ export function buildMessages() {
   if (bets?.jupiterError) head += `\n⚠️ Jupiter unavailable (${short(bets.jupiterError, 120)}) — Polymarket prices used as fallback.`;
   if (bets?.polymarketError) head += `\n⚠️ Polymarket data incomplete (${short(bets.polymarketError, 120)}).`;
   if (!bets) head += '\n⚠️ Market comparison stage did not run; predictions only.';
+  if (luSrc) head += `\nLineups: ${short(luSrc.src, 220)}`;
   msgs.push({ content: short(head, 2000) });
 
   // ---- per-game embeds (≤5 per message to stay far below Discord's 6000-char / 10-embed limits)
@@ -44,7 +47,13 @@ export function buildMessages() {
     const mFav = Math.abs(g.expMarginHome);
     let d = `**${g.away.abbr} ${g.final.away} – ${g.home.abbr} ${g.final.home}**  ·  ${fav.abbr} win ${pct(Math.max(g.homeWin, g.awayWin))}\n`;
     d += `Exp. margin ${fav.abbr} ${mFav.toFixed(1)} · total ${g.expTotal.toFixed(1)} (80%: ${g.iTotal[0].toFixed(0)}–${g.iTotal[1].toFixed(0)}) · OT ${pct(g.otProb)}\n`;
-    d += `Confidence **${g.confidence}** · lineups ${g.lineupStatus}\n`;
+    d += `Confidence **${g.confidence}** · lineups **${g.lineupStatus}**\n`;
+    if (g.lineups) for (const k of ['away', 'home']) {
+      const L = g.lineups[k]; const tag = { CONFIRMED: '✅ confirmed', EXPECTED: '🕒 expected', NONE: '❔ not posted' }[L.status] || L.status;
+      d += `${g[k].abbr} ${tag}: ${L.starters.length ? L.starters.map(p => p.name.split(' ').slice(1).join(' ') || p.name).join(', ') : '—'}${L.updatedAt ? ` (${etHM(L.updatedAt)} ET)` : ''}\n`;
+    }
+    const ovr = ['away', 'home'].flatMap(k => (g.availability?.[k] || []).filter(p => p.lineupOverride).map(p => `${p.name} → ${p.label}`));
+    if (ovr.length) d += `Lineup overrides: ${short(ovr.join('; '), 200)}\n`;
     if (b?.best) {
       const x = b.best;
       d += `\n✅ **BEST BET: ${x.label}** @ ${c(x.ask)} — price from **${x.venue}**${x.venue !== 'Jupiter' ? ' (Jupiter quote unavailable; check Jupiter before betting)' : ''}\nModel ${pct(x.modelProb)} vs cost ${c(x.cost)} (price ${c(x.ask)} + fee ${c(x.fee)}) → **edge +${(x.edge * 100).toFixed(1)} pts**, EV ${x.roi >= 0 ? '+' : ''}${(x.roi * 100).toFixed(0)}%/$` + (x.depth != null ? ` · CLOB depth ~${Math.round(x.depth)} contracts` : '');
