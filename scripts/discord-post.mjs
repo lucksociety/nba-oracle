@@ -17,6 +17,7 @@ const tipET = (iso) => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New
 const betOf = (g) => bets?.games.find(b => b.gameId === g.id);
 const short = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 const dash = '—';
+const venueTxt = (v) => (v ? `${c(v.ask)}+${c(v.fee)} fee → edge ${v.edge >= 0 ? '+' : ''}${(v.edge * 100).toFixed(1)}` : 'n/a');
 
 export function buildMessages() {
   const msgs = [];
@@ -29,11 +30,12 @@ export function buildMessages() {
     return `${(g.away.abbr + ' ' + g.final.away + '-' + g.final.home + ' ' + g.home.abbr).padEnd(16)} ${(fav + ' ' + pct(Math.max(g.homeWin, g.awayWin))).padEnd(11)} ${('T ' + g.expTotal.toFixed(1)).padEnd(8)} ${pick}`;
   });
   let head = `🏀 **NBA ORACLE V1.2 — ${pred.date}** · ${n} game${n === 1 ? '' : 's'} · ${pred.sims.toLocaleString('en-US')} sims/game · ${recs} bet${recs === 1 ? '' : 's'} recommended\n`;
-  head += `Predictions frozen ${new Date(pred.cutoff).toISOString().slice(11, 16)} UTC (sha256 \`${sha.slice(0, 12)}\`) **before** any Jupiter price was fetched.\n`;
+  head += `Predictions frozen ${new Date(pred.cutoff).toISOString().slice(11, 16)} UTC (sha256 \`${sha.slice(0, 12)}\`) **before** any Jupiter/Polymarket price was fetched.\n`;
   if (!n) head += `No modelled NBA games on ${pred.date}.` + (pred.skipped.length ? ' Skipped: ' + pred.skipped.map(s => `${s.game} (${s.reason})`).join('; ') : '');
   else head += '```\n' + 'Prediction       Winner %    Total    Best bet\n' + rows.join('\n') + '\n```';
-  if (bets?.error) head += `\n⚠️ Jupiter comparison unavailable: ${short(bets.error, 200)}`;
-  if (!bets) head += '\n⚠️ Jupiter comparison stage did not run; predictions only.';
+  if (bets?.jupiterError) head += `\n⚠️ Jupiter unavailable (${short(bets.jupiterError, 120)}) — Polymarket prices used as fallback.`;
+  if (bets?.polymarketError) head += `\n⚠️ Polymarket data incomplete (${short(bets.polymarketError, 120)}).`;
+  if (!bets) head += '\n⚠️ Market comparison stage did not run; predictions only.';
   msgs.push({ content: short(head, 2000) });
 
   // ---- per-game embeds (≤5 per message to stay far below Discord's 6000-char / 10-embed limits)
@@ -45,12 +47,13 @@ export function buildMessages() {
     d += `Confidence **${g.confidence}** · lineups ${g.lineupStatus}\n`;
     if (b?.best) {
       const x = b.best;
-      d += `\n✅ **BEST BET: ${x.label}** @ ${c(x.ask)} on Jupiter\nModel ${pct(x.modelProb)} vs cost ${c(x.cost)} (price ${c(x.ask)} + fee ${c(x.fee)}) → **edge +${(x.edge * 100).toFixed(1)} pts**, EV ${x.roi >= 0 ? '+' : ''}${(x.roi * 100).toFixed(0)}%/$` + (x.depth != null ? ` · depth ~${Math.round(x.depth)} contracts` : '');
+      d += `\n✅ **BEST BET: ${x.label}** @ ${c(x.ask)} — price from **${x.venue}**${x.venue !== 'Jupiter' ? ' (Jupiter quote unavailable; check Jupiter before betting)' : ''}\nModel ${pct(x.modelProb)} vs cost ${c(x.cost)} (price ${c(x.ask)} + fee ${c(x.fee)}) → **edge +${(x.edge * 100).toFixed(1)} pts**, EV ${x.roi >= 0 ? '+' : ''}${(x.roi * 100).toFixed(0)}%/$` + (x.depth != null ? ` · CLOB depth ~${Math.round(x.depth)} contracts` : '');
+      d += `\nJupiter ${venueTxt(x.jupiter)} · Polymarket ${venueTxt(x.polymarket)}`;
       if (x.edge > 0.15) d += `\n⚠️ Very large disagreement with the market — more often a model blind spot (late news, roster change) than free money. Verify injuries first.`;
     } else d += `\n⛔ **NO BET** — ${b ? short(b.noBetReason || 'requirements not met', 220) : 'comparison unavailable'}`;
-    const others = (b?.candidates || []).filter(x => x !== b?.best && x.marketId !== b?.best?.marketId && x.modelProb > 0.5).slice(0, 3);
-    if (others.length) d += `\nOther lines: ` + others.map(x => `${x.label} ${pct(x.modelProb)} vs ${c(x.cost)} (${x.edge >= 0 ? '+' : ''}${(x.edge * 100).toFixed(1)})`).join(' · ');
-    if (b && !b.best && b.coverage) d += `\nJupiter markets: ML ${b.coverage.moneyline} · spreads ${b.coverage.spreads} · totals ${b.coverage.totals}`;
+    const others = (b?.alternatives || []).slice(0, 3);
+    if (others.length) d += `\nNext best: ` + others.map(x => `${x.label} ${pct(x.modelProb)} vs ${c(x.cost)} (${x.edge >= 0 ? '+' : ''}${(x.edge * 100).toFixed(1)}${x.qualifies ? '' : ', fails filters'})`).join(' · ');
+    if (b?.coverage) d += `\nLines checked: ${b.coverage.evaluated} (ML ${b.coverage.moneyline} · ${b.coverage.spreadLines} spread mkts × 2 sides · ${b.coverage.totalLines} totals × O/U)`;
     d += `\n_Key factor: ${short(g.keyFactors[0] || dash, 120)}_`;
     return { title: `${g.away.name} @ ${g.home.name} · ${tipET(g.tip)}${g.status.state !== 'pre' ? ' · ' + (g.status.detail || g.status.state) : ''}`.slice(0, 250),
       description: short(d, 1500), color: b?.best ? 0x2ecc71 : 0x7f8c8d,
@@ -61,7 +64,7 @@ export function buildMessages() {
   // ---- final: copy list + rules
   if (n) {
     let tail = '**Copy list (Google Sheets)**\n```\n' + pred.games.map(g => g.sheetLine).join('\n') + '\n```\n';
-    tail += `Rules: a bet is recommended only if model probability > 50% **and** edge > 0 after Jupiter's fee (0.07·p·(1−p)/contract), with a two-sided quote (≤10¢ wide) and ≥10 contracts at the ask; otherwise NO BET. Spreads = Jupiter's NBA spread markets.\n`;
+    tail += `Rules: every moneyline, alternate spread (both sides) and alternate total (over/under) is checked; a bet is recommended only if model probability > 50% **and** edge > 0 after fees, with a two-sided quote (≤10¢ wide) and ≥10 contracts within 1¢ of the ask on the Polymarket order book; otherwise NO BET. Edge uses Jupiter's price + fee (0.07·p·(1−p)/contract) since bets are placed on Jupiter; Polymarket (NBA games currently 0% fee) is shown for comparison and used only if Jupiter has no quote.\n`;
     tail += `Probabilities are provisional (not yet walk-forward calibrated). Odds never enter the model — they are compared only after the forecast is frozen. Not financial advice.`;
     msgs.push({ content: short(tail, 2000) });
   }
