@@ -3,23 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NBA ORACLE V1.2 — Score Prediction Dashboard</title>
+<title>Luck Society · NBA Oracle V1.2 — Score Predictions</title>
 <meta name="description" content="Independent, zero-market NBA score predictions: possession-level four-factors Monte Carlo.">
+<meta name="theme-color" content="#050807">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>">
+<link rel="icon" type="image/png" href="assets/brand/favicon-64.png">
+<link rel="apple-touch-icon" href="assets/brand/coin-192.png">
 </head>
 <body>
-<header class="top">
-  <div class="brand">
-    <div class="logo">🏀</div>
-    <div>
-      <h1>NBA ORACLE <span>V1.2</span></h1>
-      <p class="sub">Autonomous NBA prediction engine · possession-level four-factors Monte Carlo</p>
-    </div>
-  </div>
+<nav class="topbar">
+  <a class="tb-brand" href="./"><img src="assets/brand/coin-192.png" alt="Luck Society"><span>LUCK SOCIETY</span></a>
   <div class="badges">
     <span class="badge fw" title="No odds, spreads, totals, moneylines, picks or other models are fetched, used or shown. ESPN odds fields are stripped at ingestion.">🛡️ Zero-market firewall ON</span>
     <span class="badge warn" title="No chronological walk-forward calibration has been run yet.">Probabilities provisional · uncalibrated</span>
+  </div>
+</nav>
+<header class="hero">
+  <div class="hero-inner">
+    <img class="hero-coin" src="assets/brand/coin-192.png" alt="Luck Society clover coin">
+    <div class="eyebrow"><span></span>LUCK SOCIETY PRESENTS<span></span></div>
+    <h1 class="hero-title">NBA <em>ORACLE</em></h1>
+    <div class="hero-sub"><span class="ver">V1.2</span> Score prediction engine · possession-level Monte Carlo · zero market influence</div>
   </div>
 </header>
 
@@ -29,7 +36,7 @@
     <div class="field"><label for="sims">Simulations / game</label>
       <select id="sims"><option value="100000" selected>100,000</option><option value="300000">300,000</option><option value="500000">500,000</option></select></div>
     <div class="field"><label for="seed">Random seed</label><input type="text" id="seed" placeholder="auto: oracle-YYYY-MM-DD"></div>
-    <button id="simulate" class="sim-btn"><span class="ball">🏀</span> SIMULATE</button>
+    <button id="simulate" class="sim-btn"><span class="ball">🍀</span><span class="sim-label">SIMULATE SLATE</span></button>
   </section>
 
   <section id="progress" class="card hidden">
@@ -40,7 +47,6 @@
   <section id="error" class="card error hidden"></section>
 
   <section id="results" class="hidden">
-    <div class="card" id="integrity"></div>
     <div class="card">
       <h2>Slate forecast <small>ranked by predicted-winner probability</small></h2>
       <div class="table-wrap"><table id="slate"></table></div>
@@ -53,8 +59,9 @@
         <button id="copy" class="small-btn">Copy</button>
       </div>
     </div>
-    <h2 class="section-title">Game forecasts</h2>
+    <h2 class="section-title"><span>Game forecasts</span></h2>
     <div id="games"></div>
+    <div class="card" id="integrity"></div>
   </section>
 
   <section class="card about">
@@ -63,7 +70,12 @@
     <p><strong>Honesty notes:</strong> probabilities are <em>provisional model estimates</em>; no walk-forward backtest or calibration has been performed. There is no tracking, lineup-level or play-by-play data; player impact is a simple box-score estimate. See the <a href="https://github.com/lucksociety/nba-oracle#readme" target="_blank" rel="noopener">README</a> for exactly what is implemented, simplified, or missing.</p>
   </section>
 </main>
-<footer>NBA ORACLE V1.2 · data: ESPN public site API (basketball fields only) · <a href="https://github.com/lucksociety/nba-oracle" target="_blank" rel="noopener">source</a></footer>
+<footer>
+  <img src="assets/brand/coin-192.png" alt="" class="foot-coin">
+  <div class="foot-name">LUCK SOCIETY</div>
+  <div>NBA ORACLE V1.2 · data: ESPN public site API (basketball fields only) · <a href="https://github.com/lucksociety/nba-oracle" target="_blank" rel="noopener">source</a> · <a href="https://x.com/lucksociety" target="_blank" rel="noopener">@LuckSociety</a> · <a href="https://discord.gg/7GCt8KZy6s" target="_blank" rel="noopener">Discord</a></div>
+  <div class="foot-note">Model forecasts only — not a guarantee. Bet responsibly.</div>
+</footer>
 <script type="module" src="js/app.js"></script>
 </body>
 </html>
