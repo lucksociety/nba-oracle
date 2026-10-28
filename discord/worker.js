@@ -94,9 +94,15 @@ export default {
     if (!(await verify(req, body, env.DISCORD_PUBLIC_KEY))) return new Response('invalid request signature', { status: 401 });
     const i = JSON.parse(body);
     if (i.type === 1) return json({ type: 1 }); // PING
+    // Channel lock: Discord's per-channel command permissions don't bind server owners/admins, so enforce here.
+    const allowed = String(env.ALLOWED_CHANNEL_ID || '').split(',').map((x) => x.trim()).filter(Boolean);
+    const inAllowed = !allowed.length || allowed.includes(String(i.channel_id || i.channel?.id || ''));
     if (i.type === 4 && i.data?.name === 'nba') { // APPLICATION_COMMAND_AUTOCOMPLETE for the date option
       const focused = (i.data.options || []).find((o) => o.focused);
-      return json({ type: 8, data: { choices: dateChoices(focused?.value || '') } });
+      return json({ type: 8, data: { choices: inAllowed ? dateChoices(focused?.value || '') : [] } });
+    }
+    if (i.type === 2 && i.data?.name === 'nba' && !inAllowed) {
+      return json({ type: 4, data: { content: `Use /nba in ${allowed.map((c) => `<#${c}>`).join(' or ')}.`, flags: 64, allowed_mentions: { parse: [] } } });
     }
     if (i.type === 2 && i.data?.name === 'nba') {
       const raw = (i.data.options || []).find((o) => o.name === 'date')?.value;

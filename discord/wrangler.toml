@@ -10,4 +10,6 @@ GITHUB_REPO = "lucksociety/nba-oracle"
 GITHUB_WORKFLOW = "discord-nba.yml"
 GITHUB_REF = "main"
 SIMS = "300000"
+# /nba only runs in these channel ids (comma-separated); = channel of the DISCORD_WEBHOOK_URL webhook
+ALLOWED_CHANNEL_ID = "1337821807478177927"
 # Secrets (set with `wrangler secret put`): GITHUB_TOKEN, RELAY_KEY, DISCORD_BOT_TOKEN
