@@ -12,4 +12,15 @@ GITHUB_REF = "main"
 SIMS = "300000"
 # /nba only runs in these channel ids (comma-separated); = channel of the DISCORD_WEBHOOK_URL webhook
 ALLOWED_CHANNEL_ID = "1337821807478177927"
+# Daily auto-post 30 min before the first tip (auto.js). Set to "off" + `npx wrangler deploy` to pause.
+AUTO_POST = "on"
 # Secrets (set with `wrangler secret put`): GITHUB_TOKEN, RELAY_KEY, DISCORD_BOT_TOKEN
+
+# Auto-post: check every 5 min; dispatches discord-nba.yml once per ET date inside the T-30 window.
+[triggers]
+crons = ["*/5 * * * *"]
+
+# Once-per-date dedupe marker for the auto-post
+[[kv_namespaces]]
+binding = "AUTO_KV"
+id = "470b7ae994c044cfa0bd59b95a587611"

@@ -1,5 +1,5 @@
 name: Discord /nba
-run-name: "/nba ${{ inputs.date || 'today' }}"
+run-name: "/nba ${{ inputs.date || 'today' }}${{ inputs.auto == '1' && ' (auto)' || '' }}"
 on:
   workflow_dispatch:
     inputs:
@@ -15,6 +15,10 @@ on:
         description: 'Simulations per game'
         required: false
         default: '300000'
+      auto:
+        description: 'Set to 1 by the Worker cron auto-post (adds the auto-run header line)'
+        required: false
+        default: ''
 permissions:
   contents: read
 jobs:
@@ -42,6 +46,7 @@ jobs:
         run: node scripts/compare.mjs
       - name: "Stage 3: post to Discord"
         env:
+          AUTO_RUN: ${{ inputs.auto }}
           DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: node scripts/discord-post.mjs

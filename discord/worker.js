@@ -7,6 +7,7 @@
 // The Worker itself runs no simulation (Workers CPU limits) and never touches odds.
 
 import { dateChoices, parseDateOption } from './dates.js';
+import { runAuto } from './auto.js';
 
 const json = (o, status = 200) => new Response(JSON.stringify(o), { status, headers: { 'Content-Type': 'application/json' } });
 const hex = (h) => new Uint8Array(h.match(/.{2}/g).map((b) => parseInt(b, 16)));
@@ -102,9 +103,15 @@ async function lineupsProxy(url, ctx) {
 }
 
 export default {
+  // Cron Trigger (wrangler.toml): daily auto-post 30 min before the first tip (see auto.js).
+  async scheduled(event, env, ctx) {
+    ctx.waitUntil(runAuto(env, { now: new Date(event.scheduledTime || Date.now()) }).then((d) => console.log('auto', JSON.stringify(d))));
+  },
   async fetch(req, env, ctx) {
     const url = new URL(req.url);
     if (req.method === 'OPTIONS') return new Response(null, { headers: CORS });
+    // Dry-run status of the auto-post trigger (never dispatches): GET /auto/status
+    if (req.method === 'GET' && url.pathname === '/auto/status') return json(await runAuto(env, { dryRun: true }));
     if (req.method === 'GET' && url.pathname.startsWith('/espn/')) return espnProxy(url, ctx);
     if (req.method === 'GET' && url.pathname.startsWith('/nba/lineups/')) return lineupsProxy(url, ctx);
     if (req.method === 'GET') return new Response('NBA Oracle Discord interactions endpoint: OK\n', { headers: { 'Content-Type': 'text/plain' } });

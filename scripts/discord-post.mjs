@@ -33,6 +33,7 @@ export function buildMessages() {
     return `${(g.away.abbr + ' ' + g.final.away + '-' + g.final.home + ' ' + g.home.abbr).padEnd(16)} ${(fav + ' ' + pct(Math.max(g.homeWin, g.awayWin))).padEnd(11)} ${('T ' + g.expTotal.toFixed(1)).padEnd(8)} ${pick}`;
   });
   let head = `🏀 **NBA ORACLE V1.3 — ${pred.date}** · ${n} game${n === 1 ? '' : 's'} · ${pred.sims.toLocaleString('en-US')} sims/game · ${recs} bet${recs === 1 ? '' : 's'} recommended\n`;
+  if (process.env.AUTO_RUN === '1') head += `⏰ Auto-run: 30 min before first tip\n`;
   head += `Predictions frozen ${new Date(pred.cutoff).toISOString().slice(11, 16)} UTC (sha256 \`${sha.slice(0, 12)}\`) **before** any Jupiter/Polymarket price was fetched.\n`;
   if (!n) head += `No modelled NBA games on ${pred.date}.` + (pred.skipped.length ? ' Skipped: ' + pred.skipped.map(s => `${s.game} (${s.reason})`).join('; ') : '');
   else head += '```\n' + 'Prediction       Winner %    Total    Best bet\n' + rows.join('\n') + '\n```';
