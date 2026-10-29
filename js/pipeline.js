@@ -75,6 +75,7 @@ export function prepareSlate(date, inputs, { today = etToday() } = {}) {
   const applyInjuries = date >= today; const injuryNotToday = date > today;
   const games = []; const skipped = [];
   for (const ev of events) {
+    if (['STATUS_POSTPONED', 'STATUS_CANCELED', 'STATUS_CANCELLED'].includes(ev.status?.name)) { skipped.push({ ev, reason: 'Game postponed or cancelled' }); continue; }
     if (ev.seasonType === 1) { skipped.push({ ev, reason: 'Preseason game (not modelled)' }); continue; }
     try {
       const prep = prepareGame(ev, { model, data, injuries, lineups, recentGames: recent, applyInjuries, repl, date });

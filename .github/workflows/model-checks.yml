@@ -1,0 +1,22 @@
+name: Model and command checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Offline model and Discord routing regressions
+        run: |
+          node test/history.test.mjs
+          node test/firewall.test.mjs
+          node discord/test-worker.mjs
+          node discord/test-auto.mjs

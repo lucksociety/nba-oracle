@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import { seasonAggregates, buildModel } from '../js/engine.js';
+import { prepareSlate } from '../js/pipeline.js';
+const read = async f => JSON.parse(await fs.readFile(new URL('../data/'+f+'.json', import.meta.url), 'utf8'));
+const [gamesCurrent,gamesPrior,playersCurrent,playersPrior,calibration,teams] = await Promise.all(['games-2027','games-2026','players-2027','players-2026','calibration','teams'].map(read));
+const data={gamesCurrent,gamesPrior,playersCurrent,playersPrior,calibration,teams};
+const sorted=seasonAggregates(gamesCurrent,'2026-10-29',calibration.homeCourtPts);
+const shuffled=seasonAggregates({games:[...gamesCurrent.games].reverse()},'2026-10-29',calibration.homeCourtPts);
+assert.deepEqual(shuffled,sorted,'recency weighting must be invariant to file ordering');
+const altered=structuredClone(data);
+altered.gamesPrior.games.push(['future','2026-11-01',gamesPrior.games[0][2],gamesPrior.games[0][3],400,1,4,false,...gamesPrior.games[0].slice(8)]);
+assert.deepEqual(buildModel(altered,'2026-10-29'),buildModel(data,'2026-10-29'),'future rows in prior-season file must not affect ratings');
+const postponed={id:'postponed',home:{id:'1'},away:{id:'2'},status:{name:'STATUS_POSTPONED'}};
+const cancelled={...postponed,id:'cancelled',status:{name:'STATUS_CANCELED'}};
+const slate=prepareSlate('2026-10-29',{data,schedule:{'2026-10-29':[postponed,cancelled]},injuries:null,lineups:null});
+assert.equal(slate.games.length,0);assert.equal(slate.skipped.length,2);
+console.log('history ordering, prior-season cutoff, postponed/cancelled routing: passed');

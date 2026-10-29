@@ -43,7 +43,7 @@ function emptyAgg() { return { g: 0, poss: 0, pts: 0, o: new Array(10).fill(0), 
 /** Aggregate one season's games up to (not including) cutoffDate. */
 export function seasonAggregates(gamesFile, cutoffDate, hcaPer100) {
   const T = {}; const L = { g: 0, poss: 0, pts: 0, o: new Array(10).fill(0) };
-  for (const g of gamesFile.games) {
+  for (const g of [...gamesFile.games].sort((a, b) => a[1].localeCompare(b[1]) || String(a[0]).localeCompare(String(b[0])))) {
     const [id, d, h, a, hs, as, per, n, hb, ab] = g;
     if (cutoffDate && d >= cutoffDate) continue;
     const P = 0.5 * (poss(hb) + poss(ab));
@@ -114,7 +114,7 @@ function solveK(f, targetPPP) {
 export function buildModel(data, cutoffDate) {
   const cal = data.calibration;
   const hcaPer100 = cal.homeCourtPts; // ~1 pt per game ≈ 1 pt per 100 possessions at NBA pace (~100)
-  const prior = seasonAggregates(data.gamesPrior, null, hcaPer100);
+  const prior = seasonAggregates(data.gamesPrior, cutoffDate, hcaPer100);
   const cur = seasonAggregates(data.gamesCurrent, cutoffDate, hcaPer100);
   const wl = cur.lg.teamGames / (cur.lg.teamGames + PRIORS.leaguePseudoTeamGames);
   const blendLg = (c, p) => (c == null ? p : wl * c + (1 - wl) * p);
