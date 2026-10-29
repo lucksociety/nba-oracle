@@ -136,7 +136,9 @@ export default {
       if (!resolved) return json({ type: 4, data: { content: `⚠️ Couldn't read the date "${String(raw).slice(0, 40)}". Pick Today/Tomorrow from the list, or type YYYY-MM-DD.`, flags: 64 } });
       i.resolvedDate = resolved;
       if (!env.GITHUB_TOKEN || !env.RELAY_KEY) return json({ type: 4, data: { content: '⚠️ NBA Oracle is not fully configured (missing GITHUB_TOKEN / RELAY_KEY secret).' } });
-      ctx.waitUntil(dispatch(env, i));
+      ctx.waitUntil(dispatch(env, i).catch(async () => {
+        await editOriginal(env, i.token, '⚠️ Could not start the NBA Oracle run. Check the Worker configuration and GitHub connection, then retry.');
+      }));
       return json({ type: 5 }); // deferred: "NBA Oracle is thinking…"
     }
     return json({ type: 4, data: { content: 'Unknown command', flags: 64 } });

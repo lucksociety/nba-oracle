@@ -26,7 +26,6 @@ const realFetch = globalThis.fetch; const sent = [];
 globalThis.fetch = async (u, init) => { sent.push({ u: String(u), body: init?.body }); return new Response(null, { status: 204 }); };
 r = JSON.parse((await call({ type: 2, token: 't', channel_id: '111', member: { user: { username: 'u' } }, data: { name: 'nba', options: [{ type: 3, name: 'date', value: 'tomorrow' }] } })).body);
 await Promise.all(waits);
-globalThis.fetch = realFetch;
 const disp = sent.find((s) => s.u.includes('/dispatches'));
 assert(r.type === 5 && disp && JSON.parse(disp.body).inputs.date.match(/^\d{4}-\d{2}-\d{2}$/), `"tomorrow" -> deferred + dispatch date ${disp && JSON.parse(disp.body).inputs.date}`);
 r = JSON.parse((await call({ type: 2, token: 't', channel_id: '111', data: { name: 'nba' } })).body);
@@ -44,4 +43,14 @@ assert(r.type === 5, 'omitted date -> deferred (today)');
   await Promise.all(waits); globalThis.fetch = rf;
   assert(x.type === 5 && sent2.some((u) => u.includes('/dispatches')), 'allowed channel (2nd in list) -> deferred + dispatch');
 }
+// A thrown network error must finish the deferred reply, not leave it thinking forever.
+waits.length = 0; const failureReplies = [];
+globalThis.fetch = async (url, opts) => {
+  if (String(url).includes('api.github.com')) throw new Error('network down');
+  failureReplies.push(JSON.parse(opts.body)); return new Response(null, { status: 204 });
+};
+await call({ type: 2, token: 't', channel_id: '111', data: { name: 'nba' } });
+await Promise.all(waits);
+assert(failureReplies.some(x => x.content.includes('Could not start')), 'network failure resolves deferred interaction with error');
+globalThis.fetch = realFetch;
 console.log('worker handler tests passed');
