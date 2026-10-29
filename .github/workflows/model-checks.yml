@@ -16,7 +16,12 @@ jobs:
           node-version: '22'
       - name: Offline model and Discord routing regressions
         run: |
+          node test/data-recovery.test.mjs
           node test/history.test.mjs
           node test/firewall.test.mjs
           node discord/test-worker.mjs
           node discord/test-auto.mjs
+      - name: Prospective evaluation regressions
+        run: python3 -m unittest discover -s scripts -p test_model_learning.py
+      - name: Evergreen data and reconciliation regressions
+        run: python3 -m unittest discover -s scripts -p test_evergreen.py

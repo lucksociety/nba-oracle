@@ -106,7 +106,14 @@ async function buildSeason(season, now, teamMeta) {
     let sb;
     try { sb = await getJSON(`${BASE}/scoreboard?dates=${m}&limit=500`); }
     catch (e) { console.warn(`season ${season}: month ${m} unavailable, keeping cached games (${e.message})`); failedMonths.add(String(m).slice(0, 6)); continue; }
-    for (const e of sanitizeScoreboard(sb)) {
+    const monthEvents = sanitizeScoreboard(sb);
+    const cachedCount = Object.values(cache).filter(g => String(g.d).replaceAll('-', '').startsWith(m)).length;
+    const finalCount = monthEvents.filter(e => e.seasonType === 2 && e.seasonYear === season && e.status.completed && e.status.name === 'STATUS_FINAL').length;
+    if ((cachedCount > 0 && finalCount === 0) || (cachedCount >= 10 && finalCount < cachedCount / 2)) {
+      console.warn(`::warning::season ${season}: scoreboard ${m} lost most known finals; retaining last good history`);
+      failedMonths.add(m);
+    }
+    for (const e of monthEvents) {
       if (!e.home || !e.away || !NBA30.has(e.home.abbr) || !NBA30.has(e.away.abbr)) continue; // excludes All-Star / exhibition teams
       for (const side of ['home', 'away']) if (e[side]) teamMeta[e[side].id] = { abbr: e[side].abbr, name: e[side].name, short: e[side].short, logo: e[side].logo, color: e[side].color, alt: e[side].alt };
       if (e.seasonType === 2 && e.seasonYear === season && e.status.completed && e.status.name === 'STATUS_FINAL') events.push(e);
