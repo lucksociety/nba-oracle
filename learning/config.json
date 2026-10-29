@@ -1,0 +1,4 @@
+{
+  "project": "nba-oracle",
+  "refresh_workflow": "update-data.yml"
+}

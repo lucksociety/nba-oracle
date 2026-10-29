@@ -44,6 +44,14 @@ jobs:
         env:
           JUPITER_API_KEY: ${{ secrets.JUPITER_API_KEY }}
         run: node scripts/compare.mjs
+      - name: Preserve pre-game forecasts for prospective evaluation
+        run: python3 scripts/model_learning.py --capture-only
+      - uses: actions/upload-artifact@v4
+        with:
+          name: learning-${{ github.run_id }}
+          path: learning/inbox.jsonl
+          retention-days: 90
+          if-no-files-found: error
       - name: "Stage 3: post to Discord"
         env:
           AUTO_RUN: ${{ inputs.auto }}
