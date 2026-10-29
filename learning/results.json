@@ -1,0 +1,10394 @@
+{
+ "401809234": {
+  "label": "H",
+  "scores": [
+   119,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809235": {
+  "label": "A",
+  "scores": [
+   92,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809236": {
+  "label": "A",
+  "scores": [
+   135,
+   141
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809237": {
+  "label": "H",
+  "scores": [
+   137,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809238": {
+  "label": "H",
+  "scores": [
+   126,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809239": {
+  "label": "A",
+  "scores": [
+   102,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809240": {
+  "label": "H",
+  "scores": [
+   126,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809241": {
+  "label": "A",
+  "scores": [
+   96,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809242": {
+  "label": "H",
+  "scores": [
+   142,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809243": {
+  "label": "H",
+  "scores": [
+   125,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809244": {
+  "label": "A",
+  "scores": [
+   109,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809245": {
+  "label": "A",
+  "scores": [
+   95,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809246": {
+  "label": "A",
+  "scores": [
+   114,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809247": {
+  "label": "A",
+  "scores": [
+   110,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809248": {
+  "label": "A",
+  "scores": [
+   104,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809249": {
+  "label": "A",
+  "scores": [
+   97,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809250": {
+  "label": "H",
+  "scores": [
+   104,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809502": {
+  "label": "A",
+  "scores": [
+   108,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809503": {
+  "label": "A",
+  "scores": [
+   108,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809504": {
+  "label": "A",
+  "scores": [
+   101,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809505": {
+  "label": "H",
+  "scores": [
+   135,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809506": {
+  "label": "A",
+  "scores": [
+   112,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809507": {
+  "label": "H",
+  "scores": [
+   118,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809508": {
+  "label": "H",
+  "scores": [
+   109,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809509": {
+  "label": "H",
+  "scores": [
+   126,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809510": {
+  "label": "H",
+  "scores": [
+   123,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809511": {
+  "label": "A",
+  "scores": [
+   115,
+   148
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809512": {
+  "label": "A",
+  "scores": [
+   97,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809773": {
+  "label": "A",
+  "scores": [
+   107,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809774": {
+  "label": "H",
+  "scores": [
+   121,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809775": {
+  "label": "H",
+  "scores": [
+   126,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809776": {
+  "label": "H",
+  "scores": [
+   118,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809777": {
+  "label": "H",
+  "scores": [
+   126,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809778": {
+  "label": "H",
+  "scores": [
+   137,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809779": {
+  "label": "H",
+  "scores": [
+   129,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809780": {
+  "label": "A",
+  "scores": [
+   101,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809781": {
+  "label": "H",
+  "scores": [
+   140,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809782": {
+  "label": "H",
+  "scores": [
+   105,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809783": {
+  "label": "H",
+  "scores": [
+   114,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809784": {
+  "label": "H",
+  "scores": [
+   140,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809785": {
+  "label": "H",
+  "scores": [
+   147,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809786": {
+  "label": "H",
+  "scores": [
+   124,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809787": {
+  "label": "A",
+  "scores": [
+   104,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809788": {
+  "label": "A",
+  "scores": [
+   127,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809789": {
+  "label": "A",
+  "scores": [
+   108,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809790": {
+  "label": "H",
+  "scores": [
+   120,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809791": {
+  "label": "A",
+  "scores": [
+   105,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809792": {
+  "label": "H",
+  "scores": [
+   140,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809793": {
+  "label": "A",
+  "scores": [
+   107,
+   143
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809794": {
+  "label": "H",
+  "scores": [
+   118,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809795": {
+  "label": "H",
+  "scores": [
+   114,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809796": {
+  "label": "A",
+  "scores": [
+   109,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809797": {
+  "label": "A",
+  "scores": [
+   112,
+   144
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809798": {
+  "label": "A",
+  "scores": [
+   123,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809799": {
+  "label": "H",
+  "scores": [
+   132,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809800": {
+  "label": "A",
+  "scores": [
+   103,
+   144
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809801": {
+  "label": "H",
+  "scores": [
+   135,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809802": {
+  "label": "H",
+  "scores": [
+   117,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809803": {
+  "label": "A",
+  "scores": [
+   101,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809804": {
+  "label": "H",
+  "scores": [
+   106,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809805": {
+  "label": "H",
+  "scores": [
+   97,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809806": {
+  "label": "H",
+  "scores": [
+   113,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809807": {
+  "label": "A",
+  "scores": [
+   128,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809808": {
+  "label": "A",
+  "scores": [
+   100,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809809": {
+  "label": "A",
+  "scores": [
+   102,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809810": {
+  "label": "A",
+  "scores": [
+   100,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809811": {
+  "label": "H",
+  "scores": [
+   130,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809812": {
+  "label": "A",
+  "scores": [
+   103,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809813": {
+  "label": "H",
+  "scores": [
+   123,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809814": {
+  "label": "A",
+  "scores": [
+   109,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809815": {
+  "label": "H",
+  "scores": [
+   119,
+   86
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809816": {
+  "label": "H",
+  "scores": [
+   118,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809817": {
+  "label": "H",
+  "scores": [
+   123,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809818": {
+  "label": "A",
+  "scores": [
+   136,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809819": {
+  "label": "H",
+  "scores": [
+   128,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809820": {
+  "label": "H",
+  "scores": [
+   129,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809821": {
+  "label": "A",
+  "scores": [
+   107,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809833": {
+  "label": "H",
+  "scores": [
+   117,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809834": {
+  "label": "A",
+  "scores": [
+   101,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809835": {
+  "label": "H",
+  "scores": [
+   138,
+   89
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809836": {
+  "label": "A",
+  "scores": [
+   119,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809837": {
+  "label": "A",
+  "scores": [
+   120,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809838": {
+  "label": "A",
+  "scores": [
+   109,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809839": {
+  "label": "H",
+  "scores": [
+   124,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809933": {
+  "label": "H",
+  "scores": [
+   136,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809934": {
+  "label": "H",
+  "scores": [
+   125,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809935": {
+  "label": "A",
+  "scores": [
+   118,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809936": {
+  "label": "A",
+  "scores": [
+   116,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809937": {
+  "label": "H",
+  "scores": [
+   115,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809938": {
+  "label": "H",
+  "scores": [
+   128,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809939": {
+  "label": "H",
+  "scores": [
+   133,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809940": {
+  "label": "H",
+  "scores": [
+   129,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809941": {
+  "label": "H",
+  "scores": [
+   120,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809942": {
+  "label": "A",
+  "scores": [
+   114,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809943": {
+  "label": "A",
+  "scores": [
+   107,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809944": {
+  "label": "A",
+  "scores": [
+   124,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809945": {
+  "label": "H",
+  "scores": [
+   105,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809946": {
+  "label": "A",
+  "scores": [
+   116,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809947": {
+  "label": "A",
+  "scores": [
+   111,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809948": {
+  "label": "A",
+  "scores": [
+   114,
+   146
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809949": {
+  "label": "A",
+  "scores": [
+   116,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809950": {
+  "label": "A",
+  "scores": [
+   107,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809951": {
+  "label": "H",
+  "scores": [
+   128,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809952": {
+  "label": "H",
+  "scores": [
+   139,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809953": {
+  "label": "H",
+  "scores": [
+   105,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809954": {
+  "label": "H",
+  "scores": [
+   129,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809955": {
+  "label": "A",
+  "scores": [
+   98,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809956": {
+  "label": "A",
+  "scores": [
+   100,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809957": {
+  "label": "H",
+  "scores": [
+   125,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809958": {
+  "label": "H",
+  "scores": [
+   128,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809959": {
+  "label": "H",
+  "scores": [
+   133,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809960": {
+  "label": "H",
+  "scores": [
+   118,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809961": {
+  "label": "H",
+  "scores": [
+   119,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809962": {
+  "label": "H",
+  "scores": [
+   118,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809963": {
+  "label": "H",
+  "scores": [
+   115,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809964": {
+  "label": "A",
+  "scores": [
+   113,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809965": {
+  "label": "H",
+  "scores": [
+   114,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809966": {
+  "label": "H",
+  "scores": [
+   139,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809967": {
+  "label": "H",
+  "scores": [
+   114,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809968": {
+  "label": "A",
+  "scores": [
+   120,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809969": {
+  "label": "H",
+  "scores": [
+   136,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809970": {
+  "label": "H",
+  "scores": [
+   128,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809971": {
+  "label": "H",
+  "scores": [
+   137,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809972": {
+  "label": "A",
+  "scores": [
+   90,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809973": {
+  "label": "H",
+  "scores": [
+   121,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809974": {
+  "label": "A",
+  "scores": [
+   94,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809975": {
+  "label": "H",
+  "scores": [
+   138,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809976": {
+  "label": "H",
+  "scores": [
+   131,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809977": {
+  "label": "A",
+  "scores": [
+   108,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809978": {
+  "label": "A",
+  "scores": [
+   134,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809979": {
+  "label": "H",
+  "scores": [
+   144,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809980": {
+  "label": "H",
+  "scores": [
+   121,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809981": {
+  "label": "H",
+  "scores": [
+   107,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809982": {
+  "label": "H",
+  "scores": [
+   98,
+   79
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809983": {
+  "label": "H",
+  "scores": [
+   125,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809984": {
+  "label": "H",
+  "scores": [
+   135,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809985": {
+  "label": "A",
+  "scores": [
+   112,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809986": {
+  "label": "A",
+  "scores": [
+   121,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809987": {
+  "label": "H",
+  "scores": [
+   126,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809988": {
+  "label": "H",
+  "scores": [
+   107,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809989": {
+  "label": "H",
+  "scores": [
+   122,
+   88
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809990": {
+  "label": "A",
+  "scores": [
+   134,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809991": {
+  "label": "A",
+  "scores": [
+   115,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809992": {
+  "label": "A",
+  "scores": [
+   113,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809993": {
+  "label": "A",
+  "scores": [
+   107,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809994": {
+  "label": "H",
+  "scores": [
+   120,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809995": {
+  "label": "H",
+  "scores": [
+   127,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809996": {
+  "label": "H",
+  "scores": [
+   107,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809997": {
+  "label": "A",
+  "scores": [
+   133,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809998": {
+  "label": "A",
+  "scores": [
+   105,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401809999": {
+  "label": "H",
+  "scores": [
+   114,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810000": {
+  "label": "A",
+  "scores": [
+   94,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810001": {
+  "label": "A",
+  "scores": [
+   101,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810002": {
+  "label": "H",
+  "scores": [
+   122,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810003": {
+  "label": "H",
+  "scores": [
+   137,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810004": {
+  "label": "A",
+  "scores": [
+   105,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810005": {
+  "label": "H",
+  "scores": [
+   126,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810006": {
+  "label": "H",
+  "scores": [
+   117,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810007": {
+  "label": "H",
+  "scores": [
+   117,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810008": {
+  "label": "H",
+  "scores": [
+   128,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810009": {
+  "label": "H",
+  "scores": [
+   130,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810010": {
+  "label": "H",
+  "scores": [
+   130,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810011": {
+  "label": "A",
+  "scores": [
+   109,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810012": {
+  "label": "A",
+  "scores": [
+   115,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810013": {
+  "label": "A",
+  "scores": [
+   103,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810014": {
+  "label": "H",
+  "scores": [
+   119,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810015": {
+  "label": "H",
+  "scores": [
+   110,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810016": {
+  "label": "A",
+  "scores": [
+   106,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810017": {
+  "label": "H",
+  "scores": [
+   130,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810018": {
+  "label": "A",
+  "scores": [
+   115,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810019": {
+  "label": "A",
+  "scores": [
+   119,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810020": {
+  "label": "H",
+  "scores": [
+   128,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810021": {
+  "label": "H",
+  "scores": [
+   127,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810022": {
+  "label": "H",
+  "scores": [
+   113,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810023": {
+  "label": "H",
+  "scores": [
+   116,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810024": {
+  "label": "H",
+  "scores": [
+   118,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810025": {
+  "label": "A",
+  "scores": [
+   107,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810026": {
+  "label": "H",
+  "scores": [
+   132,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810027": {
+  "label": "H",
+  "scores": [
+   114,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810028": {
+  "label": "A",
+  "scores": [
+   103,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810029": {
+  "label": "H",
+  "scores": [
+   136,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810030": {
+  "label": "H",
+  "scores": [
+   137,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810031": {
+  "label": "A",
+  "scores": [
+   109,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810032": {
+  "label": "A",
+  "scores": [
+   99,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810033": {
+  "label": "H",
+  "scores": [
+   122,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810034": {
+  "label": "H",
+  "scores": [
+   118,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810035": {
+  "label": "H",
+  "scores": [
+   121,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810036": {
+  "label": "H",
+  "scores": [
+   121,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810037": {
+  "label": "H",
+  "scores": [
+   115,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810038": {
+  "label": "A",
+  "scores": [
+   105,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810039": {
+  "label": "H",
+  "scores": [
+   130,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810040": {
+  "label": "H",
+  "scores": [
+   122,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810041": {
+  "label": "H",
+  "scores": [
+   128,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810042": {
+  "label": "H",
+  "scores": [
+   136,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810043": {
+  "label": "H",
+  "scores": [
+   126,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810044": {
+  "label": "H",
+  "scores": [
+   117,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810045": {
+  "label": "A",
+  "scores": [
+   103,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810046": {
+  "label": "A",
+  "scores": [
+   115,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810047": {
+  "label": "H",
+  "scores": [
+   134,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810048": {
+  "label": "A",
+  "scores": [
+   107,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810049": {
+  "label": "A",
+  "scores": [
+   100,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810050": {
+  "label": "A",
+  "scores": [
+   108,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810051": {
+  "label": "H",
+  "scores": [
+   114,
+   83
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810052": {
+  "label": "A",
+  "scores": [
+   117,
+   144
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810053": {
+  "label": "A",
+  "scores": [
+   111,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810054": {
+  "label": "H",
+  "scores": [
+   137,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810055": {
+  "label": "H",
+  "scores": [
+   115,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810056": {
+  "label": "H",
+  "scores": [
+   140,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810057": {
+  "label": "A",
+  "scores": [
+   117,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810058": {
+  "label": "A",
+  "scores": [
+   114,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810059": {
+  "label": "H",
+  "scores": [
+   121,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810060": {
+  "label": "A",
+  "scores": [
+   113,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810061": {
+  "label": "A",
+  "scores": [
+   102,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810062": {
+  "label": "A",
+  "scores": [
+   109,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810063": {
+  "label": "H",
+  "scores": [
+   133,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810064": {
+  "label": "H",
+  "scores": [
+   102,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810065": {
+  "label": "H",
+  "scores": [
+   126,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810066": {
+  "label": "H",
+  "scores": [
+   152,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810067": {
+  "label": "A",
+  "scores": [
+   108,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810068": {
+  "label": "H",
+  "scores": [
+   111,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810069": {
+  "label": "H",
+  "scores": [
+   124,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810070": {
+  "label": "A",
+  "scores": [
+   107,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810071": {
+  "label": "H",
+  "scores": [
+   131,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810072": {
+  "label": "A",
+  "scores": [
+   116,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810073": {
+  "label": "H",
+  "scores": [
+   135,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810074": {
+  "label": "A",
+  "scores": [
+   117,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810075": {
+  "label": "A",
+  "scores": [
+   120,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810076": {
+  "label": "A",
+  "scores": [
+   114,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810077": {
+  "label": "H",
+  "scores": [
+   121,
+   92
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810078": {
+  "label": "A",
+  "scores": [
+   100,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810079": {
+  "label": "A",
+  "scores": [
+   116,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810080": {
+  "label": "A",
+  "scores": [
+   113,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810081": {
+  "label": "H",
+  "scores": [
+   133,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810082": {
+  "label": "A",
+  "scores": [
+   122,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810083": {
+  "label": "H",
+  "scores": [
+   108,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810084": {
+  "label": "A",
+  "scores": [
+   96,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810085": {
+  "label": "A",
+  "scores": [
+   111,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810086": {
+  "label": "A",
+  "scores": [
+   95,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810087": {
+  "label": "A",
+  "scores": [
+   112,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810088": {
+  "label": "H",
+  "scores": [
+   121,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810089": {
+  "label": "H",
+  "scores": [
+   123,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810090": {
+  "label": "A",
+  "scores": [
+   106,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810091": {
+  "label": "H",
+  "scores": [
+   117,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810092": {
+  "label": "A",
+  "scores": [
+   106,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810093": {
+  "label": "H",
+  "scores": [
+   138,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810094": {
+  "label": "A",
+  "scores": [
+   122,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810095": {
+  "label": "H",
+  "scores": [
+   150,
+   147
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810096": {
+  "label": "H",
+  "scores": [
+   118,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810097": {
+  "label": "H",
+  "scores": [
+   127,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810098": {
+  "label": "H",
+  "scores": [
+   110,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810099": {
+  "label": "H",
+  "scores": [
+   115,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810100": {
+  "label": "H",
+  "scores": [
+   110,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810101": {
+  "label": "H",
+  "scores": [
+   120,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810102": {
+  "label": "A",
+  "scores": [
+   109,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810103": {
+  "label": "A",
+  "scores": [
+   127,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810104": {
+  "label": "H",
+  "scores": [
+   121,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810105": {
+  "label": "A",
+  "scores": [
+   99,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810106": {
+  "label": "A",
+  "scores": [
+   112,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810107": {
+  "label": "H",
+  "scores": [
+   111,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810108": {
+  "label": "H",
+  "scores": [
+   140,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810109": {
+  "label": "A",
+  "scores": [
+   110,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810110": {
+  "label": "A",
+  "scores": [
+   104,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810111": {
+  "label": "H",
+  "scores": [
+   127,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810112": {
+  "label": "H",
+  "scores": [
+   110,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810113": {
+  "label": "A",
+  "scores": [
+   112,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810114": {
+  "label": "H",
+  "scores": [
+   120,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810115": {
+  "label": "A",
+  "scores": [
+   118,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810116": {
+  "label": "H",
+  "scores": [
+   113,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810117": {
+  "label": "A",
+  "scores": [
+   111,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810118": {
+  "label": "A",
+  "scores": [
+   121,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810119": {
+  "label": "H",
+  "scores": [
+   129,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810120": {
+  "label": "H",
+  "scores": [
+   137,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810121": {
+  "label": "A",
+  "scores": [
+   114,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810122": {
+  "label": "H",
+  "scores": [
+   135,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810123": {
+  "label": "A",
+  "scores": [
+   116,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810124": {
+  "label": "H",
+  "scores": [
+   133,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810125": {
+  "label": "A",
+  "scores": [
+   98,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810126": {
+  "label": "H",
+  "scores": [
+   121,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810127": {
+  "label": "A",
+  "scores": [
+   116,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810128": {
+  "label": "A",
+  "scores": [
+   96,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810129": {
+  "label": "A",
+  "scores": [
+   123,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810130": {
+  "label": "A",
+  "scores": [
+   117,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810131": {
+  "label": "H",
+  "scores": [
+   113,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810132": {
+  "label": "H",
+  "scores": [
+   138,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810133": {
+  "label": "H",
+  "scores": [
+   120,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810134": {
+  "label": "H",
+  "scores": [
+   119,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810135": {
+  "label": "H",
+  "scores": [
+   122,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810136": {
+  "label": "H",
+  "scores": [
+   111,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810137": {
+  "label": "A",
+  "scores": [
+   106,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810138": {
+  "label": "A",
+  "scores": [
+   117,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810139": {
+  "label": "H",
+  "scores": [
+   110,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810140": {
+  "label": "A",
+  "scores": [
+   100,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810141": {
+  "label": "H",
+  "scores": [
+   106,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810142": {
+  "label": "A",
+  "scores": [
+   115,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810143": {
+  "label": "A",
+  "scores": [
+   103,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810144": {
+  "label": "H",
+  "scores": [
+   143,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810145": {
+  "label": "A",
+  "scores": [
+   92,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810146": {
+  "label": "H",
+  "scores": [
+   134,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810147": {
+  "label": "H",
+  "scores": [
+   117,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810148": {
+  "label": "H",
+  "scores": [
+   119,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810149": {
+  "label": "H",
+  "scores": [
+   118,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810150": {
+  "label": "H",
+  "scores": [
+   103,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810151": {
+  "label": "A",
+  "scores": [
+   135,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810152": {
+  "label": "H",
+  "scores": [
+   116,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810153": {
+  "label": "H",
+  "scores": [
+   104,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810154": {
+  "label": "A",
+  "scores": [
+   112,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810155": {
+  "label": "A",
+  "scores": [
+   110,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810156": {
+  "label": "A",
+  "scores": [
+   101,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810157": {
+  "label": "A",
+  "scores": [
+   115,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810158": {
+  "label": "H",
+  "scores": [
+   116,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810159": {
+  "label": "A",
+  "scores": [
+   134,
+   142
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810160": {
+  "label": "A",
+  "scores": [
+   115,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810161": {
+  "label": "H",
+  "scores": [
+   125,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810162": {
+  "label": "A",
+  "scores": [
+   107,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810163": {
+  "label": "H",
+  "scores": [
+   133,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810164": {
+  "label": "H",
+  "scores": [
+   99,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810165": {
+  "label": "A",
+  "scores": [
+   119,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810166": {
+  "label": "H",
+  "scores": [
+   129,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810167": {
+  "label": "H",
+  "scores": [
+   116,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810168": {
+  "label": "H",
+  "scores": [
+   140,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810169": {
+  "label": "H",
+  "scores": [
+   125,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810170": {
+  "label": "A",
+  "scores": [
+   121,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810171": {
+  "label": "H",
+  "scores": [
+   133,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810172": {
+  "label": "A",
+  "scores": [
+   108,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810173": {
+  "label": "H",
+  "scores": [
+   121,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810174": {
+  "label": "H",
+  "scores": [
+   121,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810175": {
+  "label": "H",
+  "scores": [
+   123,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810176": {
+  "label": "A",
+  "scores": [
+   142,
+   149
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810177": {
+  "label": "H",
+  "scores": [
+   126,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810178": {
+  "label": "A",
+  "scores": [
+   112,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810179": {
+  "label": "A",
+  "scores": [
+   110,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810180": {
+  "label": "A",
+  "scores": [
+   120,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810181": {
+  "label": "A",
+  "scores": [
+   112,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810182": {
+  "label": "A",
+  "scores": [
+   92,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810183": {
+  "label": "H",
+  "scores": [
+   119,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810184": {
+  "label": "A",
+  "scores": [
+   103,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810185": {
+  "label": "H",
+  "scores": [
+   121,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810186": {
+  "label": "H",
+  "scores": [
+   113,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810187": {
+  "label": "H",
+  "scores": [
+   118,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810188": {
+  "label": "H",
+  "scores": [
+   99,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810189": {
+  "label": "A",
+  "scores": [
+   101,
+   146
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810190": {
+  "label": "A",
+  "scores": [
+   110,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810191": {
+  "label": "A",
+  "scores": [
+   120,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810192": {
+  "label": "A",
+  "scores": [
+   116,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810193": {
+  "label": "H",
+  "scores": [
+   126,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810194": {
+  "label": "H",
+  "scores": [
+   106,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810195": {
+  "label": "A",
+  "scores": [
+   133,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810196": {
+  "label": "H",
+  "scores": [
+   130,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810197": {
+  "label": "H",
+  "scores": [
+   122,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810198": {
+  "label": "H",
+  "scores": [
+   146,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810199": {
+  "label": "A",
+  "scores": [
+   86,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810200": {
+  "label": "A",
+  "scores": [
+   105,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810201": {
+  "label": "H",
+  "scores": [
+   117,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810202": {
+  "label": "H",
+  "scores": [
+   107,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810203": {
+  "label": "A",
+  "scores": [
+   101,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810204": {
+  "label": "H",
+  "scores": [
+   132,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810205": {
+  "label": "H",
+  "scores": [
+   119,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810206": {
+  "label": "A",
+  "scores": [
+   116,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810207": {
+  "label": "A",
+  "scores": [
+   94,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810208": {
+  "label": "H",
+  "scores": [
+   124,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810209": {
+  "label": "A",
+  "scores": [
+   111,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810210": {
+  "label": "H",
+  "scores": [
+   109,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810211": {
+  "label": "H",
+  "scores": [
+   122,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810212": {
+  "label": "H",
+  "scores": [
+   106,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810213": {
+  "label": "A",
+  "scores": [
+   113,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810214": {
+  "label": "A",
+  "scores": [
+   106,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810215": {
+  "label": "H",
+  "scores": [
+   119,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810216": {
+  "label": "A",
+  "scores": [
+   91,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810217": {
+  "label": "A",
+  "scores": [
+   108,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810218": {
+  "label": "A",
+  "scores": [
+   101,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810219": {
+  "label": "H",
+  "scores": [
+   116,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810220": {
+  "label": "A",
+  "scores": [
+   105,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810221": {
+  "label": "A",
+  "scores": [
+   132,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810222": {
+  "label": "H",
+  "scores": [
+   127,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810223": {
+  "label": "A",
+  "scores": [
+   110,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810224": {
+  "label": "H",
+  "scores": [
+   122,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810225": {
+  "label": "H",
+  "scores": [
+   119,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810226": {
+  "label": "H",
+  "scores": [
+   133,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810227": {
+  "label": "A",
+  "scores": [
+   113,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810228": {
+  "label": "A",
+  "scores": [
+   95,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810229": {
+  "label": "A",
+  "scores": [
+   105,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810230": {
+  "label": "H",
+  "scores": [
+   133,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810231": {
+  "label": "H",
+  "scores": [
+   116,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810232": {
+  "label": "H",
+  "scores": [
+   126,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810233": {
+  "label": "H",
+  "scores": [
+   99,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810234": {
+  "label": "A",
+  "scores": [
+   135,
+   143
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810235": {
+  "label": "H",
+  "scores": [
+   134,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810236": {
+  "label": "H",
+  "scores": [
+   129,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810237": {
+  "label": "A",
+  "scores": [
+   107,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810238": {
+  "label": "A",
+  "scores": [
+   98,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810239": {
+  "label": "A",
+  "scores": [
+   125,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810240": {
+  "label": "H",
+  "scores": [
+   112,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810241": {
+  "label": "A",
+  "scores": [
+   101,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810242": {
+  "label": "H",
+  "scores": [
+   121,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810243": {
+  "label": "A",
+  "scores": [
+   96,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810244": {
+  "label": "H",
+  "scores": [
+   128,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810245": {
+  "label": "H",
+  "scores": [
+   112,
+   86
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810246": {
+  "label": "A",
+  "scores": [
+   122,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810247": {
+  "label": "H",
+  "scores": [
+   119,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810248": {
+  "label": "A",
+  "scores": [
+   127,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810249": {
+  "label": "A",
+  "scores": [
+   93,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810250": {
+  "label": "H",
+  "scores": [
+   103,
+   88
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810251": {
+  "label": "A",
+  "scores": [
+   150,
+   152
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810252": {
+  "label": "H",
+  "scores": [
+   96,
+   81
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810253": {
+  "label": "H",
+  "scores": [
+   132,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810254": {
+  "label": "A",
+  "scores": [
+   113,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810255": {
+  "label": "H",
+  "scores": [
+   103,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810256": {
+  "label": "H",
+  "scores": [
+   125,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810257": {
+  "label": "H",
+  "scores": [
+   139,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810258": {
+  "label": "H",
+  "scores": [
+   103,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810259": {
+  "label": "H",
+  "scores": [
+   119,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810260": {
+  "label": "H",
+  "scores": [
+   135,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810261": {
+  "label": "H",
+  "scores": [
+   119,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810262": {
+  "label": "H",
+  "scores": [
+   120,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810263": {
+  "label": "A",
+  "scores": [
+   102,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810264": {
+  "label": "H",
+  "scores": [
+   126,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810265": {
+  "label": "A",
+  "scores": [
+   106,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810266": {
+  "label": "A",
+  "scores": [
+   123,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810267": {
+  "label": "H",
+  "scores": [
+   141,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810268": {
+  "label": "A",
+  "scores": [
+   94,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810269": {
+  "label": "A",
+  "scores": [
+   91,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810270": {
+  "label": "H",
+  "scores": [
+   131,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810271": {
+  "label": "H",
+  "scores": [
+   115,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810272": {
+  "label": "H",
+  "scores": [
+   130,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810273": {
+  "label": "H",
+  "scores": [
+   132,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810274": {
+  "label": "A",
+  "scores": [
+   128,
+   137
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810275": {
+  "label": "A",
+  "scores": [
+   106,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810276": {
+  "label": "A",
+  "scores": [
+   127,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810277": {
+  "label": "H",
+  "scores": [
+   128,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810278": {
+  "label": "A",
+  "scores": [
+   111,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810279": {
+  "label": "A",
+  "scores": [
+   105,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810280": {
+  "label": "H",
+  "scores": [
+   138,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810281": {
+  "label": "A",
+  "scores": [
+   122,
+   140
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810282": {
+  "label": "H",
+  "scores": [
+   109,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810283": {
+  "label": "H",
+  "scores": [
+   125,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810284": {
+  "label": "A",
+  "scores": [
+   108,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810285": {
+  "label": "H",
+  "scores": [
+   131,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810286": {
+  "label": "A",
+  "scores": [
+   103,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810287": {
+  "label": "H",
+  "scores": [
+   113,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810288": {
+  "label": "H",
+  "scores": [
+   127,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810289": {
+  "label": "A",
+  "scores": [
+   114,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810290": {
+  "label": "A",
+  "scores": [
+   125,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810291": {
+  "label": "H",
+  "scores": [
+   142,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810292": {
+  "label": "A",
+  "scores": [
+   103,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810293": {
+  "label": "H",
+  "scores": [
+   117,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810294": {
+  "label": "A",
+  "scores": [
+   107,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810295": {
+  "label": "A",
+  "scores": [
+   114,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810296": {
+  "label": "H",
+  "scores": [
+   141,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810297": {
+  "label": "H",
+  "scores": [
+   129,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810298": {
+  "label": "H",
+  "scores": [
+   116,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810299": {
+  "label": "H",
+  "scores": [
+   114,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810300": {
+  "label": "H",
+  "scores": [
+   112,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810301": {
+  "label": "H",
+  "scores": [
+   125,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810302": {
+  "label": "A",
+  "scores": [
+   113,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810303": {
+  "label": "A",
+  "scores": [
+   101,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810304": {
+  "label": "A",
+  "scores": [
+   107,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810305": {
+  "label": "H",
+  "scores": [
+   147,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810306": {
+  "label": "H",
+  "scores": [
+   107,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810307": {
+  "label": "A",
+  "scores": [
+   101,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810308": {
+  "label": "H",
+  "scores": [
+   126,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810309": {
+  "label": "A",
+  "scores": [
+   125,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810310": {
+  "label": "H",
+  "scores": [
+   140,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810311": {
+  "label": "A",
+  "scores": [
+   101,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810312": {
+  "label": "H",
+  "scores": [
+   125,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810313": {
+  "label": "A",
+  "scores": [
+   136,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810314": {
+  "label": "A",
+  "scores": [
+   119,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810315": {
+  "label": "A",
+  "scores": [
+   106,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810316": {
+  "label": "H",
+  "scores": [
+   131,
+   90
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810317": {
+  "label": "A",
+  "scores": [
+   125,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810318": {
+  "label": "H",
+  "scores": [
+   126,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810319": {
+  "label": "A",
+  "scores": [
+   110,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810320": {
+  "label": "H",
+  "scores": [
+   129,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810321": {
+  "label": "H",
+  "scores": [
+   134,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810322": {
+  "label": "H",
+  "scores": [
+   134,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810323": {
+  "label": "A",
+  "scores": [
+   103,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810324": {
+  "label": "A",
+  "scores": [
+   113,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810325": {
+  "label": "H",
+  "scores": [
+   124,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810326": {
+  "label": "A",
+  "scores": [
+   96,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810327": {
+  "label": "A",
+  "scores": [
+   112,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810328": {
+  "label": "A",
+  "scores": [
+   108,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810329": {
+  "label": "A",
+  "scores": [
+   106,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810330": {
+  "label": "H",
+  "scores": [
+   118,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810331": {
+  "label": "A",
+  "scores": [
+   113,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810332": {
+  "label": "H",
+  "scores": [
+   119,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810333": {
+  "label": "H",
+  "scores": [
+   113,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810334": {
+  "label": "A",
+  "scores": [
+   99,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810335": {
+  "label": "H",
+  "scores": [
+   121,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810336": {
+  "label": "H",
+  "scores": [
+   122,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810337": {
+  "label": "A",
+  "scores": [
+   109,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810338": {
+  "label": "H",
+  "scores": [
+   129,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810339": {
+  "label": "A",
+  "scores": [
+   94,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810340": {
+  "label": "H",
+  "scores": [
+   128,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810341": {
+  "label": "A",
+  "scores": [
+   115,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810342": {
+  "label": "A",
+  "scores": [
+   119,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810343": {
+  "label": "H",
+  "scores": [
+   134,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810344": {
+  "label": "A",
+  "scores": [
+   99,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810345": {
+  "label": "A",
+  "scores": [
+   110,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810346": {
+  "label": "H",
+  "scores": [
+   110,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810347": {
+  "label": "H",
+  "scores": [
+   123,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810348": {
+  "label": "A",
+  "scores": [
+   115,
+   146
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810349": {
+  "label": "A",
+  "scores": [
+   110,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810350": {
+  "label": "H",
+  "scores": [
+   135,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810351": {
+  "label": "H",
+  "scores": [
+   127,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810352": {
+  "label": "H",
+  "scores": [
+   125,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810353": {
+  "label": "A",
+  "scores": [
+   115,
+   141
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810354": {
+  "label": "H",
+  "scores": [
+   108,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810355": {
+  "label": "A",
+  "scores": [
+   98,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810356": {
+  "label": "H",
+  "scores": [
+   120,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810357": {
+  "label": "H",
+  "scores": [
+   121,
+   90
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810358": {
+  "label": "H",
+  "scores": [
+   115,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810359": {
+  "label": "H",
+  "scores": [
+   118,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810360": {
+  "label": "H",
+  "scores": [
+   100,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810361": {
+  "label": "A",
+  "scores": [
+   97,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810362": {
+  "label": "A",
+  "scores": [
+   124,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810363": {
+  "label": "H",
+  "scores": [
+   103,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810364": {
+  "label": "H",
+  "scores": [
+   137,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810365": {
+  "label": "A",
+  "scores": [
+   116,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810366": {
+  "label": "H",
+  "scores": [
+   120,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810367": {
+  "label": "H",
+  "scores": [
+   106,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810368": {
+  "label": "H",
+  "scores": [
+   122,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810369": {
+  "label": "A",
+  "scores": [
+   103,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810370": {
+  "label": "A",
+  "scores": [
+   98,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810371": {
+  "label": "A",
+  "scores": [
+   96,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810372": {
+  "label": "H",
+  "scores": [
+   108,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810373": {
+  "label": "H",
+  "scores": [
+   131,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810374": {
+  "label": "H",
+  "scores": [
+   117,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810375": {
+  "label": "A",
+  "scores": [
+   110,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810376": {
+  "label": "A",
+  "scores": [
+   103,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810377": {
+  "label": "H",
+  "scores": [
+   123,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810378": {
+  "label": "H",
+  "scores": [
+   107,
+   91
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810379": {
+  "label": "A",
+  "scores": [
+   98,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810380": {
+  "label": "H",
+  "scores": [
+   129,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810381": {
+  "label": "H",
+  "scores": [
+   120,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810382": {
+  "label": "H",
+  "scores": [
+   103,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810383": {
+  "label": "A",
+  "scores": [
+   112,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810385": {
+  "label": "H",
+  "scores": [
+   131,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810386": {
+  "label": "H",
+  "scores": [
+   116,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810387": {
+  "label": "H",
+  "scores": [
+   125,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810388": {
+  "label": "A",
+  "scores": [
+   91,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810389": {
+  "label": "A",
+  "scores": [
+   107,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810390": {
+  "label": "A",
+  "scores": [
+   105,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810391": {
+  "label": "A",
+  "scores": [
+   116,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810392": {
+  "label": "A",
+  "scores": [
+   87,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810393": {
+  "label": "H",
+  "scores": [
+   112,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810394": {
+  "label": "H",
+  "scores": [
+   137,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810395": {
+  "label": "H",
+  "scores": [
+   111,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810396": {
+  "label": "A",
+  "scores": [
+   101,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810397": {
+  "label": "H",
+  "scores": [
+   146,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810398": {
+  "label": "H",
+  "scores": [
+   123,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810399": {
+  "label": "A",
+  "scores": [
+   92,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810400": {
+  "label": "A",
+  "scores": [
+   95,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810401": {
+  "label": "H",
+  "scores": [
+   125,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810402": {
+  "label": "A",
+  "scores": [
+   95,
+   150
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810403": {
+  "label": "H",
+  "scores": [
+   128,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810404": {
+  "label": "H",
+  "scores": [
+   103,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810405": {
+  "label": "H",
+  "scores": [
+   116,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810406": {
+  "label": "A",
+  "scores": [
+   114,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810407": {
+  "label": "H",
+  "scores": [
+   104,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810408": {
+  "label": "H",
+  "scores": [
+   124,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810409": {
+  "label": "H",
+  "scores": [
+   108,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810410": {
+  "label": "H",
+  "scores": [
+   112,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810411": {
+  "label": "A",
+  "scores": [
+   111,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810412": {
+  "label": "H",
+  "scores": [
+   111,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810413": {
+  "label": "A",
+  "scores": [
+   112,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810414": {
+  "label": "H",
+  "scores": [
+   98,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810415": {
+  "label": "A",
+  "scores": [
+   102,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810416": {
+  "label": "H",
+  "scores": [
+   113,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810417": {
+  "label": "H",
+  "scores": [
+   124,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810418": {
+  "label": "H",
+  "scores": [
+   117,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810419": {
+  "label": "H",
+  "scores": [
+   127,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810420": {
+  "label": "H",
+  "scores": [
+   119,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810421": {
+  "label": "A",
+  "scores": [
+   106,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810422": {
+  "label": "A",
+  "scores": [
+   116,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810423": {
+  "label": "H",
+  "scores": [
+   119,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810424": {
+  "label": "H",
+  "scores": [
+   141,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810425": {
+  "label": "H",
+  "scores": [
+   119,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810426": {
+  "label": "A",
+  "scores": [
+   101,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810427": {
+  "label": "A",
+  "scores": [
+   107,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810428": {
+  "label": "H",
+  "scores": [
+   128,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810429": {
+  "label": "H",
+  "scores": [
+   116,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810430": {
+  "label": "A",
+  "scores": [
+   109,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810431": {
+  "label": "H",
+  "scores": [
+   112,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810432": {
+  "label": "H",
+  "scores": [
+   119,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810433": {
+  "label": "H",
+  "scores": [
+   118,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810434": {
+  "label": "H",
+  "scores": [
+   108,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810435": {
+  "label": "A",
+  "scores": [
+   114,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810436": {
+  "label": "A",
+  "scores": [
+   91,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810437": {
+  "label": "H",
+  "scores": [
+   119,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810438": {
+  "label": "H",
+  "scores": [
+   144,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810439": {
+  "label": "H",
+  "scores": [
+   126,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810440": {
+  "label": "H",
+  "scores": [
+   117,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810441": {
+  "label": "A",
+  "scores": [
+   117,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810442": {
+  "label": "H",
+  "scores": [
+   112,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810443": {
+  "label": "H",
+  "scores": [
+   127,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810444": {
+  "label": "A",
+  "scores": [
+   115,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810445": {
+  "label": "A",
+  "scores": [
+   117,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810446": {
+  "label": "H",
+  "scores": [
+   110,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810447": {
+  "label": "H",
+  "scores": [
+   128,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810448": {
+  "label": "H",
+  "scores": [
+   138,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810449": {
+  "label": "A",
+  "scores": [
+   106,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810450": {
+  "label": "H",
+  "scores": [
+   121,
+   78
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810451": {
+  "label": "A",
+  "scores": [
+   99,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810452": {
+  "label": "H",
+  "scores": [
+   122,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810453": {
+  "label": "H",
+  "scores": [
+   126,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810454": {
+  "label": "H",
+  "scores": [
+   136,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810455": {
+  "label": "H",
+  "scores": [
+   121,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810456": {
+  "label": "H",
+  "scores": [
+   132,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810457": {
+  "label": "H",
+  "scores": [
+   126,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810458": {
+  "label": "H",
+  "scores": [
+   124,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810459": {
+  "label": "H",
+  "scores": [
+   119,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810460": {
+  "label": "A",
+  "scores": [
+   87,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810461": {
+  "label": "A",
+  "scores": [
+   110,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810462": {
+  "label": "H",
+  "scores": [
+   110,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810463": {
+  "label": "A",
+  "scores": [
+   106,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810464": {
+  "label": "H",
+  "scores": [
+   113,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810465": {
+  "label": "A",
+  "scores": [
+   117,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810466": {
+  "label": "H",
+  "scores": [
+   123,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810467": {
+  "label": "H",
+  "scores": [
+   135,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810468": {
+  "label": "A",
+  "scores": [
+   110,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810469": {
+  "label": "H",
+  "scores": [
+   138,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810470": {
+  "label": "H",
+  "scores": [
+   111,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810471": {
+  "label": "H",
+  "scores": [
+   127,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810472": {
+  "label": "A",
+  "scores": [
+   107,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810473": {
+  "label": "A",
+  "scores": [
+   127,
+   145
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810474": {
+  "label": "A",
+  "scores": [
+   117,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810475": {
+  "label": "A",
+  "scores": [
+   87,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810476": {
+  "label": "H",
+  "scores": [
+   119,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810477": {
+  "label": "H",
+  "scores": [
+   120,
+   66
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810478": {
+  "label": "A",
+  "scores": [
+   122,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810479": {
+  "label": "A",
+  "scores": [
+   104,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810480": {
+  "label": "A",
+  "scores": [
+   102,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810481": {
+  "label": "A",
+  "scores": [
+   109,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810482": {
+  "label": "A",
+  "scores": [
+   97,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810483": {
+  "label": "H",
+  "scores": [
+   128,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810484": {
+  "label": "A",
+  "scores": [
+   97,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810485": {
+  "label": "H",
+  "scores": [
+   123,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810486": {
+  "label": "A",
+  "scores": [
+   115,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810487": {
+  "label": "A",
+  "scores": [
+   109,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810488": {
+  "label": "H",
+  "scores": [
+   112,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810489": {
+  "label": "H",
+  "scores": [
+   127,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810490": {
+  "label": "A",
+  "scores": [
+   104,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810491": {
+  "label": "H",
+  "scores": [
+   110,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810492": {
+  "label": "A",
+  "scores": [
+   126,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810493": {
+  "label": "H",
+  "scores": [
+   123,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810494": {
+  "label": "A",
+  "scores": [
+   127,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810495": {
+  "label": "A",
+  "scores": [
+   100,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810496": {
+  "label": "A",
+  "scores": [
+   114,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810497": {
+  "label": "A",
+  "scores": [
+   98,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810498": {
+  "label": "A",
+  "scores": [
+   109,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810500": {
+  "label": "H",
+  "scores": [
+   119,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810501": {
+  "label": "A",
+  "scores": [
+   105,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810502": {
+  "label": "H",
+  "scores": [
+   114,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810503": {
+  "label": "A",
+  "scores": [
+   110,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810504": {
+  "label": "A",
+  "scores": [
+   116,
+   147
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810505": {
+  "label": "H",
+  "scores": [
+   139,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810508": {
+  "label": "A",
+  "scores": [
+   101,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810509": {
+  "label": "A",
+  "scores": [
+   95,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810510": {
+  "label": "A",
+  "scores": [
+   102,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810511": {
+  "label": "H",
+  "scores": [
+   126,
+   89
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810512": {
+  "label": "H",
+  "scores": [
+   130,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810513": {
+  "label": "H",
+  "scores": [
+   114,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810514": {
+  "label": "H",
+  "scores": [
+   132,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810515": {
+  "label": "H",
+  "scores": [
+   102,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810516": {
+  "label": "A",
+  "scores": [
+   118,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810517": {
+  "label": "H",
+  "scores": [
+   108,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810518": {
+  "label": "H",
+  "scores": [
+   108,
+   83
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810519": {
+  "label": "H",
+  "scores": [
+   115,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810520": {
+  "label": "H",
+  "scores": [
+   103,
+   87
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810521": {
+  "label": "H",
+  "scores": [
+   139,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810522": {
+  "label": "H",
+  "scores": [
+   104,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810523": {
+  "label": "A",
+  "scores": [
+   107,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810524": {
+  "label": "H",
+  "scores": [
+   106,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810525": {
+  "label": "A",
+  "scores": [
+   103,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810526": {
+  "label": "H",
+  "scores": [
+   129,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810527": {
+  "label": "H",
+  "scores": [
+   113,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810528": {
+  "label": "A",
+  "scores": [
+   106,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810529": {
+  "label": "A",
+  "scores": [
+   124,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810530": {
+  "label": "A",
+  "scores": [
+   92,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810531": {
+  "label": "A",
+  "scores": [
+   97,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810532": {
+  "label": "A",
+  "scores": [
+   105,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810533": {
+  "label": "A",
+  "scores": [
+   124,
+   140
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810534": {
+  "label": "A",
+  "scores": [
+   99,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810535": {
+  "label": "H",
+  "scores": [
+   113,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810536": {
+  "label": "H",
+  "scores": [
+   109,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810537": {
+  "label": "A",
+  "scores": [
+   86,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810538": {
+  "label": "A",
+  "scores": [
+   121,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810539": {
+  "label": "H",
+  "scores": [
+   107,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810540": {
+  "label": "H",
+  "scores": [
+   114,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810541": {
+  "label": "H",
+  "scores": [
+   123,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810542": {
+  "label": "H",
+  "scores": [
+   130,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810543": {
+  "label": "A",
+  "scores": [
+   111,
+   142
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810544": {
+  "label": "H",
+  "scores": [
+   112,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810545": {
+  "label": "H",
+  "scores": [
+   127,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810546": {
+  "label": "H",
+  "scores": [
+   114,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810547": {
+  "label": "A",
+  "scores": [
+   118,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810548": {
+  "label": "H",
+  "scores": [
+   126,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810549": {
+  "label": "A",
+  "scores": [
+   99,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810550": {
+  "label": "H",
+  "scores": [
+   122,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810551": {
+  "label": "A",
+  "scores": [
+   124,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810552": {
+  "label": "H",
+  "scores": [
+   111,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810553": {
+  "label": "H",
+  "scores": [
+   129,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810554": {
+  "label": "H",
+  "scores": [
+   124,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810555": {
+  "label": "A",
+  "scores": [
+   114,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810556": {
+  "label": "H",
+  "scores": [
+   111,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810557": {
+  "label": "H",
+  "scores": [
+   107,
+   79
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810558": {
+  "label": "H",
+  "scores": [
+   112,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810559": {
+  "label": "H",
+  "scores": [
+   130,
+   77
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810560": {
+  "label": "H",
+  "scores": [
+   134,
+   91
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810561": {
+  "label": "H",
+  "scores": [
+   107,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810562": {
+  "label": "H",
+  "scores": [
+   116,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810563": {
+  "label": "H",
+  "scores": [
+   112,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810564": {
+  "label": "A",
+  "scores": [
+   93,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810565": {
+  "label": "A",
+  "scores": [
+   111,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810566": {
+  "label": "A",
+  "scores": [
+   111,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810567": {
+  "label": "H",
+  "scores": [
+   102,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810568": {
+  "label": "A",
+  "scores": [
+   114,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810569": {
+  "label": "H",
+  "scores": [
+   137,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810570": {
+  "label": "A",
+  "scores": [
+   113,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810571": {
+  "label": "H",
+  "scores": [
+   124,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810572": {
+  "label": "A",
+  "scores": [
+   122,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810573": {
+  "label": "A",
+  "scores": [
+   101,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810574": {
+  "label": "A",
+  "scores": [
+   109,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810575": {
+  "label": "A",
+  "scores": [
+   115,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810576": {
+  "label": "A",
+  "scores": [
+   100,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810577": {
+  "label": "H",
+  "scores": [
+   131,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810578": {
+  "label": "H",
+  "scores": [
+   128,
+   92
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810579": {
+  "label": "A",
+  "scores": [
+   94,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810580": {
+  "label": "A",
+  "scores": [
+   125,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810581": {
+  "label": "H",
+  "scores": [
+   134,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810582": {
+  "label": "A",
+  "scores": [
+   126,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810583": {
+  "label": "A",
+  "scores": [
+   93,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810584": {
+  "label": "H",
+  "scores": [
+   141,
+   137
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810585": {
+  "label": "H",
+  "scores": [
+   116,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810586": {
+  "label": "A",
+  "scores": [
+   125,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810587": {
+  "label": "A",
+  "scores": [
+   91,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810588": {
+  "label": "A",
+  "scores": [
+   117,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810589": {
+  "label": "H",
+  "scores": [
+   118,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810590": {
+  "label": "H",
+  "scores": [
+   121,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810591": {
+  "label": "H",
+  "scores": [
+   123,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810592": {
+  "label": "A",
+  "scores": [
+   99,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810593": {
+  "label": "A",
+  "scores": [
+   123,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810594": {
+  "label": "A",
+  "scores": [
+   97,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810595": {
+  "label": "H",
+  "scores": [
+   119,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810596": {
+  "label": "H",
+  "scores": [
+   98,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810597": {
+  "label": "H",
+  "scores": [
+   118,
+   80
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810598": {
+  "label": "H",
+  "scores": [
+   105,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810599": {
+  "label": "A",
+  "scores": [
+   115,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810600": {
+  "label": "H",
+  "scores": [
+   135,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810601": {
+  "label": "A",
+  "scores": [
+   111,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810602": {
+  "label": "H",
+  "scores": [
+   127,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810603": {
+  "label": "A",
+  "scores": [
+   106,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810604": {
+  "label": "H",
+  "scores": [
+   138,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810605": {
+  "label": "H",
+  "scores": [
+   120,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810606": {
+  "label": "A",
+  "scores": [
+   119,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810607": {
+  "label": "A",
+  "scores": [
+   120,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810608": {
+  "label": "H",
+  "scores": [
+   105,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810609": {
+  "label": "A",
+  "scores": [
+   103,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810610": {
+  "label": "H",
+  "scores": [
+   122,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810611": {
+  "label": "A",
+  "scores": [
+   126,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810612": {
+  "label": "A",
+  "scores": [
+   89,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810613": {
+  "label": "A",
+  "scores": [
+   101,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810614": {
+  "label": "H",
+  "scores": [
+   122,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810615": {
+  "label": "A",
+  "scores": [
+   96,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810616": {
+  "label": "A",
+  "scores": [
+   104,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810617": {
+  "label": "H",
+  "scores": [
+   123,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810618": {
+  "label": "A",
+  "scores": [
+   111,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810619": {
+  "label": "H",
+  "scores": [
+   118,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810620": {
+  "label": "H",
+  "scores": [
+   138,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810621": {
+  "label": "H",
+  "scores": [
+   120,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810622": {
+  "label": "A",
+  "scores": [
+   117,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810623": {
+  "label": "H",
+  "scores": [
+   114,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810624": {
+  "label": "A",
+  "scores": [
+   110,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810625": {
+  "label": "H",
+  "scores": [
+   135,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810626": {
+  "label": "A",
+  "scores": [
+   134,
+   137
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810627": {
+  "label": "H",
+  "scores": [
+   102,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810628": {
+  "label": "H",
+  "scores": [
+   120,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810629": {
+  "label": "A",
+  "scores": [
+   108,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810630": {
+  "label": "H",
+  "scores": [
+   110,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810631": {
+  "label": "H",
+  "scores": [
+   138,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810632": {
+  "label": "A",
+  "scores": [
+   108,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810633": {
+  "label": "H",
+  "scores": [
+   124,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810634": {
+  "label": "A",
+  "scores": [
+   110,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810635": {
+  "label": "A",
+  "scores": [
+   89,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810636": {
+  "label": "A",
+  "scores": [
+   95,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810637": {
+  "label": "A",
+  "scores": [
+   102,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810638": {
+  "label": "H",
+  "scores": [
+   133,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810639": {
+  "label": "A",
+  "scores": [
+   111,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810640": {
+  "label": "A",
+  "scores": [
+   109,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810641": {
+  "label": "H",
+  "scores": [
+   121,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810642": {
+  "label": "H",
+  "scores": [
+   122,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810643": {
+  "label": "A",
+  "scores": [
+   113,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810644": {
+  "label": "A",
+  "scores": [
+   93,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810645": {
+  "label": "A",
+  "scores": [
+   119,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810646": {
+  "label": "H",
+  "scores": [
+   124,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810647": {
+  "label": "A",
+  "scores": [
+   101,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810648": {
+  "label": "H",
+  "scores": [
+   112,
+   84
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810649": {
+  "label": "A",
+  "scores": [
+   107,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810650": {
+  "label": "H",
+  "scores": [
+   112,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810651": {
+  "label": "A",
+  "scores": [
+   111,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810652": {
+  "label": "A",
+  "scores": [
+   101,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810653": {
+  "label": "H",
+  "scores": [
+   121,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810654": {
+  "label": "A",
+  "scores": [
+   110,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810655": {
+  "label": "A",
+  "scores": [
+   94,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810656": {
+  "label": "H",
+  "scores": [
+   115,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810657": {
+  "label": "A",
+  "scores": [
+   113,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810658": {
+  "label": "H",
+  "scores": [
+   131,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810659": {
+  "label": "H",
+  "scores": [
+   123,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810660": {
+  "label": "A",
+  "scores": [
+   97,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810661": {
+  "label": "H",
+  "scores": [
+   122,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810662": {
+  "label": "A",
+  "scores": [
+   118,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810663": {
+  "label": "H",
+  "scores": [
+   105,
+   86
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810664": {
+  "label": "H",
+  "scores": [
+   125,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810665": {
+  "label": "A",
+  "scores": [
+   103,
+   157
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810666": {
+  "label": "H",
+  "scores": [
+   113,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810667": {
+  "label": "H",
+  "scores": [
+   126,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810668": {
+  "label": "H",
+  "scores": [
+   136,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810669": {
+  "label": "A",
+  "scores": [
+   110,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810670": {
+  "label": "H",
+  "scores": [
+   139,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810671": {
+  "label": "H",
+  "scores": [
+   108,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810672": {
+  "label": "H",
+  "scores": [
+   121,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810673": {
+  "label": "H",
+  "scores": [
+   115,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810674": {
+  "label": "A",
+  "scores": [
+   94,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810675": {
+  "label": "H",
+  "scores": [
+   128,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810676": {
+  "label": "A",
+  "scores": [
+   130,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810677": {
+  "label": "A",
+  "scores": [
+   112,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810678": {
+  "label": "A",
+  "scores": [
+   89,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810679": {
+  "label": "A",
+  "scores": [
+   108,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810680": {
+  "label": "A",
+  "scores": [
+   99,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810681": {
+  "label": "A",
+  "scores": [
+   77,
+   92
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810682": {
+  "label": "A",
+  "scores": [
+   109,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810683": {
+  "label": "A",
+  "scores": [
+   103,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810684": {
+  "label": "A",
+  "scores": [
+   114,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810685": {
+  "label": "H",
+  "scores": [
+   125,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810686": {
+  "label": "A",
+  "scores": [
+   114,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810687": {
+  "label": "H",
+  "scores": [
+   119,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810688": {
+  "label": "A",
+  "scores": [
+   114,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810689": {
+  "label": "A",
+  "scores": [
+   107,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810690": {
+  "label": "H",
+  "scores": [
+   109,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810691": {
+  "label": "A",
+  "scores": [
+   99,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810692": {
+  "label": "H",
+  "scores": [
+   128,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810693": {
+  "label": "H",
+  "scores": [
+   113,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810694": {
+  "label": "A",
+  "scores": [
+   81,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810695": {
+  "label": "A",
+  "scores": [
+   109,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810696": {
+  "label": "A",
+  "scores": [
+   121,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810697": {
+  "label": "H",
+  "scores": [
+   124,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810698": {
+  "label": "A",
+  "scores": [
+   107,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810699": {
+  "label": "A",
+  "scores": [
+   112,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810700": {
+  "label": "H",
+  "scores": [
+   128,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810701": {
+  "label": "H",
+  "scores": [
+   118,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810702": {
+  "label": "H",
+  "scores": [
+   103,
+   84
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810703": {
+  "label": "A",
+  "scores": [
+   109,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810704": {
+  "label": "H",
+  "scores": [
+   124,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810705": {
+  "label": "H",
+  "scores": [
+   126,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810706": {
+  "label": "A",
+  "scores": [
+   110,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810707": {
+  "label": "A",
+  "scores": [
+   108,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810708": {
+  "label": "A",
+  "scores": [
+   112,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810709": {
+  "label": "A",
+  "scores": [
+   121,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810710": {
+  "label": "H",
+  "scores": [
+   113,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810711": {
+  "label": "A",
+  "scores": [
+   118,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810712": {
+  "label": "A",
+  "scores": [
+   88,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810713": {
+  "label": "H",
+  "scores": [
+   122,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810714": {
+  "label": "H",
+  "scores": [
+   148,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810715": {
+  "label": "A",
+  "scores": [
+   98,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810716": {
+  "label": "A",
+  "scores": [
+   105,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810717": {
+  "label": "H",
+  "scores": [
+   127,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810718": {
+  "label": "H",
+  "scores": [
+   109,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810719": {
+  "label": "H",
+  "scores": [
+   115,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810720": {
+  "label": "A",
+  "scores": [
+   125,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810721": {
+  "label": "A",
+  "scores": [
+   101,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810722": {
+  "label": "A",
+  "scores": [
+   105,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810723": {
+  "label": "H",
+  "scores": [
+   114,
+   89
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810724": {
+  "label": "A",
+  "scores": [
+   102,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810725": {
+  "label": "H",
+  "scores": [
+   120,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810726": {
+  "label": "A",
+  "scores": [
+   108,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810727": {
+  "label": "A",
+  "scores": [
+   106,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810728": {
+  "label": "H",
+  "scores": [
+   135,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810729": {
+  "label": "H",
+  "scores": [
+   114,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810730": {
+  "label": "A",
+  "scores": [
+   92,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810731": {
+  "label": "A",
+  "scores": [
+   87,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810732": {
+  "label": "H",
+  "scores": [
+   137,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810733": {
+  "label": "H",
+  "scores": [
+   128,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810734": {
+  "label": "A",
+  "scores": [
+   118,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810735": {
+  "label": "A",
+  "scores": [
+   81,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810736": {
+  "label": "A",
+  "scores": [
+   125,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810737": {
+  "label": "A",
+  "scores": [
+   101,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810738": {
+  "label": "H",
+  "scores": [
+   117,
+   90
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810739": {
+  "label": "H",
+  "scores": [
+   113,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810740": {
+  "label": "H",
+  "scores": [
+   126,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810741": {
+  "label": "H",
+  "scores": [
+   124,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810742": {
+  "label": "A",
+  "scores": [
+   95,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810743": {
+  "label": "A",
+  "scores": [
+   91,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810744": {
+  "label": "A",
+  "scores": [
+   108,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810745": {
+  "label": "H",
+  "scores": [
+   117,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810746": {
+  "label": "H",
+  "scores": [
+   110,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810747": {
+  "label": "A",
+  "scores": [
+   103,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810748": {
+  "label": "A",
+  "scores": [
+   100,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810749": {
+  "label": "A",
+  "scores": [
+   89,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810750": {
+  "label": "H",
+  "scores": [
+   106,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810751": {
+  "label": "A",
+  "scores": [
+   114,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810752": {
+  "label": "A",
+  "scores": [
+   113,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810753": {
+  "label": "H",
+  "scores": [
+   130,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810754": {
+  "label": "H",
+  "scores": [
+   115,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810755": {
+  "label": "A",
+  "scores": [
+   112,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810756": {
+  "label": "H",
+  "scores": [
+   126,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810757": {
+  "label": "A",
+  "scores": [
+   113,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810758": {
+  "label": "H",
+  "scores": [
+   115,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810759": {
+  "label": "H",
+  "scores": [
+   121,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810760": {
+  "label": "A",
+  "scores": [
+   103,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810761": {
+  "label": "H",
+  "scores": [
+   120,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810762": {
+  "label": "A",
+  "scores": [
+   123,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810763": {
+  "label": "H",
+  "scores": [
+   120,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810764": {
+  "label": "A",
+  "scores": [
+   120,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810765": {
+  "label": "H",
+  "scores": [
+   106,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810766": {
+  "label": "A",
+  "scores": [
+   103,
+   142
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810767": {
+  "label": "H",
+  "scores": [
+   118,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810768": {
+  "label": "H",
+  "scores": [
+   116,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810769": {
+  "label": "H",
+  "scores": [
+   128,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810770": {
+  "label": "A",
+  "scores": [
+   92,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810771": {
+  "label": "A",
+  "scores": [
+   105,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810772": {
+  "label": "H",
+  "scores": [
+   125,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810773": {
+  "label": "A",
+  "scores": [
+   120,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810774": {
+  "label": "H",
+  "scores": [
+   113,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810775": {
+  "label": "H",
+  "scores": [
+   104,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810776": {
+  "label": "A",
+  "scores": [
+   98,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810777": {
+  "label": "H",
+  "scores": [
+   110,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810778": {
+  "label": "H",
+  "scores": [
+   121,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810779": {
+  "label": "H",
+  "scores": [
+   122,
+   92
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810780": {
+  "label": "H",
+  "scores": [
+   138,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810781": {
+  "label": "A",
+  "scores": [
+   91,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810782": {
+  "label": "H",
+  "scores": [
+   145,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810783": {
+  "label": "H",
+  "scores": [
+   111,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810784": {
+  "label": "H",
+  "scores": [
+   131,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810785": {
+  "label": "H",
+  "scores": [
+   126,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810786": {
+  "label": "H",
+  "scores": [
+   115,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810787": {
+  "label": "H",
+  "scores": [
+   126,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810788": {
+  "label": "H",
+  "scores": [
+   129,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810789": {
+  "label": "H",
+  "scores": [
+   119,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810790": {
+  "label": "H",
+  "scores": [
+   126,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810791": {
+  "label": "H",
+  "scores": [
+   139,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810792": {
+  "label": "A",
+  "scores": [
+   100,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810793": {
+  "label": "H",
+  "scores": [
+   150,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810794": {
+  "label": "H",
+  "scores": [
+   124,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810795": {
+  "label": "H",
+  "scores": [
+   113,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810796": {
+  "label": "A",
+  "scores": [
+   114,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810797": {
+  "label": "H",
+  "scores": [
+   125,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810798": {
+  "label": "A",
+  "scores": [
+   124,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810799": {
+  "label": "A",
+  "scores": [
+   101,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810800": {
+  "label": "H",
+  "scores": [
+   114,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810801": {
+  "label": "H",
+  "scores": [
+   120,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810802": {
+  "label": "H",
+  "scores": [
+   128,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810803": {
+  "label": "H",
+  "scores": [
+   122,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810804": {
+  "label": "A",
+  "scores": [
+   117,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810805": {
+  "label": "H",
+  "scores": [
+   129,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810806": {
+  "label": "A",
+  "scores": [
+   109,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810807": {
+  "label": "H",
+  "scores": [
+   153,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810808": {
+  "label": "H",
+  "scores": [
+   131,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810809": {
+  "label": "A",
+  "scores": [
+   108,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810810": {
+  "label": "H",
+  "scores": [
+   136,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810811": {
+  "label": "H",
+  "scores": [
+   108,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810812": {
+  "label": "H",
+  "scores": [
+   112,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810813": {
+  "label": "A",
+  "scores": [
+   131,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810814": {
+  "label": "H",
+  "scores": [
+   104,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810815": {
+  "label": "H",
+  "scores": [
+   142,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810816": {
+  "label": "H",
+  "scores": [
+   126,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810817": {
+  "label": "A",
+  "scores": [
+   92,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810818": {
+  "label": "H",
+  "scores": [
+   122,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810819": {
+  "label": "H",
+  "scores": [
+   107,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810820": {
+  "label": "A",
+  "scores": [
+   105,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810821": {
+  "label": "A",
+  "scores": [
+   117,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810822": {
+  "label": "H",
+  "scores": [
+   124,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810823": {
+  "label": "H",
+  "scores": [
+   119,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810824": {
+  "label": "H",
+  "scores": [
+   104,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810825": {
+  "label": "H",
+  "scores": [
+   122,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810826": {
+  "label": "H",
+  "scores": [
+   111,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810827": {
+  "label": "A",
+  "scores": [
+   117,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810828": {
+  "label": "H",
+  "scores": [
+   115,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810829": {
+  "label": "H",
+  "scores": [
+   127,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810830": {
+  "label": "A",
+  "scores": [
+   109,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810831": {
+  "label": "H",
+  "scores": [
+   116,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810832": {
+  "label": "A",
+  "scores": [
+   120,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810833": {
+  "label": "H",
+  "scores": [
+   119,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810834": {
+  "label": "H",
+  "scores": [
+   134,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810835": {
+  "label": "H",
+  "scores": [
+   109,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810836": {
+  "label": "H",
+  "scores": [
+   110,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810837": {
+  "label": "H",
+  "scores": [
+   116,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810838": {
+  "label": "H",
+  "scores": [
+   124,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810839": {
+  "label": "A",
+  "scores": [
+   117,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810840": {
+  "label": "A",
+  "scores": [
+   95,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810841": {
+  "label": "H",
+  "scores": [
+   120,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810842": {
+  "label": "H",
+  "scores": [
+   132,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810843": {
+  "label": "H",
+  "scores": [
+   129,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810844": {
+  "label": "A",
+  "scores": [
+   92,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810845": {
+  "label": "A",
+  "scores": [
+   115,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810846": {
+  "label": "H",
+  "scores": [
+   136,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810847": {
+  "label": "A",
+  "scores": [
+   108,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810848": {
+  "label": "A",
+  "scores": [
+   117,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810849": {
+  "label": "H",
+  "scores": [
+   136,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810850": {
+  "label": "A",
+  "scores": [
+   116,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810851": {
+  "label": "H",
+  "scores": [
+   116,
+   104
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810852": {
+  "label": "H",
+  "scores": [
+   124,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810853": {
+  "label": "A",
+  "scores": [
+   104,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810854": {
+  "label": "H",
+  "scores": [
+   120,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810855": {
+  "label": "A",
+  "scores": [
+   92,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810856": {
+  "label": "A",
+  "scores": [
+   119,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810857": {
+  "label": "A",
+  "scores": [
+   109,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810858": {
+  "label": "A",
+  "scores": [
+   119,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810859": {
+  "label": "H",
+  "scores": [
+   147,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810860": {
+  "label": "H",
+  "scores": [
+   124,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810861": {
+  "label": "A",
+  "scores": [
+   120,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810862": {
+  "label": "A",
+  "scores": [
+   116,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810863": {
+  "label": "H",
+  "scores": [
+   130,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810864": {
+  "label": "A",
+  "scores": [
+   95,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810865": {
+  "label": "A",
+  "scores": [
+   126,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810866": {
+  "label": "A",
+  "scores": [
+   110,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810867": {
+  "label": "H",
+  "scores": [
+   105,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810868": {
+  "label": "H",
+  "scores": [
+   101,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810869": {
+  "label": "H",
+  "scores": [
+   128,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810870": {
+  "label": "A",
+  "scores": [
+   118,
+   139
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810871": {
+  "label": "A",
+  "scores": [
+   92,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810872": {
+  "label": "H",
+  "scores": [
+   115,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810873": {
+  "label": "H",
+  "scores": [
+   117,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810874": {
+  "label": "A",
+  "scores": [
+   112,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810875": {
+  "label": "A",
+  "scores": [
+   104,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810876": {
+  "label": "H",
+  "scores": [
+   121,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810877": {
+  "label": "A",
+  "scores": [
+   111,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810878": {
+  "label": "H",
+  "scores": [
+   124,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810879": {
+  "label": "A",
+  "scores": [
+   104,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810880": {
+  "label": "A",
+  "scores": [
+   106,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810881": {
+  "label": "H",
+  "scores": [
+   126,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810882": {
+  "label": "H",
+  "scores": [
+   123,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810883": {
+  "label": "H",
+  "scores": [
+   134,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810884": {
+  "label": "A",
+  "scores": [
+   131,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810885": {
+  "label": "A",
+  "scores": [
+   116,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810886": {
+  "label": "A",
+  "scores": [
+   105,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810887": {
+  "label": "H",
+  "scores": [
+   128,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810888": {
+  "label": "H",
+  "scores": [
+   126,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810889": {
+  "label": "H",
+  "scores": [
+   145,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810890": {
+  "label": "A",
+  "scores": [
+   92,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810891": {
+  "label": "H",
+  "scores": [
+   120,
+   98
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810892": {
+  "label": "H",
+  "scores": [
+   146,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810893": {
+  "label": "H",
+  "scores": [
+   113,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810894": {
+  "label": "A",
+  "scores": [
+   126,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810895": {
+  "label": "A",
+  "scores": [
+   103,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810896": {
+  "label": "A",
+  "scores": [
+   111,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810897": {
+  "label": "H",
+  "scores": [
+   132,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810898": {
+  "label": "A",
+  "scores": [
+   127,
+   143
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810899": {
+  "label": "A",
+  "scores": [
+   131,
+   137
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810900": {
+  "label": "H",
+  "scores": [
+   134,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810901": {
+  "label": "H",
+  "scores": [
+   129,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810902": {
+  "label": "H",
+  "scores": [
+   134,
+   90
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810903": {
+  "label": "H",
+  "scores": [
+   121,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810904": {
+  "label": "H",
+  "scores": [
+   136,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810905": {
+  "label": "A",
+  "scores": [
+   123,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810906": {
+  "label": "A",
+  "scores": [
+   129,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810907": {
+  "label": "A",
+  "scores": [
+   130,
+   137
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810908": {
+  "label": "H",
+  "scores": [
+   157,
+   137
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810909": {
+  "label": "H",
+  "scores": [
+   119,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810910": {
+  "label": "A",
+  "scores": [
+   103,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810911": {
+  "label": "A",
+  "scores": [
+   98,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810912": {
+  "label": "A",
+  "scores": [
+   110,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810913": {
+  "label": "H",
+  "scores": [
+   110,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810914": {
+  "label": "H",
+  "scores": [
+   142,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810915": {
+  "label": "H",
+  "scores": [
+   109,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810916": {
+  "label": "H",
+  "scores": [
+   130,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810917": {
+  "label": "H",
+  "scores": [
+   119,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810918": {
+  "label": "H",
+  "scores": [
+   114,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810919": {
+  "label": "H",
+  "scores": [
+   129,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810920": {
+  "label": "H",
+  "scores": [
+   121,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810921": {
+  "label": "A",
+  "scores": [
+   113,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810922": {
+  "label": "H",
+  "scores": [
+   109,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810923": {
+  "label": "H",
+  "scores": [
+   149,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810924": {
+  "label": "A",
+  "scores": [
+   109,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810925": {
+  "label": "H",
+  "scores": [
+   131,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810926": {
+  "label": "H",
+  "scores": [
+   119,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810927": {
+  "label": "H",
+  "scores": [
+   135,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810928": {
+  "label": "H",
+  "scores": [
+   131,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810929": {
+  "label": "A",
+  "scores": [
+   93,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810930": {
+  "label": "H",
+  "scores": [
+   116,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810931": {
+  "label": "A",
+  "scores": [
+   95,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810932": {
+  "label": "A",
+  "scores": [
+   114,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810933": {
+  "label": "H",
+  "scores": [
+   123,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810934": {
+  "label": "H",
+  "scores": [
+   125,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810935": {
+  "label": "A",
+  "scores": [
+   87,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810936": {
+  "label": "H",
+  "scores": [
+   134,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810937": {
+  "label": "A",
+  "scores": [
+   113,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810938": {
+  "label": "H",
+  "scores": [
+   135,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810939": {
+  "label": "H",
+  "scores": [
+   116,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810940": {
+  "label": "A",
+  "scores": [
+   99,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810941": {
+  "label": "H",
+  "scores": [
+   139,
+   87
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810942": {
+  "label": "H",
+  "scores": [
+   123,
+   88
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810943": {
+  "label": "A",
+  "scores": [
+   102,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810944": {
+  "label": "H",
+  "scores": [
+   111,
+   100
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810945": {
+  "label": "H",
+  "scores": [
+   116,
+   93
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810946": {
+  "label": "H",
+  "scores": [
+   119,
+   109
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810947": {
+  "label": "H",
+  "scores": [
+   112,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810948": {
+  "label": "A",
+  "scores": [
+   105,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810949": {
+  "label": "H",
+  "scores": [
+   129,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810950": {
+  "label": "A",
+  "scores": [
+   94,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810951": {
+  "label": "A",
+  "scores": [
+   113,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810952": {
+  "label": "H",
+  "scores": [
+   114,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810953": {
+  "label": "H",
+  "scores": [
+   120,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810954": {
+  "label": "H",
+  "scores": [
+   115,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810955": {
+  "label": "A",
+  "scores": [
+   86,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810956": {
+  "label": "H",
+  "scores": [
+   127,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810957": {
+  "label": "H",
+  "scores": [
+   111,
+   94
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810958": {
+  "label": "H",
+  "scores": [
+   127,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810959": {
+  "label": "A",
+  "scores": [
+   104,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810960": {
+  "label": "A",
+  "scores": [
+   131,
+   153
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810961": {
+  "label": "A",
+  "scores": [
+   129,
+   147
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810962": {
+  "label": "A",
+  "scores": [
+   101,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810963": {
+  "label": "A",
+  "scores": [
+   115,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810964": {
+  "label": "A",
+  "scores": [
+   126,
+   145
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810965": {
+  "label": "H",
+  "scores": [
+   119,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810966": {
+  "label": "A",
+  "scores": [
+   112,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810967": {
+  "label": "A",
+  "scores": [
+   117,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810968": {
+  "label": "A",
+  "scores": [
+   113,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810969": {
+  "label": "H",
+  "scores": [
+   127,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810970": {
+  "label": "H",
+  "scores": [
+   113,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810971": {
+  "label": "H",
+  "scores": [
+   139,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810972": {
+  "label": "A",
+  "scores": [
+   111,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810973": {
+  "label": "H",
+  "scores": [
+   118,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810974": {
+  "label": "A",
+  "scores": [
+   99,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810975": {
+  "label": "H",
+  "scores": [
+   129,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810976": {
+  "label": "H",
+  "scores": [
+   115,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810977": {
+  "label": "A",
+  "scores": [
+   107,
+   141
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810978": {
+  "label": "H",
+  "scores": [
+   136,
+   96
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810979": {
+  "label": "H",
+  "scores": [
+   140,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810980": {
+  "label": "A",
+  "scores": [
+   96,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810981": {
+  "label": "A",
+  "scores": [
+   101,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810982": {
+  "label": "A",
+  "scores": [
+   127,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810983": {
+  "label": "H",
+  "scores": [
+   117,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810984": {
+  "label": "H",
+  "scores": [
+   152,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810985": {
+  "label": "H",
+  "scores": [
+   136,
+   134
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810986": {
+  "label": "A",
+  "scores": [
+   93,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810987": {
+  "label": "H",
+  "scores": [
+   115,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810988": {
+  "label": "H",
+  "scores": [
+   121,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810989": {
+  "label": "A",
+  "scores": [
+   110,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810990": {
+  "label": "H",
+  "scores": [
+   131,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810991": {
+  "label": "H",
+  "scores": [
+   117,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810992": {
+  "label": "A",
+  "scores": [
+   108,
+   122
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810993": {
+  "label": "A",
+  "scores": [
+   108,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810994": {
+  "label": "H",
+  "scores": [
+   146,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810995": {
+  "label": "H",
+  "scores": [
+   134,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810996": {
+  "label": "A",
+  "scores": [
+   109,
+   138
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810997": {
+  "label": "A",
+  "scores": [
+   116,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810998": {
+  "label": "A",
+  "scores": [
+   105,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401810999": {
+  "label": "H",
+  "scores": [
+   123,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811000": {
+  "label": "A",
+  "scores": [
+   126,
+   142
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811001": {
+  "label": "H",
+  "scores": [
+   115,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811002": {
+  "label": "H",
+  "scores": [
+   137,
+   132
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811003": {
+  "label": "A",
+  "scores": [
+   98,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811004": {
+  "label": "H",
+  "scores": [
+   113,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811005": {
+  "label": "H",
+  "scores": [
+   96,
+   90
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811006": {
+  "label": "H",
+  "scores": [
+   121,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811007": {
+  "label": "A",
+  "scores": [
+   104,
+   124
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811008": {
+  "label": "H",
+  "scores": [
+   156,
+   137
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811009": {
+  "label": "H",
+  "scores": [
+   110,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811010": {
+  "label": "A",
+  "scores": [
+   87,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811011": {
+  "label": "H",
+  "scores": [
+   116,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811012": {
+  "label": "A",
+  "scores": [
+   105,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811013": {
+  "label": "H",
+  "scores": [
+   122,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811014": {
+  "label": "H",
+  "scores": [
+   132,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811015": {
+  "label": "H",
+  "scores": [
+   137,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811016": {
+  "label": "H",
+  "scores": [
+   112,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811017": {
+  "label": "H",
+  "scores": [
+   136,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811018": {
+  "label": "A",
+  "scores": [
+   110,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811019": {
+  "label": "H",
+  "scores": [
+   112,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811020": {
+  "label": "H",
+  "scores": [
+   128,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811021": {
+  "label": "A",
+  "scores": [
+   108,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811022": {
+  "label": "A",
+  "scores": [
+   94,
+   123
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811023": {
+  "label": "H",
+  "scores": [
+   112,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811024": {
+  "label": "H",
+  "scores": [
+   113,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811025": {
+  "label": "A",
+  "scores": [
+   103,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811026": {
+  "label": "A",
+  "scores": [
+   100,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811027": {
+  "label": "A",
+  "scores": [
+   117,
+   140
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811028": {
+  "label": "H",
+  "scores": [
+   124,
+   102
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811029": {
+  "label": "H",
+  "scores": [
+   144,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811030": {
+  "label": "A",
+  "scores": [
+   94,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811031": {
+  "label": "H",
+  "scores": [
+   112,
+   95
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811032": {
+  "label": "A",
+  "scores": [
+   103,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811033": {
+  "label": "A",
+  "scores": [
+   132,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811034": {
+  "label": "H",
+  "scores": [
+   125,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811035": {
+  "label": "H",
+  "scores": [
+   139,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811036": {
+  "label": "H",
+  "scores": [
+   147,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811037": {
+  "label": "H",
+  "scores": [
+   127,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811038": {
+  "label": "H",
+  "scores": [
+   116,
+   97
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811039": {
+  "label": "H",
+  "scores": [
+   124,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811040": {
+  "label": "H",
+  "scores": [
+   101,
+   73
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811041": {
+  "label": "H",
+  "scores": [
+   113,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811042": {
+  "label": "H",
+  "scores": [
+   130,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811043": {
+  "label": "A",
+  "scores": [
+   121,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811044": {
+  "label": "H",
+  "scores": [
+   143,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811045": {
+  "label": "A",
+  "scores": [
+   96,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811046": {
+  "label": "H",
+  "scores": [
+   126,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811047": {
+  "label": "H",
+  "scores": [
+   136,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811048": {
+  "label": "H",
+  "scores": [
+   149,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811049": {
+  "label": "H",
+  "scores": [
+   132,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811050": {
+  "label": "H",
+  "scores": [
+   132,
+   126
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811051": {
+  "label": "A",
+  "scores": [
+   103,
+   135
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811052": {
+  "label": "A",
+  "scores": [
+   118,
+   128
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811053": {
+  "label": "H",
+  "scores": [
+   131,
+   107
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811054": {
+  "label": "H",
+  "scores": [
+   115,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401811055": {
+  "label": "H",
+  "scores": [
+   122,
+   110
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836746": {
+  "label": "H",
+  "scores": [
+   115,
+   113
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836747": {
+  "label": "H",
+  "scores": [
+   116,
+   101
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836748": {
+  "label": "H",
+  "scores": [
+   143,
+   120
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836749": {
+  "label": "A",
+  "scores": [
+   105,
+   136
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836750": {
+  "label": "A",
+  "scores": [
+   126,
+   129
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836751": {
+  "label": "H",
+  "scores": [
+   142,
+   115
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836752": {
+  "label": "H",
+  "scores": [
+   115,
+   105
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836753": {
+  "label": "A",
+  "scores": [
+   126,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836754": {
+  "label": "A",
+  "scores": [
+   126,
+   130
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836795": {
+  "label": "H",
+  "scores": [
+   119,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836796": {
+  "label": "A",
+  "scores": [
+   120,
+   127
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836797": {
+  "label": "A",
+  "scores": [
+   89,
+   108
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836798": {
+  "label": "H",
+  "scores": [
+   120,
+   117
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836799": {
+  "label": "A",
+  "scores": [
+   111,
+   119
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836800": {
+  "label": "H",
+  "scores": [
+   127,
+   82
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836801": {
+  "label": "H",
+  "scores": [
+   117,
+   103
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836802": {
+  "label": "H",
+  "scores": [
+   136,
+   131
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836803": {
+  "label": "A",
+  "scores": [
+   105,
+   112
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836804": {
+  "label": "A",
+  "scores": [
+   104,
+   114
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836805": {
+  "label": "H",
+  "scores": [
+   140,
+   133
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836806": {
+  "label": "H",
+  "scores": [
+   128,
+   125
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401836807": {
+  "label": "A",
+  "scores": [
+   103,
+   121
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401839023": {
+  "label": "A",
+  "scores": [
+   96,
+   106
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401839699": {
+  "label": "A",
+  "scores": [
+   114,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401850920": {
+  "label": "A",
+  "scores": [
+   113,
+   116
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401857824": {
+  "label": "A",
+  "scores": [
+   85,
+   111
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401858693": {
+  "label": "H",
+  "scores": [
+   125,
+   118
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401858694": {
+  "label": "H",
+  "scores": [
+   123,
+   99
+  ],
+  "source": "data/games-2026.json"
+ },
+ "401909088": {
+  "label": "H",
+  "scores": [
+   121,
+   113
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909089": {
+  "label": "A",
+  "scores": [
+   100,
+   106
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909090": {
+  "label": "A",
+  "scores": [
+   104,
+   116
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909091": {
+  "label": "A",
+  "scores": [
+   106,
+   131
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909092": {
+  "label": "H",
+  "scores": [
+   127,
+   105
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909093": {
+  "label": "H",
+  "scores": [
+   114,
+   106
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909094": {
+  "label": "H",
+  "scores": [
+   96,
+   84
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909095": {
+  "label": "H",
+  "scores": [
+   107,
+   103
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909096": {
+  "label": "A",
+  "scores": [
+   110,
+   114
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909834": {
+  "label": "A",
+  "scores": [
+   125,
+   132
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909835": {
+  "label": "H",
+  "scores": [
+   128,
+   116
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909836": {
+  "label": "A",
+  "scores": [
+   103,
+   110
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909837": {
+  "label": "H",
+  "scores": [
+   135,
+   92
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909838": {
+  "label": "H",
+  "scores": [
+   123,
+   103
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909839": {
+  "label": "A",
+  "scores": [
+   120,
+   123
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909840": {
+  "label": "H",
+  "scores": [
+   128,
+   110
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909841": {
+  "label": "H",
+  "scores": [
+   124,
+   83
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909842": {
+  "label": "H",
+  "scores": [
+   121,
+   96
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909843": {
+  "label": "A",
+  "scores": [
+   81,
+   128
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909844": {
+  "label": "A",
+  "scores": [
+   105,
+   121
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909845": {
+  "label": "A",
+  "scores": [
+   93,
+   115
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909846": {
+  "label": "A",
+  "scores": [
+   102,
+   112
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909847": {
+  "label": "A",
+  "scores": [
+   111,
+   128
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909848": {
+  "label": "A",
+  "scores": [
+   125,
+   132
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909849": {
+  "label": "H",
+  "scores": [
+   120,
+   119
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909850": {
+  "label": "A",
+  "scores": [
+   108,
+   111
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909851": {
+  "label": "H",
+  "scores": [
+   125,
+   117
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909852": {
+  "label": "A",
+  "scores": [
+   120,
+   128
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909853": {
+  "label": "H",
+  "scores": [
+   115,
+   110
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909854": {
+  "label": "H",
+  "scores": [
+   125,
+   121
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909855": {
+  "label": "H",
+  "scores": [
+   127,
+   116
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909856": {
+  "label": "A",
+  "scores": [
+   114,
+   121
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909857": {
+  "label": "A",
+  "scores": [
+   120,
+   124
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909858": {
+  "label": "A",
+  "scores": [
+   106,
+   122
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909859": {
+  "label": "H",
+  "scores": [
+   141,
+   135
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909860": {
+  "label": "H",
+  "scores": [
+   131,
+   122
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909861": {
+  "label": "A",
+  "scores": [
+   123,
+   132
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909862": {
+  "label": "A",
+  "scores": [
+   109,
+   136
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909863": {
+  "label": "A",
+  "scores": [
+   102,
+   111
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909864": {
+  "label": "H",
+  "scores": [
+   117,
+   94
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909865": {
+  "label": "H",
+  "scores": [
+   108,
+   101
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909866": {
+  "label": "A",
+  "scores": [
+   93,
+   106
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909867": {
+  "label": "A",
+  "scores": [
+   112,
+   123
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909868": {
+  "label": "H",
+  "scores": [
+   110,
+   103
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909869": {
+  "label": "H",
+  "scores": [
+   127,
+   125
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909870": {
+  "label": "H",
+  "scores": [
+   134,
+   99
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909871": {
+  "label": "A",
+  "scores": [
+   109,
+   113
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909872": {
+  "label": "H",
+  "scores": [
+   110,
+   102
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909873": {
+  "label": "H",
+  "scores": [
+   125,
+   114
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909874": {
+  "label": "H",
+  "scores": [
+   120,
+   110
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909875": {
+  "label": "A",
+  "scores": [
+   105,
+   110
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909876": {
+  "label": "A",
+  "scores": [
+   114,
+   134
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909877": {
+  "label": "H",
+  "scores": [
+   125,
+   124
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909878": {
+  "label": "H",
+  "scores": [
+   111,
+   97
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909879": {
+  "label": "H",
+  "scores": [
+   130,
+   103
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909880": {
+  "label": "A",
+  "scores": [
+   129,
+   136
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909881": {
+  "label": "A",
+  "scores": [
+   117,
+   129
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909882": {
+  "label": "H",
+  "scores": [
+   121,
+   111
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909883": {
+  "label": "H",
+  "scores": [
+   97,
+   89
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909884": {
+  "label": "A",
+  "scores": [
+   109,
+   114
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909885": {
+  "label": "H",
+  "scores": [
+   129,
+   99
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909886": {
+  "label": "A",
+  "scores": [
+   127,
+   133
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909887": {
+  "label": "A",
+  "scores": [
+   100,
+   132
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909888": {
+  "label": "A",
+  "scores": [
+   114,
+   119
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909889": {
+  "label": "A",
+  "scores": [
+   91,
+   104
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909890": {
+  "label": "A",
+  "scores": [
+   111,
+   117
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909891": {
+  "label": "H",
+  "scores": [
+   120,
+   96
+  ],
+  "source": "data/games-2027.json"
+ },
+ "401909892": {
+  "label": "A",
+  "scores": [
+   87,
+   103
+  ],
+  "source": "data/games-2027.json"
+ }
+}
