@@ -1,0 +1,7 @@
+// Run walk-forward for a list of prior overrides (parallel child processes) and print screening metrics.
+import { execFile } from 'node:child_process'; import fs from 'node:fs'; import { metrics } from './metrics.mjs';
+const [season, mode, gridJSON] = process.argv.slice(2); const grid = JSON.parse(gridJSON);
+const run = (o, i) => new Promise((res, rej) => execFile('node', ['backtest/walkforward.mjs', '--season', season, '--mode', mode, '--priors', JSON.stringify(o), '--out', `/tmp/grid-${process.pid}-${i}.json`], { env: process.env }, e => e ? rej(e) : res(JSON.parse(fs.readFileSync(`/tmp/grid-${process.pid}-${i}.json`)))));
+const out = []; let k = 0;
+await Promise.all(Array.from({ length: 8 }, async () => { while (k < grid.length) { const i = k++; const f = await run(grid[i], i); const m = metrics(f.recs, { sdM: f.cal.sdM }); const rm = Math.sqrt(f.recs.reduce((s, r) => s + (r.mM - (r.hs - r.as)) ** 2, 0) / f.recs.length); const rt = Math.sqrt(f.recs.reduce((s, r) => s + (r.mT - (r.hs + r.as)) ** 2, 0) / f.recs.length); out[i] = { o: grid[i], rmseM: rm, rmseT: rt, ...m }; } }));
+for (const r of out) console.log(JSON.stringify(r.o).padEnd(70), `rmseM ${r.rmseM.toFixed(3)} rmseT ${r.rmseT.toFixed(3)} LL ${r.logloss.toFixed(4)} brier ${r.brier.toFixed(4)} acc ${(r.acc*100).toFixed(1)} maeM ${r.maeMargin.toFixed(2)} maeT ${r.maeTotal.toFixed(2)} biasT ${r.biasTotal.toFixed(2)} slope ${r.slope.toFixed(3)}`);

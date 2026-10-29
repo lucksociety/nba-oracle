@@ -1,7 +1,7 @@
 // NBA Oracle — Discord interactions endpoint (Cloudflare Worker).
 // 1. Verifies Discord's Ed25519 request signature (DISCORD_PUBLIC_KEY).
 // 2. Answers PING; for /nba replies immediately with a deferred "thinking…" response (type 5).
-// 3. Triggers the GitHub Actions workflow `discord-nba.yml` (Node: 300k-sim NBA ORACLE V1.2 → freeze → Jupiter
+// 3. Triggers the GitHub Actions workflow `discord-nba.yml` (Node: 300k-sim NBA ORACLE V1.3 → freeze → Jupiter
 //    comparison → posts to this interaction's follow-up webhook). The interaction token is relayed AES-GCM
 //    encrypted (RELAY_KEY) because workflow inputs in a public repo are not secret.
 // The Worker itself runs no simulation (Workers CPU limits) and never touches odds.
@@ -49,7 +49,7 @@ async function dispatch(env, interaction) {
     await editOriginal(env, interaction.token, `⚠️ Could not start the NBA Oracle run (GitHub ${r.status}). ${t}`);
     return;
   }
-  await editOriginal(env, interaction.token, `🏀 Running NBA ORACLE V1.2 for ${date}${date === parseDateOption('today') ? ' (today, ET)' : ''} — ${Number(env.SIMS || 300000).toLocaleString('en-US')} simulations per game, then comparing to Jupiter. Results in ~1–2 min…`);
+  await editOriginal(env, interaction.token, `🏀 Running NBA ORACLE V1.3 for ${date}${date === parseDateOption('today') ? ' (today, ET)' : ''} — ${Number(env.SIMS || 300000).toLocaleString('en-US')} simulations per game, then comparing to Jupiter. Results in ~1–2 min…`);
 }
 
 // ---- Read-only ESPN proxy for the GitHub Pages dashboard (schedule + injuries only) ----

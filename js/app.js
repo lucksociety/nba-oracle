@@ -128,7 +128,7 @@ function gameCard(g) {
   </div>
   <div class="probbar"><div style="width:${s.awayWin * 100}%;background:${esc(ev.away.color || '#4da3ff')}"></div><div style="width:${s.homeWin * 100}%;background:${esc(ev.home.color || '#ff7a18')}"></div></div>
   <div class="probtxt"><span>${esc(ev.away.abbr)} ${pct(s.awayWin)}</span><span>${esc(ev.home.abbr)} ${pct(s.homeWin)}</span></div>
-  <div class="meta-line">GAME: ${esc(ev.away.name)} @ ${esc(ev.home.name)} · DATE: ${esc(g.date)} · MODEL: NBA ORACLE V1.2 · LINEUP STATUS: <span class="status ${r.lineupStatus}">${r.lineupStatus}</span> · <span class="tier ${r.confidence}">${r.confidence} CONFIDENCE</span></div>
+  <div class="meta-line">GAME: ${esc(ev.away.name)} @ ${esc(ev.home.name)} · DATE: ${esc(g.date)} · MODEL: NBA ORACLE V1.3 · LINEUP STATUS: <span class="status ${r.lineupStatus}">${r.lineupStatus}</span> · <span class="tier ${r.confidence}">${r.confidence} CONFIDENCE</span></div>
   ${actual ? `<div class="meta-line">${actual}</div>` : ''}
   <div class="final-line">${esc(r.finalLine)} <span class="muted" style="font-weight:400">· predicted winner: ${esc(homeWins ? ev.home.name : ev.away.name)}</span></div>
   <div class="game-body">

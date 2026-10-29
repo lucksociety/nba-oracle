@@ -1,8 +1,10 @@
-# 🏀 NBA ORACLE V1.2 — Score Prediction Dashboard
+# 🏀 NBA ORACLE V1.3 — Score Prediction Dashboard
+
+> **V1.3 (2026-10-29):** the ratings are now recency-weighted (half-life 20 games), the rating prior is lighter (K 15→8), absent-player impact is larger (×1.25), and fat-tail shocks are capped at ±4 SD. Betting rules are now model > 50%, edge 3–8 pts, price ≤ 90¢, one bet per game, plus a same-direction guard. All of this comes from a walk-forward backtest; methodology and before/after numbers are in [backtest/README.md](backtest/README.md).
 
 **Live:** https://lucksociety.github.io/nba-oracle/
 
-A static (HTML/JS, no backend) dashboard. Pick a date (defaults to today, America/New_York) and press **SIMULATE**: the page pulls that day's schedule and the injury report, rebuilds team strength, and runs a seeded possession-level Monte Carlo (300,000 games per matchup by default; 100k/500k selectable) inside Web Workers. It outputs the full NBA ORACLE V1.2 Section 16 per-game report and the Section 17 slate view.
+A static (HTML/JS, no backend) dashboard. Pick a date (defaults to today, America/New_York) and press **SIMULATE**: the page pulls that day's schedule and the injury report, rebuilds team strength, and runs a seeded possession-level Monte Carlo (300,000 games per matchup by default; 100k/500k selectable) inside Web Workers. It outputs the full NBA ORACLE V1.3 Section 16 per-game report and the Section 17 slate view.
 
 ## Zero-market firewall (Section 1)
 * The model **never** fetches, reads, uses or displays odds, spreads, totals, moneylines, implied probabilities, line movement, betting percentages, picks, consensus, power indexes or other models' predictions.

@@ -4,6 +4,7 @@
 // interaction token is supplied; (2) otherwise, or if the interaction token fails/expires (15 min), the channel
 // webhook in DISCORD_WEBHOOK_URL. DRY_RUN=1 prints the payloads instead of sending.
 import fs from 'node:fs/promises';
+import { RULES } from '../js/markets-jupiter.js';
 
 const ROOT = new URL('../', import.meta.url);
 const pred = JSON.parse(await fs.readFile(new URL('out/predictions.json', ROOT), 'utf8'));
@@ -31,7 +32,7 @@ export function buildMessages() {
     const pick = b?.best ? b.best.label : 'NO BET';
     return `${(g.away.abbr + ' ' + g.final.away + '-' + g.final.home + ' ' + g.home.abbr).padEnd(16)} ${(fav + ' ' + pct(Math.max(g.homeWin, g.awayWin))).padEnd(11)} ${('T ' + g.expTotal.toFixed(1)).padEnd(8)} ${pick}`;
   });
-  let head = `🏀 **NBA ORACLE V1.2 — ${pred.date}** · ${n} game${n === 1 ? '' : 's'} · ${pred.sims.toLocaleString('en-US')} sims/game · ${recs} bet${recs === 1 ? '' : 's'} recommended\n`;
+  let head = `🏀 **NBA ORACLE V1.3 — ${pred.date}** · ${n} game${n === 1 ? '' : 's'} · ${pred.sims.toLocaleString('en-US')} sims/game · ${recs} bet${recs === 1 ? '' : 's'} recommended\n`;
   head += `Predictions frozen ${new Date(pred.cutoff).toISOString().slice(11, 16)} UTC (sha256 \`${sha.slice(0, 12)}\`) **before** any Jupiter/Polymarket price was fetched.\n`;
   if (!n) head += `No modelled NBA games on ${pred.date}.` + (pred.skipped.length ? ' Skipped: ' + pred.skipped.map(s => `${s.game} (${s.reason})`).join('; ') : '');
   else head += '```\n' + 'Prediction       Winner %    Total    Best bet\n' + rows.join('\n') + '\n```';
@@ -58,7 +59,7 @@ export function buildMessages() {
       const x = b.best;
       d += `\n✅ **BEST BET: ${x.label}** @ ${c(x.ask)} — price from **${x.venue}**${x.venue !== 'Jupiter' ? ' (Jupiter quote unavailable; check Jupiter before betting)' : ''}\nModel ${pct(x.modelProb)} vs cost ${c(x.cost)} (price ${c(x.ask)} + fee ${c(x.fee)}) → **edge +${(x.edge * 100).toFixed(1)} pts**, EV ${x.roi >= 0 ? '+' : ''}${(x.roi * 100).toFixed(0)}%/$` + (x.depth != null ? ` · CLOB depth ~${Math.round(x.depth)} contracts` : '');
       d += `\nJupiter ${venueTxt(x.jupiter)} · Polymarket ${venueTxt(x.polymarket)}`;
-      if (x.edge > 0.15) d += `\n⚠️ Very large disagreement with the market — more often a model blind spot (late news, roster change) than free money. Verify injuries first.`;
+      if (x.edge > RULES.maxEdge) d += `\n⚠️ Very large disagreement with the market — more often a model blind spot (late news, roster change) than free money. Verify injuries first.`;
     } else d += `\n⛔ **NO BET** — ${b ? short(b.noBetReason || 'requirements not met', 220) : 'comparison unavailable'}`;
     const others = (b?.alternatives || []).slice(0, 3);
     if (others.length) d += `\nNext best: ` + others.map(x => `${x.label} ${pct(x.modelProb)} vs ${c(x.cost)} (${x.edge >= 0 ? '+' : ''}${(x.edge * 100).toFixed(1)}${x.qualifies ? '' : ', fails filters'})`).join(' · ');
@@ -73,8 +74,8 @@ export function buildMessages() {
   // ---- final: copy list + rules
   if (n) {
     let tail = '**Copy list (Google Sheets)**\n```\n' + pred.games.map(g => g.sheetLine).join('\n') + '\n```\n';
-    tail += `Rules: every moneyline, alternate spread (both sides) and alternate total (over/under) is checked; a bet is recommended only if model probability > 50% **and** edge > 0 after fees, with a two-sided quote (≤10¢ wide) and ≥10 contracts within 1¢ of the ask on the Polymarket order book; otherwise NO BET. Edge uses Jupiter's price + fee (0.07·p·(1−p)/contract) since bets are placed on Jupiter; Polymarket (NBA games currently 0% fee) is shown for comparison and used only if Jupiter has no quote.\n`;
-    tail += `Probabilities are provisional (not yet walk-forward calibrated). Odds never enter the model — they are compared only after the forecast is frozen. Not financial advice.`;
+    tail += `Rules: every moneyline, alternate spread (both sides) and alternate total (over/under) is checked; a bet is recommended only if model probability > 50% **and** edge after fees is between ${RULES.minEdge * 100} and ${RULES.maxEdge * 100} pts (bigger edges are treated as model error — in the backtest they won at the market's rate, not the model's) at a price ≤ ${Math.round(RULES.maxPrice * 100)}¢, one bet per game, and no other line backing the same side/direction showing > ${RULES.maxEdge * 100} pts (that signals missing news, not value), with a two-sided quote (≤10¢ wide) and ≥10 contracts within 1¢ of the ask on the Polymarket order book; otherwise NO BET. Edge uses Jupiter's price + fee (0.07·p·(1−p)/contract) since bets are placed on Jupiter; Polymarket (NBA games currently 0% fee) is shown for comparison and used only if Jupiter has no quote.\n`;
+    tail += `Model V1.3: walk-forward backtested (2024-25 tune, 2025-26/2026-27 test); no betting rule showed a reliable profit vs Polymarket prices — size small. Odds never enter the model — they are compared only after the forecast is frozen. Not financial advice.`;
     msgs.push({ content: short(tail, 2000) });
   }
   return msgs.map(m => ({ ...m, allowed_mentions: { parse: [] } }));

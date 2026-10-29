@@ -6,7 +6,17 @@
 // Jupiter's exact lines against the simulated outcome distributions. Nothing here can change a prediction.
 
 export const JUP_BASE = 'https://api.jup.ag/prediction/v1';
-export const RULES = { minModelProb: 0.5, minEdge: 0, maxBidAskSpread: 0.10, minDepthContracts: 10 };
+// V1.3 betting-layer safeguards (stage 2 only; the engine never sees prices). Walk-forward backtest vs Polymarket price
+// history (backtest/bets.mjs) showed edges above ~8 pts won at roughly the market's rate, not the model's, so they are
+// treated as model error, not value. minEdge 3 pts, maxEdge 8 pts, price cap 90¢, at most one bet per game.
+export const RULES = { minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
+/** Shared V1.3 qualification test (both venues). Returns the list of failed rules (empty = qualifies). */
+export function ruleFails(c, p) {
+  return [!(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
+    c.cost != null && c.edge > 0 && !(c.edge >= RULES.minEdge) && `edge < ${RULES.minEdge * 100} pts minimum`,
+    c.cost != null && c.edge > RULES.maxEdge && `edge > ${RULES.maxEdge * 100} pts (implausible vs market — treated as model error)`,
+    c.ask != null && c.ask > RULES.maxPrice && `price > ${Math.round(RULES.maxPrice * 100)}¢ cap`].filter(Boolean);
+}
 
 /** Jupiter's documented trading fee, per contract: their published table (e.g. 100 contracts @ $0.25 -> $1.32,
  *  @ $0.40 -> $1.68, @ $0.10 -> $0.63) is reproduced exactly by ceil_cent(0.07 x C x P x (1-P)). */
@@ -97,7 +107,8 @@ export function evaluateGame(game, event) {
     const c = { marketId: m.marketId, type: bet.type, label: bet.label, line: bet.line, side: bet.side, modelProb: p, ask, bid, fee, cost,
       impliedProb: ask || null, edge: cost == null ? null : p - cost, roi: cost ? p / cost - 1 : null, volume: m.pricing?.volume ?? null };
     c.twoSided = ask > 0 && ask < 1 && bid > 0 && ask - bid <= RULES.maxBidAskSpread + 1e-9;
-    c.qualifies = cost != null && c.twoSided && p > RULES.minModelProb && c.edge > RULES.minEdge;
+    c.ruleFails = ruleFails(c, p);
+    c.qualifies = cost != null && c.twoSided && !c.ruleFails.length;
     res.candidates.push(c);
   }
   res.candidates.sort((a, b) => (b.edge ?? -9) - (a.edge ?? -9));

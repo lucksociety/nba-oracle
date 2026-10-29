@@ -1,4 +1,4 @@
-// NBA ORACLE V1.2 — PERMANENT ZERO-MARKET-INFLUENCE FIREWALL (Section 1)
+// NBA ORACLE V1.3 — PERMANENT ZERO-MARKET-INFLUENCE FIREWALL (Section 1)
 // ---------------------------------------------------------------------
 // ESPN's public payloads carry sportsbook-derived fields (e.g. `odds`,
 // `pickcenter`, `againstTheSpread`, `winprobability`, `predictor`).

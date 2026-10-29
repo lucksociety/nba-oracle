@@ -52,6 +52,12 @@ for (const g of pred.games) {
     try { books = await fetchBooks(polyPost, toks); } catch (e) { pError = e.message; }
   }
   const r = evaluateCombined(g, jEv, gEv, books);
+  // V1.3 direction guard: if ANY >50% line backing the same direction (home side, away side, over, under) shows an edge
+  // above RULES.maxEdge, the model and market disagree too much on that game for any line in that direction to be
+  // trusted (re-pricing the same disagreement on an alternate line does not make it credible). Backtest: backtest/README.md.
+  const blockedDirs = new Set(r.candidates.filter(c => c.cost != null && c.modelProb > RULES.minModelProb && c.edge > RULES.maxEdge).map(c => c.side));
+  for (const c of r.candidates) if (blockedDirs.has(c.side) && c.qualifies) { c.qualifies = false; c.fails = [...(c.fails || []), `another ${c.side} line shows edge > ${RULES.maxEdge * 100} pts — model/market disagreement too large to trust`]; }
+  r.blockedDirections = [...blockedDirs];
   r.started = g.status?.state !== 'pre'; r.best = null;
   for (const c of r.candidates) if (c.jupiter && c.polymarket) priceDiffs.push({ d: c.jupiter.ask - c.polymarket.ask, game: r.matchup, label: c.label });
   if (r.started) r.noBetReason = `Game ${g.status?.state === 'post' ? 'final' : 'in progress'} at prediction time — pregame model not valid for live markets`;
@@ -64,10 +70,15 @@ for (const g of pred.games) {
     }
     if (!r.best) {
       const priced = r.candidates.filter(c => c.cost != null);
-      const topP = priced.filter(c => c.modelProb > RULES.minModelProb && c.edge > RULES.minEdge)[0];
+      const inBand = c => c.modelProb > RULES.minModelProb && c.edge >= RULES.minEdge && c.edge <= RULES.maxEdge && c.ask <= RULES.maxPrice;
+      const topP = priced.filter(inBand)[0];
+      const topBig = priced.filter(c => c.modelProb > RULES.minModelProb && c.edge > RULES.maxEdge)[0];
+      const topSmall = priced.filter(c => c.modelProb > RULES.minModelProb && c.edge > 0 && c.edge < RULES.minEdge)[0];
       const topAny = priced.filter(c => c.modelProb > RULES.minModelProb)[0];
       r.noBetReason = !r.candidates.length ? 'No open full-game moneyline/spread/total markets'
-        : topP ? `Every >50%, positive-edge line failed the liquidity filters (best: ${topP.label} ${pct(topP.modelProb)}% vs ${pct(topP.cost)}¢ — ${topP.fails.join(', ')})`
+        : topP && !blockedDirs.has(topP.side) ? `Every line inside the bet rules failed the liquidity filters (best: ${topP.label} ${pct(topP.modelProb)}% vs ${pct(topP.cost)}¢ — ${topP.fails.join(', ')})`
+        : blockedDirs.size ? `Model/market disagreement too large to trust (a >50% line backing ${[...blockedDirs].join(' / ')} shows edge > ${RULES.maxEdge * 100} pts${topBig ? `, e.g. ${topBig.label} ${pct(topBig.modelProb)}% vs ${pct(topBig.cost)}¢, +${pct(topBig.edge)} pts` : ''}) — usually missing news, not value`
+        : topBig || topSmall ? `No >50% line with edge in the ${RULES.minEdge * 100}–${RULES.maxEdge * 100} pt band${topBig ? ` (largest: ${topBig.label} ${pct(topBig.modelProb)}% vs ${pct(topBig.cost)}¢, +${pct(topBig.edge)} pts — too far from the market to trust)` : ''}${topSmall ? `${topBig ? ';' : ''} (small: ${topSmall.label} +${pct(topSmall.edge)} pts < ${RULES.minEdge * 100} pt minimum)` : ''}`
         : topAny ? `No line with model >50% AND positive edge (best >50% option ${topAny.label}: model ${pct(topAny.modelProb)}% vs cost ${pct(topAny.cost)}¢ on ${topAny.venue})`
         : 'No priced line with model >50%';
     }

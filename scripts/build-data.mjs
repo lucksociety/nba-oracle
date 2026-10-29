@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// NBA ORACLE V1.2 data builder. Runs in GitHub Actions every 30 min (and locally).
+// NBA ORACLE V1.3 data builder. Runs in GitHub Actions every 30 min (and locally).
 // Sources (all free, public, non-market): ESPN public site API
 //   scoreboard  -> schedule + final scores
 //   summary     -> box score team & player lines ONLY (odds/pickcenter/ATS/winprobability are discarded unread)
@@ -11,7 +11,7 @@ import { sanitizeScoreboard, sanitizeInjuries, sanitizeLineups, assertNoMarketDa
 import { NBA_LINEUPS_URL } from '../js/lineups.js';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const DATA = path.join(ROOT, 'data');
+const DATA = process.env.DATA_DIR || path.join(ROOT, 'data');
 const CACHE = path.join(DATA, 'cache');
 const BASE = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba';
 
@@ -233,4 +233,6 @@ async function main() {
   await writeJSON(path.join(DATA, 'meta.json'), { ...meta, builtAt: now.toISOString(), currentSeason: cur, priorSeason: prior, currentGames: curGames.length, priorGames: priorGames.length, source: 'ESPN public site API (scoreboard, summary boxscore, injuries); market fields stripped' }, true);
   console.log('ok', { cur: curGames.length, prior: priorGames.length, cal });
 }
-main().catch(e => { console.error(e); process.exit(1); });
+// Importable for the walk-forward backtest (scripts/backtest-fetch.mjs); runs main() only when executed directly.
+export { buildSeason, calibrate };
+if (process.argv[1] && path.resolve(process.argv[1]) === new URL(import.meta.url).pathname) main().catch(e => { console.error(e); process.exit(1); });

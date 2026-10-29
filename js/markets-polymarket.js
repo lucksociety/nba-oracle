@@ -10,7 +10,7 @@
 //   CLOB   GET  https://clob.polymarket.com/clob-markets/{conditionId}                 fee curve fd:{r,e,to} (authoritative)
 // Jupiter's NBA markets ARE Polymarket markets: Jupiter marketId "POLY-{gammaMarketId}-{outcomeIndex}" and the same
 // conditionId / clobTokenIds, so the two venues are joined exactly by id (no fuzzy matching).
-import { parseMarket, modelProb, feePerContract, RULES } from './markets-jupiter.js';
+import { parseMarket, modelProb, feePerContract, RULES, ruleFails } from './markets-jupiter.js';
 
 export const GAMMA = 'https://gamma-api.polymarket.com';
 export const CLOB = 'https://clob.polymarket.com';
@@ -106,9 +106,10 @@ export function evaluateCombined(game, jupEvent, gammaEvent, books) {
     if (q) Object.assign(c, { ask: q.ask, bid: q.bid, fee: q.fee, cost: q.cost, twoSided: q.twoSided, edge: p - q.cost, roi: p / q.cost - 1 });
     else Object.assign(c, { ask: null, cost: null, edge: null, twoSided: false });
     c.liquid = c.depth == null ? false : c.depth >= RULES.minDepthContracts;
-    c.qualifies = c.cost != null && c.twoSided && c.liquid && p > RULES.minModelProb && c.edge > RULES.minEdge;
+    const rf = ruleFails(c, p);
+    c.qualifies = c.cost != null && c.twoSided && c.liquid && !rf.length;
     c.fails = c.qualifies ? [] : [c.cost == null && 'no price', c.cost != null && !c.twoSided && `quote not two-sided ≤${Math.round(RULES.maxBidAskSpread * 100)}¢ (bid ${q?.bid == null ? '—' : (q.bid * 100).toFixed(0) + '¢'})`,
-      !c.liquid && `CLOB depth ${c.depth == null ? '—' : Math.round(c.depth)} < ${RULES.minDepthContracts}`, !(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > RULES.minEdge) && 'edge ≤0'].filter(Boolean);
+      !c.liquid && `CLOB depth ${c.depth == null ? '—' : Math.round(c.depth)} < ${RULES.minDepthContracts}`, ...rf].filter(Boolean);
     res.candidates.push(c);
   }
   res.candidates.sort((a, b) => (b.edge ?? -9) - (a.edge ?? -9));

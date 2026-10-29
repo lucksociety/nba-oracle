@@ -1,19 +1,23 @@
-// NBA ORACLE V1.2 — client-side prediction engine (ES module; runs in browser, Web Worker and Node).
+// NBA ORACLE V1.3 — client-side prediction engine (ES module; runs in browser, Web Worker and Node).
 // Possession-level four-factors Monte Carlo with correlated variance, fat tails, garbage time,
 // late-game fouling and overtime. All inputs are independent basketball data (see firewall.js).
 // Nothing in this file reads, accepts or produces sportsbook / market information.
 
 import { lineupsForEvent, applyLineup, gameLineupStatus } from './lineups.js';
 
-export const MODEL_VERSION = 'NBA ORACLE V1.2 (web build 1.2.1)';
+export const MODEL_VERSION = 'NBA ORACLE V1.3 (web build 1.3.0)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
 export const PRIORS = {
-  shrinkK: { rating: 15, p2: 20, p3: 25, r3: 6, tov: 10, orb: 10, ftr: 15, ftp: 25, pace: 8 }, // games of prior-season weight
+  // V1.3 (walk-forward tuned on 2024-25 only, validated out-of-sample on 2025-26 + 2026-27; see backtest/README.md):
+  // recency-weighted opponent-adjusted ratings (half-life 20 team games), less prior-season weight on the rating
+  // (shrinkK.rating 15 -> 8) and larger absent-player impact (injuryRedistribution 0.8 -> 1.0).
+  recencyHalfLifeGames: 20,
+  shrinkK: { rating: 8, p2: 20, p3: 25, r3: 6, tov: 10, orb: 10, ftr: 15, ftp: 25, pace: 8 }, // games of prior-season weight
   priorRegressBase: 0.45, priorRegressContinuity: 0.35, // prior-season deviation kept = base + cont*continuity
   leaguePseudoTeamGames: 200,
   threeInFourPts: 0.6, travelPtsPer1000mi: 0.3, travelCapPts: 1.0, altitudePts: 0.7, prevOTb2bPts: 0.3, scheduleCapPts: 3.5,
-  injuryRedistribution: 0.8, injuryTeamCapPer100: 12, replacementPPU: 0.96,
+  injuryRedistribution: 1.0, injuryTeamCapPer100: 12, replacementPPU: 0.96,
   availability: { out: 0.0, doubtful: 0.25, questionable: 0.55, probable: 0.85, available: 0.93, dtdDefault: 0.6, offNote: 0.05 },
   restrictedProb: 0.25, restrictedMinFrac: 0.7,
   // variance structure: hand-tuned on the 2026-10-27/28 slates so average simulated margin SD (~13.7) is close to the
@@ -59,11 +63,13 @@ export function seasonAggregates(gamesFile, cutoffDate, hcaPer100) {
     const nO = {}, nD = {}, nP = {};
     for (const t of ids) {
       let so = 0, sd = 0, sp = 0, w = 0;
-      for (const gm of T[t].games) {
-        const opp = T[gm.opp]; if (!opp) continue;
-        so += (gm.ortg - (opp.adjD - lg.ortg) - gm.home * hcaPer100 / 2) * gm.P;
-        sd += (gm.drtg - (opp.adjO - lg.ortg) + gm.home * hcaPer100 / 2) * gm.P;
-        sp += gm.P - (opp.adjPace - lg.pace); w += gm.P;
+      const G = T[t].games, HL = PRIORS.recencyHalfLifeGames;
+      for (let gi = 0; gi < G.length; gi++) {
+        const gm = G[gi]; const opp = T[gm.opp]; if (!opp) continue;
+        const rw = HL > 0 ? Math.pow(0.5, (G.length - 1 - gi) / HL) : 1; // recency weight (off when HL = 0)
+        so += (gm.ortg - (opp.adjD - lg.ortg) - gm.home * hcaPer100 / 2) * gm.P * rw;
+        sd += (gm.drtg - (opp.adjO - lg.ortg) + gm.home * hcaPer100 / 2) * gm.P * rw;
+        sp += gm.P - (opp.adjPace - lg.pace); w += gm.P * rw;
       }
       nO[t] = so / w; nD[t] = sd / w; nP[t] = sp / T[t].g;
     }
@@ -352,7 +358,7 @@ function runSim(params, N, seed, onProgress, adj, noAvail) {
   let spare = null;
   const gauss = () => { if (spare !== null) { const s = spare; spare = null; return s; } let u, v, s; do { u = 2 * rnd() - 1; v = 2 * rnd() - 1; s = u * u + v * v; } while (s >= 1 || s === 0); const m = Math.sqrt(-2 * Math.log(s) / s); spare = v * m; return u * m; };
   const tdf = P.tDF; const tScale = Math.sqrt((tdf - 2) / tdf);
-  const tdist = () => { let c = 0; for (let i = 0; i < tdf; i++) { const z = gauss(); c += z * z; } return gauss() / Math.sqrt(c / tdf) * tScale; };
+  const tdist = () => { let c = 0; for (let i = 0; i < tdf; i++) { const z = gauss(); c += z * z; } return clamp(gauss() / Math.sqrt(c / tdf) * tScale, -4, 4); }; // V1.3: cap fat-tail shocks at ±4 SD (prevented rare <40-pt games)
   const awayPts = new Int16Array(N), homePts = new Int16Array(N), ots = new Uint8Array(N), possArr = new Float32Array(N);
   const H = params.home, A = params.away;
 

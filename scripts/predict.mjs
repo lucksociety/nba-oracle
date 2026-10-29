@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// STAGE 1 — PREDICTION ENGINE (zero-market). Runs NBA ORACLE V1.2 for one ET date and FREEZES the result.
+// STAGE 1 — PREDICTION ENGINE (zero-market). Runs NBA ORACLE V1.3 for one ET date and FREEZES the result.
 // This script never imports the stage-2 comparison module and never contacts any odds / prediction-market host
 // (enforced by test/firewall.test.mjs). Output: out/predictions.json + out/predictions.sha256.
 // Usage: node scripts/predict.mjs [YYYY-MM-DD] [sims]
