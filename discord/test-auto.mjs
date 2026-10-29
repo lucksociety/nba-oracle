@@ -7,8 +7,8 @@ assert(firstTip(slate).toISOString() === '2026-10-30T00:00:00.000Z', 'first tip 
 assert(firstTip([{ date: '2026-10-30T00:00Z', competitions: [{ timeValid: false }] }]) === null, 'TBD time ignored');
 const at = (iso) => new Date(iso);
 assert(decide({ now: at('2026-10-29T13:45Z'), events: slate }).action === 'wait', '9:45 AM ET → wait');
-assert(decide({ now: at('2026-10-29T23:26Z'), events: slate }).action === 'wait', 'T-34 → wait');
-assert(decide({ now: at('2026-10-29T23:27Z'), events: slate }).action === 'dispatch', 'T-33 → dispatch');
+assert(decide({ now: at('2026-10-29T23:23Z'), events: slate }).action === 'wait', 'T-37 → wait');
+assert(decide({ now: at('2026-10-29T23:24Z'), events: slate }).action === 'dispatch', 'T-36 → dispatch');
 assert(decide({ now: at('2026-10-29T23:30Z'), events: slate }).action === 'dispatch', 'T-30 → dispatch');
 assert(decide({ now: at('2026-10-29T23:45Z'), events: slate }).action === 'dispatch', 'T-15 (late cron) → dispatch');
 assert(decide({ now: at('2026-10-29T23:46Z'), events: slate }).action === 'skip', 'T-14 → window passed');

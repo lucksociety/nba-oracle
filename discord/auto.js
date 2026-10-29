@@ -3,7 +3,7 @@
 // Pure decision logic is exported for tests; no odds are touched here.
 import { etYMD } from './dates.js';
 
-export const WINDOW = { startMin: 33, endMin: 15 }; // fire when first tip is 15–33 min away (cron every 5 min → first hit ≈ T-33…T-28)
+export const WINDOW = { startMin: 36, endMin: 15 }; // fire when first tip is 15–36 min away (cron every 5 min → first hit ≈ T-36…T-31; the ~2-4 min workflow run lands the post ≈ T-30)
 const SKIP = /postponed|canceled|cancelled|suspended|forfeit/i;
 
 /** First valid tipoff (Date) for ESPN scoreboard events, or null. */
