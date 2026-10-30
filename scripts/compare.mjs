@@ -58,9 +58,11 @@ for (const g of pred.games) {
   const blockedDirs = new Set(r.candidates.filter(c => c.cost != null && c.modelProb > RULES.minModelProb && c.edge > RULES.maxEdge).map(c => c.side));
   for (const c of r.candidates) if (blockedDirs.has(c.side) && c.qualifies) { c.qualifies = false; c.fails = [...(c.fails || []), `another ${c.side} line shows edge > ${RULES.maxEdge * 100} pts — model/market disagreement too large to trust`]; }
   r.blockedDirections = [...blockedDirs];
-  r.started = g.status?.state !== 'pre'; r.best = null;
+  const tipPassed = !Number.isFinite(Date.parse(g.tip)) || Date.now() >= Date.parse(g.tip);
+  r.started = g.status?.state !== 'pre' || tipPassed; r.best = null;
   for (const c of r.candidates) if (c.jupiter && c.polymarket) priceDiffs.push({ d: c.jupiter.ask - c.polymarket.ask, game: r.matchup, label: c.label });
-  if (r.started) r.noBetReason = `Game ${g.status?.state === 'post' ? 'final' : 'in progress'} at prediction time — pregame model not valid for live markets`;
+  if (tipPassed) r.noBetReason = 'Scheduled tip has passed or is unavailable — pregame forecast is not valid for live markets';
+  else if (r.started) r.noBetReason = `Game ${g.status?.state === 'post' ? 'final' : 'in progress'} at prediction time — pregame model not valid for live markets`;
   else if (!jEv && !gEv) r.noBetReason = `No NBA markets found on Jupiter${jError ? ` (API error: ${jError})` : ''} or Polymarket${pError ? ` (API error: ${pError})` : ''}`;
   else {
     const q = r.candidates.filter(c => c.qualifies);

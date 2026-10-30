@@ -46,7 +46,7 @@ export function lineupsForEvent(lineups, ev) {
 /**
  * Override injury-report availability with the official lineup (never the reverse):
  *  CONFIRMED starter -> P(play)=1 · CONFIRMED Inactive -> 0 · CONFIRMED full list, player absent -> 0
- *  CONFIRMED active (bench) -> max(report, 'available') · EXPECTED starter -> max(report, 'probable').
+ *  CONFIRMED active (bench) -> max(report, 'available'). EXPECTED starters cannot override explicit game-status tags.
  * Also adds rotation regulars (≥20 mpg this season) who are officially INACTIVE but not on the injury report
  * (rest days / late scratches), so their absence flows through the existing player-impact redistribution.
  */
@@ -57,6 +57,9 @@ export function applyLineup(injList, tl, teamRows) {
   for (const inj of list) {
     const n = normName(inj.name);
     if (tl.status === 'CONFIRMED') {
+      // A late injury update can supersede an earlier confirmed lineup.
+      const reportAt = Date.parse(inj.date), lineupAt = Date.parse(tl.updatedAt);
+      if (Number.isFinite(reportAt) && Number.isFinite(lineupAt) && reportAt > lineupAt && !inactive.has(n)) continue;
       if (starters.has(n)) inj.override = { p: 1, label: 'STARTING (confirmed)', basis: 'Official NBA.com lineup: confirmed starter' };
       else if (inactive.has(n)) inj.override = { p: 0, label: 'INACTIVE (official)', basis: 'Official NBA.com lineup: inactive' };
       else if (active.has(n)) inj.override = { p: A.available, floor: true, label: 'ACTIVE (official list)', basis: 'Official NBA.com lineup: active, not starting' };
