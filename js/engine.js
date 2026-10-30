@@ -5,7 +5,7 @@
 
 import { lineupsForEvent, applyLineup, gameLineupStatus } from './lineups.js';
 
-export const MODEL_VERSION = 'NBA ORACLE V1.3 (web build 1.3.0)';
+export const MODEL_VERSION = 'NBA ORACLE V1.3.1 (availability reconciliation)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
 export const PRIORS = {
@@ -180,12 +180,22 @@ export function replacementRates(playersPrior) {
 
 export function parseAvailability(inj) {
   const A = PRIORS.availability; const c = (inj.comment || '').toLowerCase();
-  if (inj.typeName === 'INJURY_STATUS_OUT' || /^out$/i.test(inj.status || '')) return { p: A.out, label: 'OUT', basis: 'Listed Out' };
+  const code = String(inj.fantasyCode || '').toUpperCase();
+  const listedOut = inj.typeName === 'INJURY_STATUS_OUT' || /^out$/i.test(inj.status || '');
+  // ESPN can retain a broad Out category while its game-status code is GTD and
+  // the latest report explicitly says questionable/doubtful. OUT code wins;
+  // only a GTD code permits reconciling that broad category with the report.
+  if (code === 'OUT' || (listedOut && code !== 'GTD')) return { p: A.out, label: 'OUT', basis: 'Listed Out' };
+  const explicit = String(inj.status || '').toLowerCase();
+  if (explicit === 'doubtful') return { p: A.doubtful, label: 'DOUBTFUL', basis: 'Explicit game status' };
+  if (explicit === 'questionable') return { p: A.questionable, label: 'QUESTIONABLE', basis: 'Explicit game status' };
+  if (explicit === 'probable') return { p: A.probable, label: 'PROBABLE', basis: 'Explicit game status' };
   if (/doubtful/.test(c)) return { p: A.doubtful, label: 'DOUBTFUL', basis: 'Report text: doubtful' };
   if (/questionable|game-time decision|gtd/.test(c)) return { p: A.questionable, label: 'QUESTIONABLE', basis: 'Report text: questionable' };
   if (/probable/.test(c)) return { p: A.probable, label: 'PROBABLE', basis: 'Report text: probable' };
   if (/will not play|won't play|ruled out|is out|sidelined|will miss|won't suit up|not play/.test(c)) return { p: A.offNote, label: 'OUT (report text)', basis: 'Report text indicates out' };
   if (/available|will play|cleared|expected to play|will suit up|good to go/.test(c)) return { p: A.available, label: 'AVAILABLE (DTD)', basis: 'Report text indicates available' };
+  if (listedOut && code === 'GTD') return { p: A.questionable, label: 'GTD (provider conflict)', basis: 'ESPN Out category conflicts with GTD code; participation remains uncertain' };
   return { p: A.dtdDefault, label: 'DAY-TO-DAY', basis: 'Day-to-day, no game status in report' };
 }
 
@@ -201,9 +211,13 @@ export function injuryImpacts(teamId, injList, data, model, repl) {
   const out = [];
   for (const inj of injList || []) {
     const rep = parseAvailability(inj); const o = inj.override;
-    // official lineup overrides the injury report (floor = only raises P(play), e.g. expected starter)
-    const av = !o ? rep : o.floor && rep.label === 'OUT' && o.label === 'EXPECTED STARTER' ? { p: PRIORS.availability.questionable, label: 'CONFLICT: listed Out, expected starter', basis: 'ESPN report Out vs NBA.com expected lineup — treated as questionable until confirmed' }
-      : o.floor && rep.p >= o.p ? { ...rep, label: `${rep.label} · ${o.label}` } : { p: o.p, label: o.label, basis: o.basis, reportLabel: rep.label };
+    // An expected five is a projection, not confirmation of availability.
+    // It can clarify an unspecified DTD report, but cannot erase a game-status tag.
+    const projected = o?.label === 'EXPECTED STARTER';
+    const av = !o ? rep : projected && rep.label !== 'DAY-TO-DAY'
+      ? { ...rep, label: `${rep.label} · expected lineup unconfirmed` }
+      : o.floor && rep.p >= o.p ? { ...rep, label: `${rep.label} · ${o.label}` }
+      : { p: o.p, label: o.label, basis: o.basis, reportLabel: rep.label };
     const cRow = pc.find(r => r[0] === inj.athleteId);
     const pAll = priorAll[inj.athleteId];
     const pRow = pAll ? pAll.rows.reduce((s, r) => s ? s.map((v, i) => (typeof v === 'number' ? v + r[i] : v)) : r.slice(), null) : null;

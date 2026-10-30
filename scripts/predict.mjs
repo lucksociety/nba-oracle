@@ -24,6 +24,14 @@ const t0 = Date.now();
 // Lineups: NBA.com directly, then via our Cloudflare Worker in case stats.nba.com refuses the runner's IP.
 const LINEUP_PROXY = process.env.LINEUP_PROXY || 'https://nba-oracle-discord.dreiss324.workers.dev/nba/lineups';
 const inputs = await loadInputs(date, getJSON, 'data', undefined, [...DIRECT_LINEUPS, { url: ymd => `${LINEUP_PROXY}/${ymd}`, label: 'via NBA Oracle Cloudflare proxy' }]);
+// Preserve exactly the sanitized basketball inputs used for prospective replay.
+// These never contain market data or credentials; comparison runs in a later process.
+assertNoMarketData(inputs);
+await fs.mkdir(new URL('out/', ROOT), { recursive: true });
+const inputsBody = canonical(inputs);
+const inputsSha256 = crypto.createHash('sha256').update(inputsBody).digest('hex');
+await fs.writeFile(new URL('out/model-inputs.json', ROOT), inputsBody);
+await fs.writeFile(new URL('out/model-inputs.sha256', ROOT), inputsSha256 + '\n');
 const cutoff = new Date().toISOString();
 const slate = prepareSlate(date, inputs);
 const seedBase = `oracle-${date}`;
@@ -62,7 +70,7 @@ const games = slate.games.map((g, i) => {
 });
 const out = {
   stage: 'prediction', modelVersion: MODEL_VERSION, date, sims: N, seedBase, cutoff, generatedAt: new Date().toISOString(),
-  runtimeMs: Date.now() - t0, applyInjuries: slate.applyInjuries, injuryNotToday: slate.injuryNotToday,
+  runtimeMs: Date.now() - t0, inputsSha256, applyInjuries: slate.applyInjuries, injuryNotToday: slate.injuryNotToday,
   sources: inputs.sources, skipped: slate.skipped.map(s => ({ game: s.ev.shortName, reason: s.reason })), games,
 };
 assertNoMarketData(out); // the frozen prediction must contain no market-like field

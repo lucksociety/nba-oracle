@@ -18,6 +18,7 @@ jobs:
         run: |
           node test/data-recovery.test.mjs
           node test/history.test.mjs
+          node test/availability.test.mjs
           node test/firewall.test.mjs
           node discord/test-worker.mjs
           node discord/test-auto.mjs
