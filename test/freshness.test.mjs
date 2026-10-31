@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import { missingCompletedGames, prepareSlate } from '../js/pipeline.js';
+const read=async name=>JSON.parse(await fs.readFile(new URL('../data/'+name+'.json',import.meta.url),'utf8'));
+const [gamesCurrent,gamesPrior,playersCurrent,playersPrior,calibration,teams]=await Promise.all(['games-2027','games-2026','players-2027','players-2026','calibration','teams'].map(read));
+const data={gamesCurrent,gamesPrior,playersCurrent,playersPrior,calibration,teams};
+const ev={id:'new-final',shortName:'A @ B',seasonType:2,status:{completed:true,name:'STATUS_FINAL'},home:{id:'1',abbr:'B'},away:{id:'2',abbr:'A'}};
+const inputs={data,schedule:{'2026-10-30':[ev]},injuries:null,lineups:null};
+assert.deepEqual(missingCompletedGames('2026-10-31',inputs).map(g=>g.id),['new-final']);
+assert.throws(()=>prepareSlate('2026-10-31',inputs,{today:'2026-10-31'}),/missing 1 completed game/);
+const known=structuredClone(inputs);known.data.gamesCurrent.games.push(['new-final']);
+assert.deepEqual(missingCompletedGames('2026-10-31',known),[],'a completed ingested result is not missing');
+const irrelevant=structuredClone(inputs);irrelevant.schedule['2026-10-30']=[{...ev,seasonType:1},{...ev,seasonType:3},{...ev,status:{completed:false,name:'STATUS_POSTPONED'}}];
+assert.deepEqual(missingCompletedGames('2026-10-31',irrelevant),[],'preseason, playoff and postponed games do not masquerade as missing regular-season training data');
+assert.deepEqual(missingCompletedGames('2026-10-30',inputs),[],'current-day finals stay outside the date-level fitting cutoff');
+assert.doesNotThrow(()=>prepareSlate('2026-10-31',inputs,{today:'2026-11-01'}),'retrospective evaluation is permitted without claiming live data coverage');
+console.log('Freshness: missing prior-day finals block live predictions; known finals and non-training games handled correctly');

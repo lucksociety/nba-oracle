@@ -5,7 +5,7 @@
 
 import { lineupsForEvent, applyLineup, gameLineupStatus } from './lineups.js';
 
-export const MODEL_VERSION = 'NBA ORACLE V1.3.1 (availability reconciliation)';
+export const MODEL_VERSION = 'NBA ORACLE V1.3.2 (verified input freshness)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
 export const PRIORS = {

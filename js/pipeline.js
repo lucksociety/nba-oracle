@@ -59,9 +59,30 @@ export async function loadInputs(date, getJSON, dataBase, espnSources = [{ base:
   return { data, schedule, injuries, lineups, sources, live };
 }
 
+/** Finals visible in the result feed but absent from the fitted regular-season history.
+ * Do not substitute a score-only record: box scores are required for team/player factors.
+ */
+export function missingCompletedGames(date, inputs) {
+  const known = new Set([...(inputs.data.gamesCurrent?.games || []), ...(inputs.data.gamesPrior?.games || [])].map(g => String(g[0])));
+  const missing = new Map();
+  for (const [day, events] of Object.entries(inputs.schedule || {})) {
+    if (day >= date) continue;
+    for (const e of events) {
+      if (e.seasonType === 2 && e.status?.completed && e.status?.name === 'STATUS_FINAL' && !known.has(String(e.id))) {
+        missing.set(String(e.id), { id: String(e.id), date: day, matchup: e.shortName || `${e.away?.abbr} @ ${e.home?.abbr}` });
+      }
+    }
+  }
+  return [...missing.values()];
+}
+
 /** Build everything the simulator needs for every game on `date`. */
 export function prepareSlate(date, inputs, { today = etToday() } = {}) {
   const { data, schedule, injuries, lineups } = inputs;
+  if (date >= today) {
+    const missing = missingCompletedGames(date, inputs);
+    if (missing.length) throw new Error(`Training history is missing ${missing.length} completed game(s): ${missing.map(g => g.matchup).join(', ')}. Refresh box-score data before simulating.`);
+  }
   const events = (schedule[date] || []).filter(e => e.home && e.away);
   const model = buildModel(data, date);
   const repl = replacementRates(data.playersPrior);

@@ -35,6 +35,8 @@ jobs:
           RELAY_PAYLOAD: ${{ inputs.relay }}
           RELAY_KEY: ${{ secrets.RELAY_KEY }}
         run: node scripts/relay-decrypt.mjs
+      - name: Refresh completed games and player box scores before fitting
+        run: node scripts/build-data.mjs
       - name: "Stage 0: firewall + simulator self-tests"
         run: node test/firewall.test.mjs
       - name: "Stage 1: NBA ORACLE V1.3 predictions (zero-market, frozen + hashed)"
