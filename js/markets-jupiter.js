@@ -12,7 +12,7 @@ export const JUP_BASE = 'https://api.jup.ag/prediction/v1';
 export const RULES = { minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
 /** Shared V1.3 qualification test (both venues). Returns the list of failed rules (empty = qualifies). */
 export function ruleFails(c, p) {
-  return [!(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
+  return [(!Number.isFinite(p) || p > 1) && 'invalid model probability', !(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
     c.cost != null && c.edge > 0 && !(c.edge >= RULES.minEdge) && `edge < ${RULES.minEdge * 100} pts minimum`,
     c.cost != null && c.edge > RULES.maxEdge && `edge > ${RULES.maxEdge * 100} pts (implausible vs market — treated as model error)`,
     c.ask != null && c.ask > RULES.maxPrice && `price > ${Math.round(RULES.maxPrice * 100)}¢ cap`].filter(Boolean);
@@ -85,9 +85,15 @@ export function modelProb(bet, game) {
 
 /** Depth (contracts) purchasable at the best YES ask and 1c above it, from GET /orderbook/{marketId}.
  *  YES asks are the complement of NO bids (YES ask = $1 - NO bid). */
-export function depthAtAsk(book, ask) {
+export function depthAtAsk(book, ask, toleranceCents = 1) {
+  if (!Number.isFinite(ask) || !(ask > 0 && ask < 1) || !Array.isArray(book?.no)) return 0;
   const askC = Math.round(ask * 100); let d = 0; const bids = book?.no || [];
-  for (const [noBidC, size] of bids) if (100 - noBidC <= askC + 1) d += Number(size) || 0;
+  for (const row of bids) {
+    if (!Array.isArray(row)) continue;
+    const [price, quantity] = row.map(Number);
+    if (Number.isFinite(price) && price > 0 && price < 100 && Number.isFinite(quantity) && quantity > 0 &&
+        100 - price <= askC + toleranceCents) d += quantity;
+  }
   return d;
 }
 
@@ -106,7 +112,7 @@ export function evaluateGame(game, event) {
     const cost = fee == null ? null : ask + fee;
     const c = { marketId: m.marketId, type: bet.type, label: bet.label, line: bet.line, side: bet.side, modelProb: p, ask, bid, fee, cost,
       impliedProb: ask || null, edge: cost == null ? null : p - cost, roi: cost ? p / cost - 1 : null, volume: m.pricing?.volume ?? null };
-    c.twoSided = ask > 0 && ask < 1 && bid > 0 && ask - bid <= RULES.maxBidAskSpread + 1e-9;
+    c.twoSided = ask > 0 && ask < 1 && bid > 0 && bid <= ask && ask - bid <= RULES.maxBidAskSpread + 1e-9;
     c.ruleFails = ruleFails(c, p);
     c.qualifies = cost != null && c.twoSided && !c.ruleFails.length;
     res.candidates.push(c);

@@ -5,6 +5,7 @@
 // and order-book liquidity), evaluates every full-game line, and writes out/bets.json. Never writes to predictions.
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
+import { verifyExecutionLiquidity } from '../js/execution-liquidity.js';
 import { fetchNbaEvents, matchEvent, RULES, JUP_BASE } from '../js/markets-jupiter.js';
 import { GAMMA, CLOB, fetchGammaEventBySlug, fetchGammaNbaGames, adaptGammaEvent, fetchBooks, evaluateCombined } from '../js/markets-polymarket.js';
 
@@ -52,6 +53,9 @@ for (const g of pred.games) {
     try { books = await fetchBooks(polyPost, toks); } catch (e) { pError = e.message; }
   }
   const r = evaluateCombined(g, jEv, gEv, books);
+  if (g.status?.state === 'pre' && Date.now() < Date.parse(g.tip)) {
+    await verifyExecutionLiquidity(r, id => jupFetch(`${JUP_BASE}/orderbook/${encodeURIComponent(id)}`));
+  }
   // V1.3 direction guard: if ANY >50% line backing the same direction (home side, away side, over, under) shows an edge
   // above RULES.maxEdge, the model and market disagree too much on that game for any line in that direction to be
   // trusted (re-pricing the same disagreement on an alternate line does not make it credible). Backtest: backtest/README.md.
@@ -98,7 +102,7 @@ const out = { stage: 'comparison', predictionsSha256: sha, date: pred.date, fetc
   sources: { jupiter: `${JUP_BASE} (keyless=${!process.env.JUPITER_API_KEY})`, polymarketGamma: GAMMA, polymarketClob: CLOB },
   jupiterEventsSeen: jEvents.length, error: jError && pError ? `${jError}; ${pError}` : null, jupiterError: jError, polymarketError: pError, rules: RULES,
   feeModel: { jupiter: 'ceil-to-cent(0.07 x C x p x (1-p)) — Jupiter published fee table', polymarket: 'C x rate x (p(1-p))^exponent from each market feeSchedule (CLOB fd); NBA game markets currently rate 0 ("zero_fees"); 0.05 sports default if absent' },
-  pricing: 'Edge uses the Jupiter executable ask + Jupiter fee; Polymarket ask + Polymarket fee only when Jupiter has no usable two-sided quote. Liquidity from Polymarket CLOB depth within 1¢ of the best ask.',
+  pricing: 'Edge uses the Jupiter ask + fee, with depth verified on Jupiter at that exact ask. Polymarket fallback uses its own CLOB quote and depth.',
   priceComparison, games };
 await fs.writeFile(new URL('out/bets.json', ROOT), JSON.stringify(out, null, 1));
 

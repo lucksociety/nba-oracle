@@ -63,7 +63,7 @@ export async function fetchBooks(postJSON, tokenIds) {
 
 const venueQuote = (ask, bid, fee) => {
   if (!(ask > 0 && ask < 1)) return null;
-  const cost = ask + fee; return { ask, bid: bid ?? null, fee, cost, twoSided: bid > 0 && ask - bid <= RULES.maxBidAskSpread + 1e-9 };
+  const cost = ask + fee; return { ask, bid: bid ?? null, fee, cost, twoSided: bid > 0 && bid <= ask && ask - bid <= RULES.maxBidAskSpread + 1e-9 };
 };
 
 /**

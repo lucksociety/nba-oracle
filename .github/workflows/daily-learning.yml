@@ -31,7 +31,10 @@ jobs:
         with:
           node-version: '22'
       - name: Freeze daily model sample before tip (no market data)
-        run: node scripts/predict.mjs "$(TZ=America/New_York date +%F)" "300000"
+        # The live predictor refuses known missing finals, so refresh this independent run too.
+        run: |
+          node scripts/build-data.mjs
+          node scripts/predict.mjs "$(TZ=America/New_York date +%F)" "300000"
       - name: Import archived forecasts, grade finals and evaluate calibration candidates
         env:
           GH_TOKEN: ${{ github.token }}
