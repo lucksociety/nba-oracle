@@ -53,13 +53,13 @@ for (const g of pred.games) {
     try { books = await fetchBooks(polyPost, toks); } catch (e) { pError = e.message; }
   }
   const r = evaluateCombined(g, jEv, gEv, books);
-  if (g.status?.state === 'pre' && Date.now() < Date.parse(g.tip)) {
-    await verifyExecutionLiquidity(r, id => jupFetch(`${JUP_BASE}/orderbook/${encodeURIComponent(id)}`));
-  }
   // V1.3 direction guard: if ANY >50% line backing the same direction (home side, away side, over, under) shows an edge
   // above RULES.maxEdge, the model and market disagree too much on that game for any line in that direction to be
   // trusted (re-pricing the same disagreement on an alternate line does not make it credible). Backtest: backtest/README.md.
   const blockedDirs = new Set(r.candidates.filter(c => c.cost != null && c.modelProb > RULES.minModelProb && c.edge > RULES.maxEdge).map(c => c.side));
+  if (g.status?.state === 'pre' && Date.now() < Date.parse(g.tip)) {
+    await verifyExecutionLiquidity(r, id => jupFetch(`${JUP_BASE}/orderbook/${encodeURIComponent(id)}`), { blockedDirections: blockedDirs });
+  }
   for (const c of r.candidates) if (blockedDirs.has(c.side) && c.qualifies) { c.qualifies = false; c.fails = [...(c.fails || []), `another ${c.side} line shows edge > ${RULES.maxEdge * 100} pts — model/market disagreement too large to trust`]; }
   r.blockedDirections = [...blockedDirs];
   const tipPassed = !Number.isFinite(Date.parse(g.tip)) || Date.now() >= Date.parse(g.tip);

@@ -21,3 +21,9 @@ await verifyExecutionLiquidity({ candidates: [poly] }, async () => { throw Error
 assert.equal(poly.qualifies, true);
 assert.equal((await run({ no: [[47, 1000]] }, { modelProb: .5 })).qualifies, false);
 console.log('Exact-venue, exact-price liquidity, unavailable book, invalid depth and probability regressions passed');
+const ranked = { candidates: [candidate({ side: 'under', marketId: 'blocked' }), candidate({ side: 'home', marketId: 'empty' }),
+  candidate({ side: 'away', marketId: 'winner' }), candidate({ side: 'over', marketId: 'lower' })] };
+const calls = [];
+await verifyExecutionLiquidity(ranked, async id => { calls.push(id); return { no: [[47, id === 'empty' ? 1 : 100]] }; }, { blockedDirections: new Set(['under']) });
+assert.deepEqual(calls, ['empty', 'winner']);
+assert.deepEqual(ranked.candidates.filter(c => c.qualifies).map(c => c.marketId), ['winner']);
