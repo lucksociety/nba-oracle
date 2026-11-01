@@ -1,0 +1,5 @@
+# Improvements following the October 31 Discord audit
+
+NBA: verify order-book depth on the selected execution venue at the exact quoted Jupiter ask, rather than borrowing Polymarket liquidity or counting contracts a cent more expensive without repricing. Reject crossed quotes and invalid model probabilities. Keep the existing >50%, fee, direction-disagreement and edge-band rules. Refresh results before the independent daily learning sample too. No scoring parameters or variance coefficients are changed. October 31 totals went 1–4 and spreads 2–1; that small sample does not justify fitting an under/over direction or suppressing a bet type.
+
+Validation covers boundary and failure cases, unchanged market-free forecasting, and the repository's existing model/Discord regressions. Statistical accuracy improvements require further prospective results; execution safeguards do not establish profitable betting. Soccer's 32–21 original Discord record is preserved, with no one-day parameter retuning.
