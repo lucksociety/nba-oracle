@@ -90,7 +90,7 @@ for (const g of pred.games) {
     }
   }
   // top 3 alternatives (after the best) among >50% lines, ranked by edge — for sanity checks
-  r.alternatives = r.candidates.filter(c => c !== r.best && c.cost != null && c.modelProb > RULES.minModelProb).slice(0, 3);
+  r.alternatives = r.candidates.filter(c => c !== r.best && c.qualifies && c.modelProb > RULES.minModelProb && c.roi > 0).slice(0, 3);
   r.candidatesTotal = r.candidates.length;
   r.candidates = r.candidates.filter(c => c.cost != null && c.twoSided).slice(0, 8); // keep output compact
   games.push(r);
