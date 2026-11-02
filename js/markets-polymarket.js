@@ -101,7 +101,7 @@ export function evaluateCombined(game, jupEvent, gammaEvent, books) {
     const venue = jup?.twoSided ? 'Jupiter' : poly?.twoSided ? 'Polymarket' : jup ? 'Jupiter' : poly ? 'Polymarket' : null;
     const q = venue === 'Jupiter' ? jup : venue === 'Polymarket' ? poly : null;
     const c = { key, marketId: r.jup?.marketId || `POLY-${key}`, conditionId: r.poly?.conditionId || r.jup?.conditionId || null, type: bet.type, label: bet.label, line: bet.line, side: bet.side,
-      modelProb: p, venue, jupiter: jup ? { ...jup, edge: p - jup.cost } : null, polymarket: poly ? { ...poly, edge: p - poly.cost } : null,
+      sampleN: game.sims, modelProb: p, venue, jupiter: jup ? { ...jup, edge: p - jup.cost } : null, polymarket: poly ? { ...poly, edge: p - poly.cost } : null,
       depth: book ? book.depthAtAsk : null };
     if (q) Object.assign(c, { ask: q.ask, bid: q.bid, fee: q.fee, cost: q.cost, twoSided: q.twoSided, edge: p - q.cost, roi: p / q.cost - 1 });
     else Object.assign(c, { ask: null, cost: null, edge: null, twoSided: false });

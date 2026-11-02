@@ -12,7 +12,13 @@ export const JUP_BASE = 'https://api.jup.ag/prediction/v1';
 export const RULES = { minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
 /** Shared V1.3 qualification test (both venues). Returns the list of failed rules (empty = qualifies). */
 export function ruleFails(c, p) {
-  return [(!Number.isFinite(p) || p > 1) && 'invalid model probability', !(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
+  // Numerical sampling error only; this is not a confidence interval for model accuracy.
+  const n = c.sampleN;
+  const lower = Number.isInteger(n) && n >= 1000 && Number.isFinite(p) && p >= 0 && p <= 1
+    ? p - 1.96 * Math.sqrt(p * (1 - p) / n) : NaN;
+  c.mcLower95 = lower;
+  return [!(lower > RULES.minModelProb) && 'probability not above 50% after Monte Carlo error',
+    c.cost != null && !(lower > c.cost) && 'positive EV not resolved beyond Monte Carlo error', (!Number.isFinite(p) || p > 1) && 'invalid model probability', !(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
     c.cost != null && c.edge > 0 && !(c.edge >= RULES.minEdge) && `edge < ${RULES.minEdge * 100} pts minimum`,
     c.cost != null && c.edge > RULES.maxEdge && `edge > ${RULES.maxEdge * 100} pts (implausible vs market — treated as model error)`,
     c.ask != null && c.ask > RULES.maxPrice && `price > ${Math.round(RULES.maxPrice * 100)}¢ cap`].filter(Boolean);
@@ -110,7 +116,7 @@ export function evaluateGame(game, event) {
     const p = modelProb(bet, game);
     const fee = ask > 0 && ask < 1 ? feePerContract(ask) : null;
     const cost = fee == null ? null : ask + fee;
-    const c = { marketId: m.marketId, type: bet.type, label: bet.label, line: bet.line, side: bet.side, modelProb: p, ask, bid, fee, cost,
+    const c = { marketId: m.marketId, type: bet.type, label: bet.label, line: bet.line, side: bet.side, sampleN: game.sims, modelProb: p, ask, bid, fee, cost,
       impliedProb: ask || null, edge: cost == null ? null : p - cost, roi: cost ? p / cost - 1 : null, volume: m.pricing?.volume ?? null };
     c.twoSided = ask > 0 && ask < 1 && bid > 0 && bid <= ask && ask - bid <= RULES.maxBidAskSpread + 1e-9;
     c.ruleFails = ruleFails(c, p);

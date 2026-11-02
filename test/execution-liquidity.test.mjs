@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { verifyExecutionLiquidity } from '../js/execution-liquidity.js';
 import { depthAtAsk } from '../js/markets-jupiter.js';
-const candidate = (extra = {}) => ({ marketId: 'test', venue: 'Jupiter', modelProb: .6, ask: .53, cost: .55,
+const candidate = (extra = {}) => ({ marketId: 'test', sampleN: 300000, venue: 'Jupiter', modelProb: .6, ask: .53, cost: .55,
   edge: .05, twoSided: true, depth: 100000, liquid: true, qualifies: true, fails: [], ...extra });
 async function run(book, extra = {}) {
   const r = { candidates: [candidate(extra)] };
