@@ -1,8 +1,8 @@
 {
- "builtAt": "2026-11-04T22:58:47.042Z",
+ "builtAt": "2026-11-05T03:10:52.783Z",
  "currentSeason": 2027,
  "priorSeason": 2026,
- "currentGames": 107,
+ "currentGames": 111,
  "priorGames": 1231,
  "source": "ESPN public site API (scoreboard, summary boxscore, injuries); market fields stripped"
 }
