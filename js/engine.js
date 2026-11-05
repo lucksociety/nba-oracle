@@ -5,7 +5,7 @@
 
 import { lineupsForEvent, applyLineup, gameLineupStatus } from './lineups.js';
 
-export const MODEL_VERSION = 'NBA ORACLE V1.3.2 (verified input freshness)';
+export const MODEL_VERSION = 'NBA ORACLE V1.3.3 (regulation endgame correction)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
 export const PRIORS = {
@@ -419,14 +419,25 @@ function runSim(params, N, seed, onProgress, adj, noAvail) {
     if (Math.abs(hs - as) >= P.garbageMargin) { // garbage time: leader's bench, slight regression
       if (hs > as) thL = { ...th, p2: th.p2 * P.garbageLeaderK, p3: th.p3 * P.garbageLeaderK }; else taL = { ...ta, p2: ta.p2 * P.garbageLeaderK, p3: ta.p3 * P.garbageLeaderK };
     }
-    for (let j = g1; j < n; j++) { const dev = C * ((hs - as) - em * j); as += possession(taL, false, 1 + dev); hs += possession(thL, false, 1 - dev); }
-    // late-game intentional fouling when trailing by 1-6
-    let m = hs - as;
-    if (m !== 0 && Math.abs(m) <= 6 && rnd() < P.lateFoulProb) {
-      for (let r = 0; r < 3; r++) {
-        m = hs - as; if (m === 0 || Math.abs(m) > 6) break;
-        if (m > 0) { as += possession(ta, true); if (rnd() < th.ftp) hs++; if (rnd() < th.ftp) hs++; }
-        else { hs += possession(th, true); if (rnd() < ta.ftp) as++; if (rnd() < ta.ftp) as++; }
+    // Intentional fouls replace possessions while regulation time remains.
+    // Award the leading team's free throws before the trailing team's response.
+    for (let j = g1; j < n; j++) {
+      const margin = hs - as;
+      const foul = j >= n - 3 && margin !== 0 && Math.abs(margin) <= 6 && rnd() < P.lateFoulProb;
+      if (foul) {
+        const leader = margin > 0 ? th : ta;
+        const freeThrows = Number(rnd() < leader.ftp) + Number(rnd() < leader.ftp);
+        if (margin > 0) {
+          hs += freeThrows;
+          as += possession(ta, true);
+        } else {
+          as += freeThrows;
+          hs += possession(th, true);
+        }
+      } else {
+        const dev = C * ((hs - as) - em * j);
+        as += possession(taL, false, 1 + dev);
+        hs += possession(thL, false, 1 - dev);
       }
     }
     let ot = 0;
