@@ -5,7 +5,7 @@ export async function verifyExecutionLiquidity(result, fetchBook, { blockedDirec
     c.liquiditySource = 'Jupiter'; c.depth = null; c.liquid = false; c.qualifies = false;
     c.fails = [...ruleFails(c, c.modelProb), 'Jupiter execution depth not verified'];
   }
-  // Candidates are ranked by edge. Verify until the highest-ranked executable Jupiter bet is found,
+  // Candidates are ranked by sensitivity probability, then EV. Verify until the highest-ranked executable Jupiter bet is found,
   // rather than spending the keyless rate limit on every lower-ranked alternate line.
   for (const c of result.candidates) {
     if (c.venue !== 'Jupiter') continue;

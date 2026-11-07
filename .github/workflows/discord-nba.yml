@@ -60,6 +60,17 @@ jobs:
           DISCORD_APPLICATION_ID: ${{ secrets.DISCORD_APPLICATION_ID }}
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: node scripts/discord-post.mjs
+      - name: Preserve delivered recommendations for market-specific calibration
+        if: success()
+        continue-on-error: true
+        run: python3 scripts/bet_learning.py --capture
+      - uses: actions/upload-artifact@v4
+        if: success()
+        with:
+          name: bet-learning-${{ github.run_id }}
+          path: learning/bets-inbox.jsonl
+          retention-days: 90
+          if-no-files-found: warn
       - name: Report failure to Discord
         if: failure()
         env:

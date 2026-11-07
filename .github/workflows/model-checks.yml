@@ -27,6 +27,8 @@ jobs:
           node discord/test-worker.mjs
           node discord/test-auto.mjs
       - name: Prospective evaluation regressions
-        run: python3 -m unittest discover -s scripts -p test_model_learning.py
+        run: |
+          python3 -m unittest discover -s scripts -p test_model_learning.py
+          python3 -m unittest discover -s scripts -p test_bet_learning.py
       - name: Evergreen data and reconciliation regressions
         run: python3 -m unittest discover -s scripts -p test_evergreen.py

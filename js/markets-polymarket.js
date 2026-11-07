@@ -10,7 +10,7 @@
 //   CLOB   GET  https://clob.polymarket.com/clob-markets/{conditionId}                 fee curve fd:{r,e,to} (authoritative)
 // Jupiter's NBA markets ARE Polymarket markets: Jupiter marketId "POLY-{gammaMarketId}-{outcomeIndex}" and the same
 // conditionId / clobTokenIds, so the two venues are joined exactly by id (no fuzzy matching).
-import { parseMarket, modelProb, feePerContract, RULES, ruleFails } from './markets-jupiter.js';
+import { parseMarket, modelProb, feePerContract, RULES, ruleFails, confidenceOrder } from './markets-jupiter.js';
 
 export const GAMMA = 'https://gamma-api.polymarket.com';
 export const CLOB = 'https://clob.polymarket.com';
@@ -112,7 +112,7 @@ export function evaluateCombined(game, jupEvent, gammaEvent, books) {
       !c.liquid && `CLOB depth ${c.depth == null ? '—' : Math.round(c.depth)} < ${RULES.minDepthContracts}`, ...rf].filter(Boolean);
     res.candidates.push(c);
   }
-  res.candidates.sort((a, b) => (b.edge ?? -9) - (a.edge ?? -9));
+  res.candidates.sort(confidenceOrder);
   res.coverage = { moneyline: cov.moneyline, spreads: cov.spreads, totals: cov.totals, spreadLines: cov.spreadLines.size, totalLines: cov.totalLines.size,
     evaluated: res.candidates.length, jupiterPriced: cov.jupiterPriced, polymarketPriced: cov.polymarketPriced, both: cov.both };
   return res;

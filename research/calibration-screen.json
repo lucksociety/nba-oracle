@@ -1,0 +1,155 @@
+{
+  "winner": {
+    "temperature_beta": 1.128991431400678,
+    "train_games": 1231,
+    "test_games": 90,
+    "test_dates": [
+      "2026-10-20",
+      "2026-11-01"
+    ],
+    "before": {
+      "logloss": 0.623674781211627,
+      "brier": 0.2201155298611111,
+      "bins": {
+        "80-90": {
+          "derived_lines": 12,
+          "predicted": 0.8540833333333334,
+          "actual": 0.8333333333333334
+        },
+        "90-100": {
+          "derived_lines": 2,
+          "predicted": 0.904625,
+          "actual": 1.0
+        }
+      }
+    },
+    "after": {
+      "logloss": 0.6274397952312127,
+      "brier": 0.2222554624591835,
+      "bins": {
+        "80-90": {
+          "derived_lines": 14,
+          "predicted": 0.8498944772312494,
+          "actual": 0.8571428571428571
+        },
+        "90-100": {
+          "derived_lines": 5,
+          "predicted": 0.9145681585040826,
+          "actual": 1.0
+        }
+      }
+    },
+    "logloss_improvement_day_bootstrap95": [
+      -0.011118872475702134,
+      0.003933026352013574
+    ],
+    "prior_diagnostic_reserve": {
+      "mean_overconfidence": -0.02632473598700244,
+      "bootstrap_upper_975": 0.000564512883169242,
+      "rounded_reserve": 0.001,
+      "interpretation": "Screening stress only, not an individual forecast confidence interval or evidence of profit."
+    }
+  },
+  "spread": {
+    "temperature_beta": 0.9644475861634763,
+    "train_games": 1231,
+    "test_games": 90,
+    "test_dates": [
+      "2026-10-20",
+      "2026-11-01"
+    ],
+    "before": {
+      "logloss": 0.4722790031808122,
+      "brier": 0.15306853613782054,
+      "bins": {
+        "80-90": {
+          "derived_lines": 965,
+          "predicted": 0.8531269430051814,
+          "actual": 0.8290155440414507
+        },
+        "90-100": {
+          "derived_lines": 1641,
+          "predicted": 0.955965265082267,
+          "actual": 0.923217550274223
+        }
+      }
+    },
+    "after": {
+      "logloss": 0.4706771008617461,
+      "brier": 0.15283160000056878,
+      "bins": {
+        "80-90": {
+          "derived_lines": 985,
+          "predicted": 0.8531562013874968,
+          "actual": 0.8365482233502538
+        },
+        "90-100": {
+          "derived_lines": 1554,
+          "predicted": 0.9546590574675686,
+          "actual": 0.9266409266409267
+        }
+      }
+    },
+    "logloss_improvement_day_bootstrap95": [
+      -0.00026353676647425546,
+      0.0033150122466394593
+    ],
+    "prior_diagnostic_reserve": {
+      "mean_overconfidence": 0.0013552677622945698,
+      "bootstrap_upper_975": 0.010098427480479562,
+      "rounded_reserve": 0.011,
+      "interpretation": "Screening stress only, not an individual forecast confidence interval or evidence of profit."
+    }
+  },
+  "total": {
+    "temperature_beta": 0.9856047509672972,
+    "train_games": 1231,
+    "test_games": 90,
+    "test_dates": [
+      "2026-10-20",
+      "2026-11-01"
+    ],
+    "before": {
+      "logloss": 0.4119450523829819,
+      "brier": 0.1304218099965707,
+      "bins": {
+        "80-90": {
+          "derived_lines": 1502,
+          "predicted": 0.8542546604527299,
+          "actual": 0.8422103861517976
+        },
+        "90-100": {
+          "derived_lines": 2953,
+          "predicted": 0.9559973755502879,
+          "actual": 0.9471723670843211
+        }
+      }
+    },
+    "after": {
+      "logloss": 0.4117594922495107,
+      "brier": 0.13042128904747102,
+      "bins": {
+        "80-90": {
+          "derived_lines": 1512,
+          "predicted": 0.8540687719672473,
+          "actual": 0.8472222222222222
+        },
+        "90-100": {
+          "derived_lines": 2903,
+          "predicted": 0.9552198319585055,
+          "actual": 0.9472959007922839
+        }
+      }
+    },
+    "logloss_improvement_day_bootstrap95": [
+      -0.0005046318740626617,
+      0.0009583690847851666
+    ],
+    "prior_diagnostic_reserve": {
+      "mean_overconfidence": 0.0008219343903882231,
+      "bootstrap_upper_975": 0.007974412212299867,
+      "rounded_reserve": 0.008,
+      "interpretation": "Screening stress only, not an individual forecast confidence interval or evidence of profit."
+    }
+  }
+}
