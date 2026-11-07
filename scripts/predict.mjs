@@ -16,7 +16,7 @@ const N = Number(process.argv[3] || process.env.SIMS || 300000);
 const ROOT = new URL('../', import.meta.url);
 const getJSON = async (u) => {
   if (u.startsWith('data/')) return JSON.parse(await fs.readFile(new URL(u.split('?')[0], ROOT), 'utf8'));
-  for (let i = 0; i < 3; i++) { try { const r = await fetch(u, { headers: /stats\.nba\.com/.test(u) ? { 'User-Agent': 'Mozilla/5.0', Referer: 'https://www.nba.com/' } : {}, signal: AbortSignal.timeout(15000) }); if (!r.ok) throw new Error('HTTP ' + r.status); return await r.json(); } catch (e) { if (i === 2) throw e; await new Promise(r => setTimeout(r, 700)); } }
+  for (let i = 0; i < 3; i++) { try { const url = new URL(u); url.searchParams.set('_refresh', String(t0)); const r = await fetch(url, { cache: 'no-store', headers: /stats\.nba\.com/.test(u) ? { 'User-Agent': 'Mozilla/5.0', Referer: 'https://www.nba.com/', 'Cache-Control': 'no-cache' } : { 'Cache-Control': 'no-cache' }, signal: AbortSignal.timeout(15000) }); if (!r.ok) throw new Error('HTTP ' + r.status); return await r.json(); } catch (e) { if (i === 2) throw e; await new Promise(r => setTimeout(r, 700)); } }
 };
 export const canonical = (o) => JSON.stringify(o);
 
@@ -71,7 +71,7 @@ const games = slate.games.map((g, i) => {
 const out = {
   stage: 'prediction', modelVersion: MODEL_VERSION, date, sims: N, seedBase, cutoff, generatedAt: new Date().toISOString(),
   runtimeMs: Date.now() - t0, inputsSha256, applyInjuries: slate.applyInjuries, injuryNotToday: slate.injuryNotToday,
-  sources: inputs.sources, skipped: slate.skipped.map(s => ({ game: s.ev.shortName, reason: s.reason })), games,
+  availabilityRefresh: inputs.availabilityRefresh, sources: inputs.sources, skipped: slate.skipped.map(s => ({ game: s.ev.shortName, reason: s.reason })), games,
 };
 assertNoMarketData(out); // the frozen prediction must contain no market-like field
 const body = canonical(out);

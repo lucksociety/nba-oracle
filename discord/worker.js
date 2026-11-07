@@ -73,9 +73,12 @@ async function espnProxy(url, ctx) {
   else if (path === 'injuries') target = `${ESPN}/injuries`;
   else return new Response('not found', { status: 404, headers: CORS });
   const cache = caches.default; const key = new Request(target);
-  let hit = await cache.match(key);
+  const refresh = url.searchParams.has("_refresh");
+  let hit = refresh ? null : await cache.match(key);
   if (!hit) {
-    const r = await fetch(target, { headers: { 'User-Agent': 'nba-oracle-proxy' } });
+    const upstream = new URL(target);
+    if (refresh) upstream.searchParams.set('_refresh', url.searchParams.get('_refresh'));
+    const r = await fetch(upstream, { cache: 'no-store', headers: { 'User-Agent': 'nba-oracle-proxy' } });
     if (!r.ok) return new Response(`upstream ${r.status}`, { status: 502, headers: CORS });
     const body = JSON.stringify(strip(await r.json()));
     hit = new Response(body, { headers: { 'Content-Type': 'application/json', 'Cache-Control': 'public, max-age=60' } });
@@ -90,9 +93,12 @@ async function lineupsProxy(url, ctx) {
   if (!/^\d{8}$/.test(ymd)) return new Response('bad date', { status: 400, headers: CORS });
   const target = `https://stats.nba.com/js/data/leaders/00_daily_lineups_${ymd}.json`;
   const cache = caches.default; const key = new Request(target);
-  let hit = await cache.match(key);
+  const refresh = url.searchParams.has("_refresh");
+  let hit = refresh ? null : await cache.match(key);
   if (!hit) {
-    const r = await fetch(target, { headers: { 'User-Agent': 'Mozilla/5.0 (nba-oracle-proxy)', Referer: 'https://www.nba.com/', Accept: 'application/json' }, redirect: 'manual', signal: AbortSignal.timeout(8000) }).catch(e => new Response(null, { status: 504 }));
+    const upstream = new URL(target);
+    if (refresh) upstream.searchParams.set('_refresh', url.searchParams.get('_refresh'));
+    const r = await fetch(upstream, { cache: 'no-store', headers: { 'User-Agent': 'Mozilla/5.0 (nba-oracle-proxy)', Referer: 'https://www.nba.com/', Accept: 'application/json', 'Cache-Control': 'no-cache' }, redirect: 'manual', signal: AbortSignal.timeout(8000) }).catch(e => new Response(null, { status: 504 }));
     if (r.status !== 200) return new Response(`upstream ${r.status} (lineups not posted for this date or source unavailable)`, { status: [301, 302, 403, 404].includes(r.status) ? 404 : 502, headers: CORS });
     let data; try { data = await r.json(); } catch { return new Response('upstream returned non-JSON', { status: 502, headers: CORS }); }
     const body = JSON.stringify(strip(data));

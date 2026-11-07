@@ -22,7 +22,7 @@ export async function loadInputs(date, getJSON, dataBase, espnSources = [{ base:
   const [meta, cal, teams, snapshot] = await Promise.all(['meta', 'calibration', 'teams', 'snapshot'].map(f => getJSON(`${dataBase}/${f}.json${bust}`)));
   const [gamesCurrent, gamesPrior, playersCurrent, playersPrior] = await Promise.all([
     `games-${meta.currentSeason}`, `games-${meta.priorSeason}`, `players-${meta.currentSeason}`, `players-${meta.priorSeason}`].map(f => getJSON(`${dataBase}/${f}.json${bust}`)));
-  const sources = []; const schedule = {}; let injuries = null; let live = true;
+  const sources = []; const schedule = {}; let injuries = null; let live = true; let injuriesLive = true;
   for (const k of [0, -1, -2, -3]) {
     const d = shiftDate(date, k);
     try {
@@ -36,7 +36,7 @@ export async function loadInputs(date, getJSON, dataBase, espnSources = [{ base:
     }
   }
   try { const { raw, label } = await getLive(getJSON, espnSources, 'injuries'); injuries = sanitizeInjuries(raw); sources.push({ what: 'Injury report', src: `ESPN injuries — ${label}`, at: injuries.timestamp || new Date().toISOString() }); }
-  catch (e) { injuries = snapshot.injuries; sources.push({ what: 'Injury report', src: `Repo snapshot, refreshed ~every 30 min (live fetch failed: ${e.message})`, at: snapshot.injuries?.timestamp || snapshot.fetchedAt }); }
+  catch (e) { injuriesLive = false; injuries = snapshot.injuries; sources.push({ what: 'Injury report', src: `Repo snapshot, refreshed ~every 30 min (live fetch failed: ${e.message})`, at: snapshot.injuries?.timestamp || snapshot.fetchedAt }); }
   // Official starting lineups for the requested date (only used when the injury report is applied, i.e. today/future).
   let lineups = null;
   if (date >= etToday()) {
@@ -56,7 +56,7 @@ export async function loadInputs(date, getJSON, dataBase, espnSources = [{ base:
   sources.push({ what: 'Historical calibration (HCA, B2B, margin/total SD)', src: `Fitted on ${cal.sampleGames} ${cal.season - 1}-${String(cal.season).slice(2)} final scores`, at: meta.builtAt });
   const data = { meta, calibration: cal, teams, gamesCurrent, gamesPrior, playersCurrent, playersPrior };
   assertNoMarketData({ schedule, injuries, lineups });
-  return { data, schedule, injuries, lineups, sources, live };
+  return { data, schedule, injuries, lineups, sources, live, availabilityRefresh: {checkedAt:new Date().toISOString(), injuriesLive, lineupsLive:!!lineups && !String(lineups.source).includes("snapshot")} };
 }
 
 /** Finals visible in the result feed but absent from the fitted regular-season history.
