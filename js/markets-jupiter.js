@@ -16,6 +16,15 @@ export const confidenceOrder = (a, b) => (b.modelStressLower ?? b.modelProb) - (
   || (b.roi ?? -Infinity) - (a.roi ?? -Infinity);
 export const RULES = { selection: 'confidence-first-positive-stress-ev-v1', minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
 /** Shared V1.3 qualification test (both venues). Returns the list of failed rules (empty = qualifies). */
+export function scoreSupports(c, game) {
+  const a = game?.final?.away, h = game?.final?.home;
+  if (![a,h].every(x => Number.isInteger(x) && x >= 0)) return false;
+  if (c.type === 'moneyline') return c.side === 'home' ? h > a : c.side === 'away' ? a > h : false;
+  if (!Number.isFinite(c.line)) return false;
+  if (c.type === 'spreads') return c.side === 'home' ? h + c.line > a : c.side === 'away' ? a + c.line > h : false;
+  if (c.type === 'totals') return c.side === 'over' ? a+h > c.line : c.side === 'under' ? a+h < c.line : false;
+  return false;
+}
 export function ruleFails(c, p) {
   // Numerical sampling error only; this is not a confidence interval for model accuracy.
   const n = c.sampleN;
@@ -25,7 +34,7 @@ export function ruleFails(c, p) {
   c.calibrationReserve = CALIBRATION_RESERVE[c.type] ?? Math.max(...Object.values(CALIBRATION_RESERVE));
   c.modelStressLower = lower - c.calibrationReserve;
   c.stressEV = c.cost > 0 ? c.modelStressLower / c.cost - 1 : null;
-  return [!(c.modelStressLower > RULES.minModelProb) && 'probability not above 50% after calibration stress',
+  return [c.scoreConsistent === false && 'bet does not win at displayed predicted score', !(c.modelStressLower > RULES.minModelProb) && 'probability not above 50% after calibration stress',
     c.cost != null && !(c.modelStressLower > c.cost) && 'EV does not survive historical calibration stress', !(lower > RULES.minModelProb) && 'probability not above 50% after Monte Carlo error',
     c.cost != null && !(lower > c.cost) && 'positive EV not resolved beyond Monte Carlo error', (!Number.isFinite(p) || p > 1) && 'invalid model probability', !(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
     c.cost != null && c.edge > 0 && !(c.edge >= RULES.minEdge) && `edge < ${RULES.minEdge * 100} pts minimum`,
@@ -128,6 +137,7 @@ export function evaluateGame(game, event) {
     const c = { marketId: m.marketId, type: bet.type, label: bet.label, line: bet.line, side: bet.side, sampleN: game.sims, modelProb: p, ask, bid, fee, cost,
       impliedProb: ask || null, edge: cost == null ? null : p - cost, roi: cost ? p / cost - 1 : null, volume: m.pricing?.volume ?? null };
     c.twoSided = ask > 0 && ask < 1 && bid > 0 && bid <= ask && ask - bid <= RULES.maxBidAskSpread + 1e-9;
+    c.scoreConsistent = scoreSupports(c, game);
     c.ruleFails = ruleFails(c, p);
     c.qualifies = cost != null && c.twoSided && !c.ruleFails.length;
     res.candidates.push(c);

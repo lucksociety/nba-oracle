@@ -4,7 +4,7 @@
 // interaction token is supplied; (2) otherwise, or if the interaction token fails/expires (15 min), the channel
 // webhook in DISCORD_WEBHOOK_URL. DRY_RUN=1 prints the payloads instead of sending.
 import fs from 'node:fs/promises';
-import { RULES } from '../js/markets-jupiter.js';
+import { RULES, scoreSupports } from '../js/markets-jupiter.js';
 
 const ROOT = new URL('../', import.meta.url);
 const pred = JSON.parse(await fs.readFile(new URL('out/predictions.json', ROOT), 'utf8'));
@@ -15,7 +15,13 @@ if (bets && bets.predictionsSha256 !== sha) throw new Error('bets.json does not 
 const pct = (x) => (x * 100).toFixed(1) + '%';
 const c = (x) => (x * 100).toFixed(1) + '¢';
 const tipET = (iso) => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit' }).format(new Date(iso)) + ' ET';
-const betOf = (g) => bets?.games.find(b => b.gameId === g.id);
+const betOf = (g) => {
+  const b = bets?.games.find(b => b.gameId === g.id);
+  if (!b) return b;
+  return { ...b, best: b.best && scoreSupports(b.best, g) ? b.best : null,
+    alternatives: (b.alternatives || []).filter(c => scoreSupports(c, g)),
+    noBetReason: b.best && !scoreSupports(b.best, g) ? 'bet does not win at displayed predicted score' : b.noBetReason };
+};
 const short = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
 const dash = '—';
 const venueTxt = (v) => (v ? `${c(v.ask)}+${c(v.fee)} fee → edge ${v.edge >= 0 ? '+' : ''}${(v.edge * 100).toFixed(1)}` : 'n/a');
