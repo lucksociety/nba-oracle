@@ -59,6 +59,7 @@ export function buildMessages() {
     if (b?.best) {
       const x = b.best;
       d += `\n✅ **BEST BET: ${x.label}** @ ${c(x.ask)} — price from **${x.venue}**${x.venue !== 'Jupiter' ? ' (Jupiter quote unavailable; check Jupiter before betting)' : ''}\nModel ${pct(x.modelProb)} vs cost ${c(x.cost)} (price ${c(x.ask)} + fee ${c(x.fee)}) → **edge +${(x.edge * 100).toFixed(1)} pts**, EV ${x.roi >= 0 ? '+' : ''}${(x.roi * 100).toFixed(0)}%/$` + (x.depth != null ? ` · ${x.liquiditySource || x.venue} depth ~${Math.round(x.depth)} contracts` : '');
+      if (Number.isFinite(x.modelStressLower)) d += `\nCalibration sensitivity minimum ${pct(x.modelStressLower)} · positive EV after stress (not a confidence interval)`;
       d += `\nJupiter ${venueTxt(x.jupiter)} · Polymarket ${venueTxt(x.polymarket)}`;
       if (x.edge > RULES.maxEdge) d += `\n⚠️ Very large disagreement with the market — more often a model blind spot (late news, roster change) than free money. Verify injuries first.`;
     } else d += `\n⛔ **NO BET** — ${b ? short(b.noBetReason || 'requirements not met', 220) : 'comparison unavailable'}`;

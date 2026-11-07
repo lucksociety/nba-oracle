@@ -9,7 +9,12 @@ export const JUP_BASE = 'https://api.jup.ag/prediction/v1';
 // V1.3 betting-layer safeguards (stage 2 only; the engine never sees prices). Walk-forward backtest vs Polymarket price
 // history (backtest/bets.mjs) showed edges above ~8 pts won at roughly the market's rate, not the model's, so they are
 // treated as model error, not value. minEdge 3 pts, maxEdge 8 pts, price cap 90¢, at most one bet per game.
-export const RULES = { minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
+// Prior-season diagnostic calibration stress, rounded upward from a date-cluster bootstrap.
+// Not an individual forecast confidence interval; never alters the frozen model probabilities.
+export const CALIBRATION_RESERVE = { moneyline: 0.001, spreads: 0.011, totals: 0.008 };
+export const confidenceOrder = (a, b) => (b.modelStressLower ?? b.modelProb) - (a.modelStressLower ?? a.modelProb)
+  || (b.roi ?? -Infinity) - (a.roi ?? -Infinity);
+export const RULES = { selection: 'confidence-first-positive-stress-ev-v1', minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
 /** Shared V1.3 qualification test (both venues). Returns the list of failed rules (empty = qualifies). */
 export function ruleFails(c, p) {
   // Numerical sampling error only; this is not a confidence interval for model accuracy.
@@ -17,7 +22,11 @@ export function ruleFails(c, p) {
   const lower = Number.isInteger(n) && n >= 1000 && Number.isFinite(p) && p >= 0 && p <= 1
     ? p - 1.96 * Math.sqrt(p * (1 - p) / n) : NaN;
   c.mcLower95 = lower;
-  return [!(lower > RULES.minModelProb) && 'probability not above 50% after Monte Carlo error',
+  c.calibrationReserve = CALIBRATION_RESERVE[c.type] ?? Math.max(...Object.values(CALIBRATION_RESERVE));
+  c.modelStressLower = lower - c.calibrationReserve;
+  c.stressEV = c.cost > 0 ? c.modelStressLower / c.cost - 1 : null;
+  return [!(c.modelStressLower > RULES.minModelProb) && 'probability not above 50% after calibration stress',
+    c.cost != null && !(c.modelStressLower > c.cost) && 'EV does not survive historical calibration stress', !(lower > RULES.minModelProb) && 'probability not above 50% after Monte Carlo error',
     c.cost != null && !(lower > c.cost) && 'positive EV not resolved beyond Monte Carlo error', (!Number.isFinite(p) || p > 1) && 'invalid model probability', !(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
     c.cost != null && c.edge > 0 && !(c.edge >= RULES.minEdge) && `edge < ${RULES.minEdge * 100} pts minimum`,
     c.cost != null && c.edge > RULES.maxEdge && `edge > ${RULES.maxEdge * 100} pts (implausible vs market — treated as model error)`,
