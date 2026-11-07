@@ -22,6 +22,7 @@ jobs:
           node test/freshness.test.mjs
           node test/execution-liquidity.test.mjs
           node test/probability-certainty.test.mjs
+          node test/score-consistency.test.mjs
           node test/endgame.test.mjs
           node test/firewall.test.mjs
           node discord/test-worker.mjs
