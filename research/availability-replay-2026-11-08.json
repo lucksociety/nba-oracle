@@ -1,0 +1,134 @@
+{
+  "date": "2026-11-08",
+  "protocol": "Original pregame inputs and seeds; exact unchanged base histograms asserted. Retrospective diagnostic, not a holdout or profitability claim.",
+  "rows": [
+    {
+      "id": "401909946",
+      "label": "LAL +15.5",
+      "originalProbability": 0.8032433333333333,
+      "availabilityChecks": [],
+      "newStressLower": 0.7908207302781342,
+      "qualifies": true,
+      "failures": []
+    },
+    {
+      "id": "401909947",
+      "label": "MIN -12.5",
+      "originalProbability": 0.53005,
+      "availabilityChecks": [
+        {
+          "name": "Keyonte George",
+          "side": "away",
+          "state": "in",
+          "sampleN": 164870,
+          "prob": 0.5213198277430703,
+          "stressLower": 0.5079084786214714
+        },
+        {
+          "name": "Keyonte George",
+          "side": "away",
+          "state": "out",
+          "sampleN": 135130,
+          "prob": 0.540701546658773,
+          "stressLower": 0.5270444553405561
+        },
+        {
+          "name": "Lauri Markkanen",
+          "side": "away",
+          "state": "in",
+          "sampleN": 165004,
+          "prob": 0.5165995975855131,
+          "stressLower": 0.5031883635196922
+        },
+        {
+          "name": "Lauri Markkanen",
+          "side": "away",
+          "state": "out",
+          "sampleN": 134996,
+          "prob": 0.546490266378263,
+          "stressLower": 0.5328345594713645
+        }
+      ],
+      "newStressLower": 0.5031883635196922,
+      "qualifies": true,
+      "failures": []
+    },
+    {
+      "id": "401909949",
+      "label": "MIL +12.5",
+      "originalProbability": 0.5442366666666667,
+      "availabilityChecks": [
+        {
+          "name": "Gary Trent Jr.",
+          "side": "home",
+          "state": "in",
+          "sampleN": 165012,
+          "prob": 0.5408879354228784,
+          "stressLower": 0.5274835100223403
+        },
+        {
+          "name": "Gary Trent Jr.",
+          "side": "home",
+          "state": "out",
+          "sampleN": 134988,
+          "prob": 0.5483302219456544,
+          "stressLower": 0.5346753712771448
+        },
+        {
+          "name": "Mitchell Robinson",
+          "side": "away",
+          "state": "in",
+          "sampleN": 164800,
+          "prob": 0.5390169902912622,
+          "stressLower": 0.5256102947433821
+        },
+        {
+          "name": "Mitchell Robinson",
+          "side": "away",
+          "state": "out",
+          "sampleN": 135200,
+          "prob": 0.5505991124260355,
+          "stressLower": 0.5369475464238535
+        }
+      ],
+      "newStressLower": 0.5256102947433821,
+      "qualifies": true,
+      "failures": []
+    },
+    {
+      "id": "401909950",
+      "label": "Over 223.5",
+      "originalProbability": 0.6398533333333334,
+      "availabilityChecks": [],
+      "newStressLower": 0.6301355224016827,
+      "qualifies": true,
+      "failures": []
+    },
+    {
+      "id": "401909951",
+      "label": "Over 238.5",
+      "originalProbability": 0.5262366666666667,
+      "availabilityChecks": [
+        {
+          "name": "Keegan Murray",
+          "side": "home",
+          "state": "in",
+          "sampleN": 165060,
+          "prob": 0.5223555070883316,
+          "stressLower": 0.5119457646438342
+        },
+        {
+          "name": "Keegan Murray",
+          "side": "home",
+          "state": "out",
+          "sampleN": 134940,
+          "prob": 0.530984141099748,
+          "stressLower": 0.5203214532443117
+        }
+      ],
+      "newStressLower": 0.5119457646438342,
+      "qualifies": true,
+      "failures": []
+    }
+  ]
+}

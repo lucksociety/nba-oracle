@@ -18,6 +18,7 @@ jobs:
         run: |
           node test/data-recovery.test.mjs
           node test/history.test.mjs
+          node test/availability-stress.test.mjs
           node test/availability.test.mjs
           node test/freshness.test.mjs
           node test/execution-liquidity.test.mjs

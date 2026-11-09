@@ -363,11 +363,11 @@ export function simulate(params, N, seed, onProgress, opts = {}) {
       adj = { h: adj.h + (dH * 100 / params.pace) / params.home.dppp, a: adj.a + (dA * 100 / params.pace) / params.away.dppp };
     }
   }
-  const sim = runSim(params, N, seed, onProgress, adj, !!opts.noAvailability);
+  const sim = runSim(params, N, seed, onProgress, adj, !!opts.noAvailability, !!opts.captureAvailability);
   sim.calibration = { kAdjHome: adj.h, kAdjAway: adj.a };
   return sim;
 }
-function runSim(params, N, seed, onProgress, adj, noAvail) {
+function runSim(params, N, seed, onProgress, adj, noAvail, captureAvailability = false) {
   const P = params.overridePriors ? { ...params.priors, ...params.overridePriors } : params.priors; const rnd = mulberry32(seed);
   let spare = null;
   const gauss = () => { if (spare !== null) { const s = spare; spare = null; return s; } let u, v, s; do { u = 2 * rnd() - 1; v = 2 * rnd() - 1; s = u * u + v * v; } while (s >= 1 || s === 0); const m = Math.sqrt(-2 * Math.log(s) / s); spare = v * m; return u * m; };
@@ -375,6 +375,11 @@ function runSim(params, N, seed, onProgress, adj, noAvail) {
   const tdist = () => { let c = 0; for (let i = 0; i < tdf; i++) { const z = gauss(); c += z * z; } return clamp(gauss() / Math.sqrt(c / tdf) * tScale, -4, 4); }; // V1.3: cap fat-tail shocks at ±4 SD (prevented rare <40-pt games)
   const awayPts = new Int16Array(N), homePts = new Int16Array(N), ots = new Uint8Array(N), possArr = new Float32Array(N);
   const H = params.home, A = params.away;
+  // Record the existing draws without consuming random numbers or changing the forecast.
+  const availabilityDraws = captureAvailability && !noAvail ? ['home', 'away'].flatMap(side =>
+    params[side === 'home' ? 'uncHome' : 'uncAway'].map(u => ({side, name:u.name, p:u.p, active:new Uint8Array(N)}))) : [];
+  const tracked = side => availabilityDraws.filter(x => x.side === side);
+  const trackedHome = tracked('home'), trackedAway = tracked('away');
 
   function team(base, kAdj, shootShock, threeShock, tovShock, orbShock, ftrShock) {
     const f = base.f;
@@ -396,17 +401,19 @@ function runSim(params, N, seed, onProgress, adj, noAvail) {
     }
     return pts;
   }
-  function availabilityShift(unc) { // returns [offLossPer100, defLossPer100]
+  function availabilityShift(unc, records, drawIndex) { // returns [offLossPer100, defLossPer100]
     let o = 0, d = 0;
-    for (const u of unc) {
-      if (rnd() >= u.p) { o += u.off; d += u.def; }
+    for (let j = 0; j < unc.length; j++) {
+      const u = unc[j], active = rnd() < u.p;
+      if (records[j]) records[j].active[drawIndex] = Number(active);
+      if (!active) { o += u.off; d += u.def; }
       else if (rnd() < P.restrictedProb && u.p < 0.9) { o += u.off * (1 - P.restrictedMinFrac); d += u.def * (1 - P.restrictedMinFrac); }
     }
     return [o, d];
   }
   const chunk = Math.max(1, Math.floor(N / 20));
   for (let i = 0; i < N; i++) {
-    const [hO, hD] = noAvail ? [0, 0] : availabilityShift(params.uncHome), [aO, aD] = noAvail ? [0, 0] : availabilityShift(params.uncAway);
+    const [hO, hD] = noAvail ? [0, 0] : availabilityShift(params.uncHome, trackedHome, i), [aO, aD] = noAvail ? [0, 0] : availabilityShift(params.uncAway, trackedAway, i);
     const kH = H.k + adj.h + (-hO + aD) / H.dppp, kA = A.k + adj.a + (-aO + hD) / A.dppp;
     const env = gauss() * P.envSD, whistle = gauss() * P.whistleSD;
     const th = team(H, kH, env + tdist() * P.shootSD, gauss() * P.threeSD, gauss() * P.tovSD, gauss() * P.orbSD, whistle + gauss() * P.ftrTeamSD);
@@ -449,7 +456,7 @@ function runSim(params, N, seed, onProgress, adj, noAvail) {
     awayPts[i] = as; homePts[i] = hs; ots[i] = ot; possArr[i] = n + ot * Math.round(n * 5 / 48);
     if (onProgress && i % chunk === 0) onProgress(i / N);
   }
-  return { awayPts, homePts, ots, possArr, N };
+  return { awayPts, homePts, ots, possArr, N, availabilityDraws };
 }
 
 // ---------------- Summaries (Section 11 metrics) ----------------

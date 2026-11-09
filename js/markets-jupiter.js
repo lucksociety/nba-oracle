@@ -14,7 +14,7 @@ export const JUP_BASE = 'https://api.jup.ag/prediction/v1';
 export const CALIBRATION_RESERVE = { moneyline: 0.001, spreads: 0.011, totals: 0.008 };
 export const confidenceOrder = (a, b) => (b.modelStressLower ?? b.modelProb) - (a.modelStressLower ?? a.modelProb)
   || (b.roi ?? -Infinity) - (a.roi ?? -Infinity);
-export const RULES = { selection: 'confidence-first-positive-stress-ev-v1', minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
+export const RULES = { selection: 'confidence-first-availability-stress-ev-v2', minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
 /** Shared V1.3 qualification test (both venues). Returns the list of failed rules (empty = qualifies). */
 export function scoreSupports(c, game) {
   const a = game?.final?.away, h = game?.final?.home;
@@ -25,6 +25,17 @@ export function scoreSupports(c, game) {
   if (c.type === 'totals') return c.side === 'over' ? a+h > c.line : c.side === 'under' ? a+h < c.line : false;
   return false;
 }
+// Conditional probabilities retain the original simulation mixture for every other player.
+// These are individual-player sensitivity checks, not all joint roster combinations.
+export function availabilityStress(bet, game) {
+  if (!Array.isArray(game.availabilityConditionals)) {
+    const uncertain = Object.values(game.availability || {}).flat().some(x => x.p > 0 && x.p < 1);
+    return uncertain ? [{name:'missing conditional availability forecast',sampleN:0,prob:NaN}] : [];
+  }
+  return game.availabilityConditionals.flatMap(g => ['in','out'].map(state => ({
+    name:g.name,side:g.side,state,sampleN:g[state].sims,prob:modelProb(bet,g[state])
+  })));
+}
 export function ruleFails(c, p) {
   // Numerical sampling error only; this is not a confidence interval for model accuracy.
   const n = c.sampleN;
@@ -33,8 +44,17 @@ export function ruleFails(c, p) {
   c.mcLower95 = lower;
   c.calibrationReserve = CALIBRATION_RESERVE[c.type] ?? Math.max(...Object.values(CALIBRATION_RESERVE));
   c.modelStressLower = lower - c.calibrationReserve;
+  const checks = c.availabilityChecks || [];
+  c.availabilityWorst = null;
+  for (const x of checks) {
+    const valid = Number.isInteger(x.sampleN) && x.sampleN >= 1000 && Number.isFinite(x.prob) && x.prob >= 0 && x.prob <= 1;
+    x.stressLower = valid ? x.prob - 1.96*Math.sqrt(x.prob*(1-x.prob)/x.sampleN) - c.calibrationReserve : -Infinity;
+    if (x.stressLower < c.modelStressLower || !Number.isFinite(x.stressLower)) {
+      c.modelStressLower = x.stressLower;c.availabilityWorst = {name:x.name,side:x.side,state:x.state};
+    }
+  }
   c.stressEV = c.cost > 0 ? c.modelStressLower / c.cost - 1 : null;
-  return [c.scoreConsistent === false && 'bet does not win at displayed predicted score', !(c.modelStressLower > RULES.minModelProb) && 'probability not above 50% after calibration stress',
+  return [checks.some(x => !(x.stressLower > RULES.minModelProb) || (c.cost != null && !(x.stressLower > c.cost))) && 'bet not robust to uncertain-player IN/OUT outcomes (or insufficient conditional sims)', c.scoreConsistent === false && 'bet does not win at displayed predicted score', !(c.modelStressLower > RULES.minModelProb) && 'probability not above 50% after calibration stress',
     c.cost != null && !(c.modelStressLower > c.cost) && 'EV does not survive historical calibration stress', !(lower > RULES.minModelProb) && 'probability not above 50% after Monte Carlo error',
     c.cost != null && !(lower > c.cost) && 'positive EV not resolved beyond Monte Carlo error', (!Number.isFinite(p) || p > 1) && 'invalid model probability', !(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
     c.cost != null && c.edge > 0 && !(c.edge >= RULES.minEdge) && `edge < ${RULES.minEdge * 100} pts minimum`,
@@ -138,6 +158,7 @@ export function evaluateGame(game, event) {
       impliedProb: ask || null, edge: cost == null ? null : p - cost, roi: cost ? p / cost - 1 : null, volume: m.pricing?.volume ?? null };
     c.twoSided = ask > 0 && ask < 1 && bid > 0 && bid <= ask && ask - bid <= RULES.maxBidAskSpread + 1e-9;
     c.scoreConsistent = scoreSupports(c, game);
+    c.availabilityChecks = availabilityStress(bet, game);
     c.ruleFails = ruleFails(c, p);
     c.qualifies = cost != null && c.twoSided && !c.ruleFails.length;
     res.candidates.push(c);
