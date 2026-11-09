@@ -30,4 +30,10 @@ class BetLearningTests(unittest.TestCase):
         group=next(iter(r['settled_by_model_and_market'].values()))
         self.assertEqual(group['wins'],0);self.assertEqual(group['flat_cost_roi'],-1)
         self.assertAlmostEqual(group['brier'],.36)
+    def test_selection_policies_not_pooled(self):
+        first=self.row(event='G1');later=self.row(event='G2')
+        later.pop('key');later['selection_policy']='availability-stress-v2';later['key']=b.digest(later)
+        report=b.evaluate(b.merge([first,later]),{'G1':{'scores':[124,118]},'G2':{'scores':[120,124]}})
+        self.assertEqual(len(report['settled_by_model_and_market']),2)
+
 if __name__=='__main__':unittest.main()

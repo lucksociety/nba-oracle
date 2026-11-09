@@ -14,10 +14,10 @@ def read(path,default):
     try:return json.loads(path.read_text())
     except FileNotFoundError:return default
 
-def make_record(event,start,model,bet,source,at):
+def make_record(event,start,model,bet,source,at,selection_policy='sensitivity-confidence-v1'):
     st=ml.timestamp(start); posted=ml.timestamp(at)
     if not st or not posted or posted>=st:return None
-    r={'event_id':str(event),'start':st.isoformat(),'posted_at':posted.isoformat(),'model':model,'selection_policy':'sensitivity-confidence-v1','bet':bet,'source':source}
+    r={'event_id':str(event),'start':st.isoformat(),'posted_at':posted.isoformat(),'model':model,'selection_policy':selection_policy,'bet':bet,'source':source}
     if bet:
         if (not math.isfinite(bet['probability']) or not .5<bet['probability']<=1
             or not math.isfinite(bet['cost']) or not 0<bet['cost']<bet['probability']):raise ValueError('Invalid posted recommendation')
@@ -25,8 +25,8 @@ def make_record(event,start,model,bet,source,at):
 
 def capture(root,project,at,source):
     out=[]
-    def add(event,start,model,bet):
-        r=make_record(event,start,model,bet,source,at)
+    def add(event,start,model,bet,policy='sensitivity-confidence-v1'):
+        r=make_record(event,start,model,bet,source,at,policy)
         if r:out.append(r)
     if project=='nba-oracle':
         p=read(root/'out/predictions.json',{});b=read(root/'out/bets.json',{})
@@ -35,7 +35,7 @@ def capture(root,project,at,source):
         for g in p.get('games',[]):
             x=bg.get(str(g['id']),{}).get('best') if fresh else None
             bet=None if not x else {'type':x['type'],'index':0 if x['side']=='home' else 1,'side':x['side'],'line':x.get('line'),'label':x['label'],'probability':x['modelProb'],'selection_probability':x.get('modelStressLower'),'cost':x['cost']}
-            add(g['id'],g['tip'],p['modelVersion'],bet)
+            add(g['id'],g['tip'],p['modelVersion'],bet,b.get('rules',{}).get('selection','unversioned'))
     elif project=='nhl-score-predictor':
         date=os.environ.get('SLATE_DATE') or ml.timestamp(at).astimezone(__import__('zoneinfo').ZoneInfo('America/New_York')).date().isoformat()
         p=read(root/f'data/predictions/{date}.json',{})
