@@ -27,9 +27,9 @@
     }
   },
   "forecast_policy": "Last pre-game freeze per event per model version. No retrospectively generated forecast is graded.",
-  "forecasts": 495,
-  "generated_at": "2026-11-09T21:38:36.962319+00:00",
-  "last_successful_refresh": "2026-11-09T20:26:40+00:00",
+  "forecasts": 517,
+  "generated_at": "2026-11-10T18:51:31.529561+00:00",
+  "last_successful_refresh": "2026-11-10T18:22:18+00:00",
   "project": "nba-oracle",
   "settled_by_version": {
     "NBA ORACLE V1.2 (web build 1.2.1)": {
@@ -73,14 +73,14 @@
       "winner_accuracy": 0.7
     },
     "NBA ORACLE V1.3.3 (regulation endgame correction)": {
-      "brier_multiclass_sum": 0.26831984680355553,
-      "log_loss": 0.4358043157651602,
-      "margin_mae": 10.725913066666665,
-      "n": 25,
-      "score_mae_per_team": 9.372312533333332,
-      "score_n": 25,
-      "total_mae": 14.489325066666668,
-      "winner_accuracy": 0.92
+      "brier_multiclass_sum": 0.2872366724814815,
+      "log_loss": 0.456713947223697,
+      "margin_mae": 11.65345414141414,
+      "n": 33,
+      "score_mae_per_team": 9.417627676767676,
+      "score_n": 33,
+      "total_mae": 13.866156161616162,
+      "winner_accuracy": 0.8787878787878788
     }
   },
   "warnings": []
