@@ -1,5 +1,6 @@
 // Orchestration shared by the browser app and the Node end-to-end test.
 import { sanitizeScoreboard, sanitizeInjuries, sanitizeLineups, assertNoMarketData } from './firewall.js';
+import {validateInjuryFeed,validateScoreboard,validateLineupFeed} from './live-inputs.js';
 import { NBA_LINEUPS_URL } from './lineups.js';
 import { buildModel, prepareGame, replacementRates, MODEL_VERSION } from './engine.js';
 
@@ -10,9 +11,9 @@ const etDateOf = iso => new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Ne
 
 /** Load repo data (built by GitHub Actions) + live ESPN schedule/injuries (falls back to repo snapshot). */
 /** espnSources: ordered list of {base, label}; the first that answers wins (e.g. Worker proxy, then direct ESPN). */
-async function getLive(getJSON, espnSources, path) {
+async function getLive(getJSON, espnSources, path, validate=x=>x) {
   let lastErr;
-  for (const s of espnSources) { try { return { raw: await getJSON(`${s.base}/${path}`), label: s.label }; } catch (e) { lastErr = e; } }
+  for (const s of espnSources) { try { return { raw: validate(await getJSON(`${s.base}/${path}`)), label: s.label }; } catch (e) { lastErr = e; } }
   throw lastErr || new Error('no live source');
 }
 /** lineupSources: ordered list of {url: ymd => url, label} for NBA.com's official daily lineups file. */
@@ -22,27 +23,31 @@ export async function loadInputs(date, getJSON, dataBase, espnSources = [{ base:
   const [meta, cal, teams, snapshot] = await Promise.all(['meta', 'calibration', 'teams', 'snapshot'].map(f => getJSON(`${dataBase}/${f}.json${bust}`)));
   const [gamesCurrent, gamesPrior, playersCurrent, playersPrior] = await Promise.all([
     `games-${meta.currentSeason}`, `games-${meta.priorSeason}`, `players-${meta.currentSeason}`, `players-${meta.priorSeason}`].map(f => getJSON(`${dataBase}/${f}.json${bust}`)));
-  const sources = []; const schedule = {}; let injuries = null; let live = true; let injuriesLive = true;
+  const sources = []; const schedule = {}; let injuries = null; let live = true; let injuriesLive = true; let scheduleLive = true;
   for (const k of [0, -1, -2, -3]) {
     const d = shiftDate(date, k);
     try {
-      const { raw, label } = await getLive(getJSON, espnSources, `scoreboard?dates=${d.replaceAll('-', '')}`);
+      const { raw, label } = await getLive(getJSON, espnSources, `scoreboard?dates=${d.replaceAll('-', '')}`, raw=>{
+        validateScoreboard(raw);
+        if(k===0 && !raw.events.length && snapshot.schedule?.[d]?.length)throw new Error("empty live schedule conflicts with saved fixtures");
+        return raw;
+      });
       schedule[d] = sanitizeScoreboard(raw); // odds etc. stripped here, unread
       if (k === 0) sources.push({ what: `Schedule ${d}`, src: `ESPN scoreboard — ${label}`, at: new Date().toISOString() });
     } catch (e) {
-      live = false;
+      live = false; if(k===0)scheduleLive=false;
       schedule[d] = snapshot.schedule[d] || [];
       if (k === 0) sources.push({ what: `Schedule ${d}`, src: `Repo snapshot, refreshed ~every 30 min by GitHub Actions (live fetch failed: ${e.message})`, at: snapshot.fetchedAt });
     }
   }
-  try { const { raw, label } = await getLive(getJSON, espnSources, 'injuries'); injuries = sanitizeInjuries(raw); sources.push({ what: 'Injury report', src: `ESPN injuries — ${label}`, at: injuries.timestamp || new Date().toISOString() }); }
+  try { const { raw, label } = await getLive(getJSON, espnSources, 'injuries', validateInjuryFeed); injuries = sanitizeInjuries(raw); sources.push({ what: 'Injury report', src: `ESPN injuries — ${label}`, at: injuries.timestamp || new Date().toISOString() }); }
   catch (e) { injuriesLive = false; injuries = snapshot.injuries; sources.push({ what: 'Injury report', src: `Repo snapshot, refreshed ~every 30 min (live fetch failed: ${e.message})`, at: snapshot.injuries?.timestamp || snapshot.fetchedAt }); }
   // Official starting lineups for the requested date (only used when the injury report is applied, i.e. today/future).
   let lineups = null;
   if (date >= etToday()) {
     const ymd = date.replaceAll('-', ''); const errs = [];
     for (const s of lineupSources) {
-      try { const raw = await getJSON(s.url(ymd)); lineups = sanitizeLineups(raw); lineups.source = `NBA.com official daily lineups — ${s.label}`; break; }
+      try { const raw = await getJSON(s.url(ymd)); lineups = sanitizeLineups(validateLineupFeed(raw)); lineups.source = `NBA.com official daily lineups — ${s.label}`; break; }
       catch (e) { errs.push(`${s.label}: ${e.message}`); }
     }
     if (!lineups && snapshot.lineups?.date === date) { lineups = snapshot.lineups.data; lineups.source = 'NBA.com official daily lineups — repo snapshot (~30 min)'; }
@@ -56,7 +61,7 @@ export async function loadInputs(date, getJSON, dataBase, espnSources = [{ base:
   sources.push({ what: 'Historical calibration (HCA, B2B, margin/total SD)', src: `Fitted on ${cal.sampleGames} ${cal.season - 1}-${String(cal.season).slice(2)} final scores`, at: meta.builtAt });
   const data = { meta, calibration: cal, teams, gamesCurrent, gamesPrior, playersCurrent, playersPrior };
   assertNoMarketData({ schedule, injuries, lineups });
-  return { data, schedule, injuries, lineups, sources, live, availabilityRefresh: {checkedAt:new Date().toISOString(), injuriesLive, lineupsLive:!!lineups && !String(lineups.source).includes("snapshot")} };
+  return { data, schedule, injuries, lineups, sources, live, availabilityRefresh: {checkedAt:new Date().toISOString(), injuriesLive, injuryReportAt:injuries?.timestamp || null, scheduleLive, lineupsLive:!!lineups && !String(lineups.source).includes("snapshot")} };
 }
 
 /** Finals visible in the result feed but absent from the fitted regular-season history.
