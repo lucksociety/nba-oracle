@@ -23,7 +23,8 @@ export const canonical = (o) => JSON.stringify(o);
 const t0 = Date.now();
 // Lineups: NBA.com directly, then via our Cloudflare Worker in case stats.nba.com refuses the runner's IP.
 const LINEUP_PROXY = process.env.LINEUP_PROXY || 'https://nba-oracle-discord.dreiss324.workers.dev/nba/lineups';
-const inputs = await loadInputs(date, getJSON, 'data', undefined, [...DIRECT_LINEUPS, { url: ymd => `${LINEUP_PROXY}/${ymd}`, label: 'via NBA Oracle Cloudflare proxy' }]);
+const ESPN_PROXY=process.env.ESPN_PROXY || 'https://nba-oracle-discord.dreiss324.workers.dev/espn';
+const inputs = await loadInputs(date, getJSON, 'data', [{base:ESPN,label:'direct'},{base:ESPN_PROXY,label:'via NBA Oracle Cloudflare proxy'}], [...DIRECT_LINEUPS, { url: ymd => `${LINEUP_PROXY}/${ymd}`, label: 'via NBA Oracle Cloudflare proxy' }]);
 // Preserve exactly the sanitized basketball inputs used for prospective replay.
 // These never contain market data or credentials; comparison runs in a later process.
 assertNoMarketData(inputs);

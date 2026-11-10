@@ -1,0 +1,21 @@
+# NBA November 10 readiness and scoring-miss review
+
+The November 9 final Discord card was 5–1. That small sample does not identify new scoring coefficients or demonstrate a sustainable hit rate. IND–DAL Under 233.5 lost with 247 points versus the frozen 223.76-point mean; the existing 80% total interval was 200–248. The outcome was near the high end but inside the predicted interval. Official box scores show 29/69 combined threes (42.0%), 62 free-throw attempts and approximately 104.6 possessions versus the model's 103.0 pace. These observations suggest shooting/free-throw variation contributed more than an unexpectedly fast game; they are not a causal decomposition. One expected Indiana starter changed: Braden Smith started instead of Kelly Oubre Jr. The pregame model labelled those lineups expected, not confirmed. No arbitrary scoring/variance or player penalties are fitted to this one loss. Prior chronological tuning candidates remain rejected.
+
+## Concrete fixes
+
+A JSON error payload or a stale injury-report response could previously be marked `injuriesLive=true`: the sanitizer defaults missing lists to empty. Validate schema/status, team/player structure and the source report timestamp before accepting a live refresh. Require the report to be no more than 30 minutes old (with at most one minute future clock tolerance). This is an operational source-freshness rule, not a fitted betting threshold. Recheck the report age again when comparing prices.
+
+Try the existing official-ESPN Cloudflare proxy if the direct source errors or fails validation. Both routes bypass caches on explicit command refresh. Invalid NBA lineup responses likewise try the next source. Do not mislabel invalid feeds as an injury-free league or a lineup with no missing players.
+
+Validate scoreboard structure; if the current-date response is empty despite saved fixtures, try the next official source and then retain saved forecasts with `scheduleLive=false`. Withhold recommendations until the current schedule is verified. A genuinely empty slate with no saved fixtures remains valid. Failures fetching older schedule dates do not falsely claim that today's live schedule is missing.
+
+Keep forecasts visible when inputs fall back, but suppress primary and alternative bets when live injury/schedule verification fails. Suppress alternatives for games already started, fixing a path where the best bet was cleared but qualifying alternatives could remain visible. Existing >50% probability, after-fee EV, displayed-score consistency, execution depth, uncertainty/calibration and pregame guards remain.
+
+## Live preparation
+
+All eight November 9 finals are in the 154-game current-season training history. November 10's six official scheduled games were refreshed, simulated with 300,000 draws each and compared to prices after hash-verified freezing. Injury and schedule validation passed. NBA.com had expected lineups for all twelve teams, with no confirmed teams at preparation time; five matchups were PROBABLE and MIA–UTAH remained UNCERTAIN due to modeled availability swing. No confirmation is invented. Every later command repeats the fresh data/context/simulation protocol. The early afternoon price screen is not a persistent pick or executable quote for tonight.
+
+Full dry-run report generation succeeded without posting to Discord. Readiness artifacts retain raw official schedule/injury/IND–DAL box-score responses, logs and sanitized frozen inputs/predictions. No new delivered-bet records were created from the dry-run.
+
+Validation: all model `.test.mjs` files, both Discord routing/auto tests, prospective model/bet learning and evergreen regressions. New tests exercise valid-HTTP malformed JSON feeds, stale/future/missing timestamps, malformed team rows, official proxy fallback, lineup fallback, saved-forecast/no-bet behavior, genuine empty dates and source aging between prediction and comparison. Fixed simulator coefficients and random draws are unchanged by these input-validation changes.

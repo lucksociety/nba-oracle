@@ -5,6 +5,7 @@
 // and order-book liquidity), evaluates every full-game line, and writes out/bets.json. Never writes to predictions.
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
+import {inputBetBlock} from '../js/live-inputs.js';
 import { verifyExecutionLiquidity } from '../js/execution-liquidity.js';
 import { fetchNbaEvents, matchEvent, RULES, JUP_BASE } from '../js/markets-jupiter.js';
 import { GAMMA, CLOB, fetchGammaEventBySlug, fetchGammaNbaGames, adaptGammaEvent, fetchBooks, evaluateCombined } from '../js/markets-polymarket.js';
@@ -64,9 +65,10 @@ for (const g of pred.games) {
   r.blockedDirections = [...blockedDirs];
   const tipPassed = !Number.isFinite(Date.parse(g.tip)) || Date.now() >= Date.parse(g.tip);
   r.started = g.status?.state !== 'pre' || tipPassed; r.best = null;
-  const availabilityFailed = pred.availabilityRefresh?.injuriesLive === false;
+  const inputBlock = inputBetBlock(pred);
+  const availabilityFailed = !!inputBlock;
   for (const c of r.candidates) if (c.jupiter && c.polymarket) priceDiffs.push({ d: c.jupiter.ask - c.polymarket.ask, game: r.matchup, label: c.label });
-  if (availabilityFailed) r.noBetReason = 'Live injury refresh failed — rerun when availability can be verified';
+  if (availabilityFailed) r.noBetReason = inputBlock;
   else if (tipPassed) r.noBetReason = 'Scheduled tip has passed or is unavailable — pregame forecast is not valid for live markets';
   else if (r.started) r.noBetReason = `Game ${g.status?.state === 'post' ? 'final' : 'in progress'} at prediction time — pregame model not valid for live markets`;
   else if (!jEv && !gEv) r.noBetReason = `No NBA markets found on Jupiter${jError ? ` (API error: ${jError})` : ''} or Polymarket${pError ? ` (API error: ${pError})` : ''}`;
@@ -92,7 +94,7 @@ for (const g of pred.games) {
     }
   }
   // top 3 alternatives (after the best) among >50% lines, ranked by edge — for sanity checks
-  r.alternatives = (availabilityFailed ? [] : r.candidates).filter(c => c !== r.best && c.qualifies && c.modelProb > RULES.minModelProb && c.roi > 0).slice(0, 3);
+  r.alternatives = (availabilityFailed || r.started ? [] : r.candidates).filter(c => c !== r.best && c.qualifies && c.modelProb > RULES.minModelProb && c.roi > 0).slice(0, 3);
   r.candidatesTotal = r.candidates.length;
   r.candidates = r.candidates.filter(c => c.cost != null && c.twoSided).slice(0, 8); // keep output compact
   games.push(r);
