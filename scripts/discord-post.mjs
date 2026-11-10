@@ -4,6 +4,7 @@
 // interaction token is supplied; (2) otherwise, or if the interaction token fails/expires (15 min), the channel
 // webhook in DISCORD_WEBHOOK_URL. DRY_RUN=1 prints the payloads instead of sending.
 import fs from 'node:fs/promises';
+import {inputBetBlock} from '../js/live-inputs.js';
 import { RULES, scoreSupports } from '../js/markets-jupiter.js';
 
 const ROOT = new URL('../', import.meta.url);
@@ -18,6 +19,11 @@ const tipET = (iso) => new Intl.DateTimeFormat('en-US', { timeZone: 'America/New
 const betOf = (g) => {
   const b = bets?.games.find(b => b.gameId === g.id);
   if (!b) return b;
+  const now=Date.now(),tip=Date.parse(g.tip),priced=Date.parse(bets?.fetchedAt);
+  const blocked=inputBetBlock(pred,now) || (g.status?.state!=='pre'||!Number.isFinite(tip)||now>=tip
+    ? 'Kickoff passed or game is not pregame — no new bet'
+    : !Number.isFinite(priced)||priced>now||now-priced>300000 ? 'Quote missing, future-dated or older than five minutes — rerun' : null);
+  if(blocked)return {...b,best:null,alternatives:[],noBetReason:blocked};
   return { ...b, best: b.best && scoreSupports(b.best, g) ? b.best : null,
     alternatives: (b.alternatives || []).filter(c => scoreSupports(c, g)),
     noBetReason: b.best && !scoreSupports(b.best, g) ? 'bet does not win at displayed predicted score' : b.noBetReason };
@@ -91,7 +97,7 @@ export function buildMessages() {
 
 async function send(url, method, payload) {
   for (let i = 0; i < 4; i++) {
-    const r = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    const r = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(typeof payload === 'function' ? payload() : payload) });
     if (r.ok) return true;
     if (r.status === 429) { const j = await r.json().catch(() => ({})); await new Promise(res => setTimeout(res, 1000 * (j.retry_after || 1) + 200)); continue; }
     const t = await r.text(); throw new Error(`Discord ${method} -> ${r.status}: ${t.slice(0, 200)}`);
@@ -106,13 +112,13 @@ let delivered = false;
 if (appId && itok) {
   try {
     const base = `https://discord.com/api/v10/webhooks/${appId}/${itok}`;
-    await send(`${base}/messages/@original`, 'PATCH', msgs[0]);
-    for (const m of msgs.slice(1)) await send(base, 'POST', m);
+    await send(`${base}/messages/@original`, 'PATCH', () => buildMessages()[0]);
+    for (let i=1;i<msgs.length;i++) await send(base, 'POST', () => buildMessages()[i]);
     delivered = true; console.log(`[discord] delivered ${msgs.length} message(s) via interaction follow-up`);
   } catch (e) { console.log(`[discord] interaction delivery failed (${e.message}); falling back to channel webhook`); }
 }
 if (!delivered) {
   if (!hook) throw new Error('No delivery route: interaction token missing/expired and DISCORD_WEBHOOK_URL not set');
-  for (const m of msgs) await send(hook + (hook.includes('?') ? '&' : '?') + 'wait=true', 'POST', { ...m, username: 'NBA Oracle' });
+  for (let i=0;i<msgs.length;i++) await send(hook + (hook.includes('?') ? '&' : '?') + 'wait=true', 'POST', () => ({ ...buildMessages()[i], username: 'NBA Oracle' }));
   console.log(`[discord] delivered ${msgs.length} message(s) via channel webhook`);
 }

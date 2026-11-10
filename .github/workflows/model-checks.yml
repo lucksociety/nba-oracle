@@ -26,6 +26,7 @@ jobs:
           node test/score-consistency.test.mjs
           node test/live-refresh.test.mjs
           node test/input-validation.test.mjs
+          node test/delivery-freshness.test.mjs
           node test/endgame.test.mjs
           node test/firewall.test.mjs
           node discord/test-worker.mjs
