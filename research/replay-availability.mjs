@@ -7,7 +7,7 @@ import crypto from 'node:crypto';
 import {prepareSlate} from '../js/pipeline.js';
 import {simulate} from '../js/engine.js';
 import {outcomeHistograms} from '../js/outcome-histograms.js';
-import {availabilityStress,ruleFails} from '../js/markets-jupiter.js';
+import {feePerContract,availabilityStress,ruleFails} from '../js/markets-jupiter.js';
 const root=process.argv[2];
 const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
 for(const stem of ['predictions','model-inputs'])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,stem+'.json'))).digest('hex'),fs.readFileSync(path.join(root,stem+'.sha256'),'utf8').trim());
@@ -21,8 +21,9 @@ for(const game of predictions.games){
  const b=bets.games.find(g=>g.gameId===game.id || g.id===game.id)?.best;
  if(!b)continue;
  const contract=b.type==='totals'?{totalWins:t=>b.side==='over'?t>b.line:t<b.line}:{wins:m=>b.type==='moneyline'?(b.side==='home'?m>0:m<0):(b.side==='home'?m+b.line>0:-m+b.line>0)};
- const candidate={...b,availabilityChecks:availabilityStress(contract,h)};
+ const fee=b.venue==='Jupiter'?feePerContract(b.ask):b.fee;
+ const candidate={...b,fee,cost:b.ask+fee,edge:b.modelProb-b.ask-fee,availabilityChecks:availabilityStress(contract,h)};
  const failures=ruleFails(candidate,b.modelProb);
- rows.push({id:game.id,label:b.label,originalProbability:b.modelProb,availabilityChecks:candidate.availabilityChecks,newStressLower:candidate.modelStressLower,qualifies:!failures.length,failures});
+ rows.push({id:game.id,label:b.label,originalProbability:b.modelProb,availabilityChecks:candidate.availabilityChecks,newStressLower:candidate.modelStressLower,quoteStressEV:candidate.quoteStressEV,jointStates:h.availabilityJoint.scenarios.length,qualifies:!failures.length,failures});
 }
 console.log(JSON.stringify({date:predictions.date,protocol:'Original pregame inputs and seeds; exact unchanged base histograms asserted. Retrospective diagnostic, not a holdout or profitability claim.',rows},null,2));

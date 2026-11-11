@@ -84,6 +84,23 @@ def settle(b,scores):
     if v==0:return None # Push/void is not a loss or a win.
     return (v<0) if b.get('negated') else (v>0)
 
+def direction_metrics(rows):
+    """Keep over/under reliability separate, without changing probabilities from a small sample."""
+    groups={}
+    for record,bet,y in rows:
+        side=bet.get('side') or 'unspecified'
+        groups.setdefault(side,[]).append((record,bet,y))
+    return {side:{'n':len(xs),'wins':sum(y for r,b,y in xs),
+                  'win_rate':statistics.mean(y for r,b,y in xs),
+                  'mean_probability':statistics.mean(b['probability'] for r,b,y in xs),
+                  'brier':statistics.mean((b['probability']-y)**2 for r,b,y in xs),
+                  'flat_cost_roi':statistics.mean(y/b['cost']-1 for r,b,y in xs),
+                  'calibration_proposal':ml.calibration_proposal([
+                      {'start':r['start'],'probabilities':[b['probability'],1-b['probability']],
+                       'observed':0 if y else 1} for r,b,y in xs])}
+            for side,xs in sorted(groups.items())}
+
+
 def evaluate(rows,outcomes):
     chosen={}
     # A later NO BET supersedes an earlier bet, even when the contract/model version changed.
@@ -101,7 +118,7 @@ def evaluate(rows,outcomes):
         for lo,hi in ((.5,.6),(.6,.7),(.7,.8),(.8,.9),(.9,1.000001)):
             xs=[(b,y) for r,b,y in rs if lo<b['probability']<=hi]
             if xs:bins.append({'lower_exclusive':lo,'upper_inclusive':min(hi,1),'n':len(xs),'mean_probability':statistics.mean(b['probability'] for b,y in xs),'win_rate':statistics.mean(y for b,y in xs)})
-        report[model+' / '+policy+' / '+kind]={'n':n,'wins':sum(y for r,b,y in rs),'win_rate':statistics.mean(y for r,b,y in rs),'mean_probability':statistics.mean(b['probability'] for r,b,y in rs),'brier':statistics.mean((b['probability']-y)**2 for r,b,y in rs),'log_loss':statistics.mean(-math.log(max(1e-12,b['probability'] if y else 1-b['probability'])) for r,b,y in rs),'flat_cost_roi':statistics.mean(y/b['cost']-1 for r,b,y in rs),'reliability':bins,'calibration_status':'monitor_only_no_automatic_probability_changes','calibration_proposal':ml.calibration_proposal([{'start':r['start'],'probabilities':[b['probability'],1-b['probability']],'observed':0 if y else 1} for r,b,y in rs])}
+        report[model+' / '+policy+' / '+kind]={'by_direction':direction_metrics(rs),'n':n,'wins':sum(y for r,b,y in rs),'win_rate':statistics.mean(y for r,b,y in rs),'mean_probability':statistics.mean(b['probability'] for r,b,y in rs),'brier':statistics.mean((b['probability']-y)**2 for r,b,y in rs),'log_loss':statistics.mean(-math.log(max(1e-12,b['probability'] if y else 1-b['probability'])) for r,b,y in rs),'flat_cost_roi':statistics.mean(y/b['cost']-1 for r,b,y in rs),'reliability':bins,'calibration_status':'monitor_only_no_automatic_probability_changes','calibration_proposal':ml.calibration_proposal([{'start':r['start'],'probabilities':[b['probability'],1-b['probability']],'observed':0 if y else 1} for r,b,y in rs])}
     return {'settled_by_model_and_market':report,'pending_or_ungradable':pending,'policy':'Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.'}
 
 def collect(state):

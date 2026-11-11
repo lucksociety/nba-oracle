@@ -105,7 +105,7 @@ const priceComparison = { pairs: priceDiffs.length, identical: ad.filter(x => x 
 const out = { stage: 'comparison', predictionsSha256: sha, date: pred.date, fetchedAt,
   sources: { jupiter: `${JUP_BASE} (keyless=${!process.env.JUPITER_API_KEY})`, polymarketGamma: GAMMA, polymarketClob: CLOB },
   jupiterEventsSeen: jEvents.length, error: jError && pError ? `${jError}; ${pError}` : null, jupiterError: jError, polymarketError: pError, rules: RULES,
-  feeModel: { jupiter: 'ceil-to-cent(0.07 x C x p x (1-p)) — Jupiter published fee table', polymarket: 'C x rate x (p(1-p))^exponent from each market feeSchedule (CLOB fd); NBA game markets currently rate 0 ("zero_fees"); 0.05 sports default if absent' },
+  feeModel: { jupiter: 'Conservative whole-contract fee allowance: ceil-cent(0.07 x p x (1-p)); actual order fee depends on size', polymarket: 'C x rate x (p(1-p))^exponent from each market feeSchedule (CLOB fd); explicit market rates including zero are respected; 0.05 sports default if absent' },
   pricing: 'Edge uses the Jupiter ask + fee, with depth verified on Jupiter at that exact ask. Polymarket fallback uses its own CLOB quote and depth.',
   priceComparison, games };
 await fs.writeFile(new URL('out/bets.json', ROOT), JSON.stringify(out, null, 1));
