@@ -265,8 +265,8 @@
       }
     }
   },
-  "pending_or_ungradable": 0,
+  "pending_or_ungradable": 5,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-11T15:40:34.616893+00:00",
-  "records": 49
+  "generated_at": "2026-11-11T18:53:09.260377+00:00",
+  "records": 59
 }
