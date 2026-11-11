@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {selectionAudit,candidatePreview} from './selection-audit.mjs';
+const rejected=Array.from({length:20},(_,i)=>({marketId:String(i),venue:'Jupiter',label:'Tail '+i,cost:.99,twoSided:true,modelProb:.95,scoreConsistent:true,edge:-.04,qualifies:false,fails:['negative EV']}));
+const best={marketId:'best',venue:'Jupiter',label:'Primary',cost:.6,twoSided:true,modelProb:.7,edge:.1,scoreConsistent:true,qualifies:true,fails:[]};
+const r={candidates:[...rejected,best],best,alternatives:[]};
+const audit=selectionAudit(r);assert.equal(audit.status,'BET');assert.equal(audit.contracts,21);assert.equal(audit.qualifying,1);assert.equal(audit.rejections['negative EV'],20);
+const preview=candidatePreview(r);assert.equal(preview.length,8);assert.equal(preview[0],best);
+assert.equal(selectionAudit({...r,best:null},{inputBlocked:true}).status,'INPUT_BLOCKED');
+assert.equal(selectionAudit({candidates:[]},{hasMarket:false}).status,'NO_MARKET');
+assert.equal(selectionAudit({candidates:[{cost:null}]}).status,'PRICE_UNAVAILABLE');
+console.log('NBA full selection funnel and primary-preserving diagnostic preview: passed');
