@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import {selectionAudit,candidatePreview} from './selection-audit.mjs';
 // STAGE 2 — runs only AFTER scripts/predict.mjs has frozen out/predictions.json.
 // Verifies the SHA-256 of the frozen predictions, deep-freezes them in memory, then fetches prices from
 // Jupiter prediction markets (where bets are placed) and Polymarket (Gamma + CLOB: second price source, fallback,
@@ -96,7 +97,8 @@ for (const g of pred.games) {
   // top 3 alternatives (after the best) among >50% lines, ranked by edge — for sanity checks
   r.alternatives = (availabilityFailed || r.started ? [] : r.candidates).filter(c => c !== r.best && c.qualifies && c.modelProb > RULES.minModelProb && c.roi > 0).slice(0, 3);
   r.candidatesTotal = r.candidates.length;
-  r.candidates = r.candidates.filter(c => c.cost != null && c.twoSided).slice(0, 8); // keep output compact
+  r.assessment=selectionAudit(r,{inputBlocked:availabilityFailed,hasMarket:!!(r.jupiterEventId||r.polymarketEventId)});
+  r.candidates=candidatePreview(r); // Preserve the primary and meaningful near-misses in compact artifacts.
   games.push(r);
 }
 const ad = priceDiffs.map(x => Math.abs(x.d));
