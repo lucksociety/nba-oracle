@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {ruleFails,feePerContract} from '../js/markets-jupiter.js';
+import {fetchBooks} from '../js/markets-polymarket.js';
+assert.equal(feePerContract(.58),.02);
+const fragile={type:'totals',sampleN:300000,venue:'Jupiter',ask:.58,cost:.60,edge:.04253,availabilityChecks:[{sampleN:45116,prob:.6141058604486214}]};
+assert(ruleFails(fragile,.64253).some(x=>x.includes('one-cent')));
+assert(fragile.modelStressLower>fragile.cost,'old zero-buffer EV still positive');
+assert(fragile.quoteStressEV<0);
+const robust={type:'totals',sampleN:300000,venue:'Jupiter',ask:.57,cost:.59,edge:.028113333333,availabilityChecks:[{sampleN:134969,prob:.6132889774689003}]};
+ruleFails(robust,.618113333333);assert(robust.quoteStressEV>0,'do not claim this safeguard fixes the Orlando loss');
+const poly={type:'totals',sampleN:300000,venue:'Polymarket',ask:.55,cost:.55,edge:.05,polymarket:{feeRate:0,feeExponent:1}};
+assert.equal(ruleFails(poly,.60).length,0);assert.equal(poly.quoteStressCost,.56,'fee-free Polymarket stress stays fee-free');
+const books=await fetchBooks(async()=>[{asset_id:'x',asks:[{price:'.55',size:'2'},{price:'.56',size:'100'}],bids:[{price:'.54',size:'10'}],min_order_size:'5'}],['x']);
+assert.equal(books.get('x').depthAtAsk,2,'higher-priced depth cannot validate a cheaper quote');
+console.log('Fee allowance, one-cent stress, venue fee schedule and exact-price CLOB depth passed');

@@ -30,6 +30,19 @@ class BetLearningTests(unittest.TestCase):
         group=next(iter(r['settled_by_model_and_market'].values()))
         self.assertEqual(group['wins'],0);self.assertEqual(group['flat_cost_roi'],-1)
         self.assertAlmostEqual(group['brier'],.36)
+    def test_over_and_under_calibration_are_separate(self):
+        def total(event,side):
+            return b.make_record(event,'2026-11-07T03:00:00Z','model',
+                {'type':'totals','index':0,'side':side,'line':220.5,'label':side+' 220.5','probability':.65,'cost':.6},
+                'verified-run','2026-11-06T20:00:00Z')
+        rs=[total('G1','over'),total('G2','under')]
+        report=b.evaluate(b.merge(rs),{'G1':{'scores':[100,100]},'G2':{'scores':[100,100]}})
+        group=next(iter(report['settled_by_model_and_market'].values()))
+        self.assertEqual(group['wins'],1)
+        self.assertEqual(group['by_direction']['over']['wins'],0)
+        self.assertEqual(group['by_direction']['under']['wins'],1)
+        self.assertEqual(group['by_direction']['over']['calibration_proposal']['status'],'insufficient_forward_sample')
+
     def test_selection_policies_not_pooled(self):
         first=self.row(event='G1');later=self.row(event='G2')
         later.pop('key');later['selection_policy']='availability-stress-v2';later['key']=b.digest(later)

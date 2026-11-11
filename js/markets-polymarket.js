@@ -18,8 +18,7 @@ const TYPES = ['moneyline', 'spreads', 'totals'];
 const jparse = (s, d) => { try { return typeof s === 'string' ? JSON.parse(s) : (s ?? d); } catch { return d; } };
 
 /** Polymarket documented fee: fee = C x rate x (p(1-p))^exponent, taker only; rate/exponent are per market
- *  (Gamma feeSchedule, CLOB clob-markets fd). Sports default is rate 0.05, but NBA game markets currently carry
- *  feeType "zero_fees" / rate 0. If a market exposes no schedule we assume the documented sports rate (0.05). */
+ *  (Gamma feeSchedule, CLOB clob-markets fd). Sports fallback is rate 0.05; explicit market schedules override it. If a market exposes no schedule we assume the documented sports rate (0.05). */
 export function polyFee(p, sched) {
   const rate = sched && sched.rate != null ? Number(sched.rate) : 0.05; const e = sched && sched.exponent != null ? Number(sched.exponent) : 1;
   return rate * Math.pow(p * (1 - p), e);
@@ -54,7 +53,7 @@ export async function fetchBooks(postJSON, tokenIds) {
       const asks = (b.asks || []).map(x => [Number(x.price), Number(x.size)]).filter(x => x[1] > 0);
       const bids = (b.bids || []).map(x => [Number(x.price), Number(x.size)]).filter(x => x[1] > 0);
       const bestAsk = asks.length ? Math.min(...asks.map(x => x[0])) : null; const bestBid = bids.length ? Math.max(...bids.map(x => x[0])) : null;
-      const depthAtAsk = bestAsk == null ? 0 : asks.filter(x => x[0] <= bestAsk + 0.01 + 1e-9).reduce((s, x) => s + x[1], 0);
+      const depthAtAsk = bestAsk == null ? 0 : asks.filter(x => x[0] <= bestAsk + 1e-9).reduce((s, x) => s + x[1], 0);
       res.set(b.asset_id, { bestAsk, bestBid, depthAtAsk, minOrder: Number(b.min_order_size) || null });
     }
   }
@@ -70,7 +69,7 @@ const venueQuote = (ask, bid, fee) => {
  * Evaluate EVERY full-game line for one game — moneyline both sides, every (alternate) spread both sides, every
  * (alternate) total over and under — on the union of Jupiter and Polymarket markets, joined by Polymarket market id.
  * Recommendation price = Jupiter executable ask + Jupiter fee (where the user bets); Polymarket ask + Polymarket fee
- * is the fallback when Jupiter has no usable quote. Liquidity = Polymarket CLOB depth within 1c of the best ask.
+ * is the fallback when Jupiter has no usable quote. Liquidity = Polymarket CLOB depth at the exact best ask.
  */
 export function evaluateCombined(game, jupEvent, gammaEvent, books) {
   const res = { gameId: game.id, matchup: `${game.away.abbr} @ ${game.home.abbr}`, jupiterEventId: jupEvent?.eventId || null, polymarketEventId: gammaEvent ? `POLY-${gammaEvent.id}` : null,
@@ -96,16 +95,16 @@ export function evaluateCombined(game, jupEvent, gammaEvent, books) {
     const jup = jAsk ? venueQuote(jAsk, jBid, feePerContract(jAsk)) : null;
     const book = r.token ? books?.get(r.token) : null; const sched = r.poly?.feeSchedule || null;
     const poly = book?.bestAsk ? venueQuote(book.bestAsk, book.bestBid, polyFee(book.bestAsk, sched)) : null;
-    if (poly) { poly.feeRate = sched?.rate ?? 0.05; poly.feeType = r.poly?.feeType ?? null; }
+    if (poly) { poly.feeRate = sched?.rate ?? 0.05; poly.feeExponent = sched?.exponent ?? 1; poly.feeType = r.poly?.feeType ?? null; }
     if (jup) cov.jupiterPriced++; if (poly) cov.polymarketPriced++; if (jup && poly) cov.both++;
     const venue = jup?.twoSided ? 'Jupiter' : poly?.twoSided ? 'Polymarket' : jup ? 'Jupiter' : poly ? 'Polymarket' : null;
     const q = venue === 'Jupiter' ? jup : venue === 'Polymarket' ? poly : null;
     const c = { key, marketId: r.jup?.marketId || `POLY-${key}`, conditionId: r.poly?.conditionId || r.jup?.conditionId || null, type: bet.type, label: bet.label, line: bet.line, side: bet.side,
       sampleN: game.sims, modelProb: p, venue, jupiter: jup ? { ...jup, edge: p - jup.cost } : null, polymarket: poly ? { ...poly, edge: p - poly.cost } : null,
-      depth: book ? book.depthAtAsk : null };
+      depth: book ? book.depthAtAsk : null, minOrder: book?.minOrder ?? null };
     if (q) Object.assign(c, { ask: q.ask, bid: q.bid, fee: q.fee, cost: q.cost, twoSided: q.twoSided, edge: p - q.cost, roi: p / q.cost - 1 });
     else Object.assign(c, { ask: null, cost: null, edge: null, twoSided: false });
-    c.liquid = c.depth == null ? false : c.depth >= RULES.minDepthContracts;
+    c.liquid = c.depth == null ? false : c.depth >= Math.max(RULES.minDepthContracts,c.minOrder || 0);
     c.scoreConsistent = scoreSupports(c, game);
     c.availabilityChecks = availabilityStress(bet, game);
     const rf = ruleFails(c, p);

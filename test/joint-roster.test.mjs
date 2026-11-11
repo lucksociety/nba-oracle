@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {simulate,PRIORS} from '../js/engine.js';
+import {outcomeHistograms} from '../js/outcome-histograms.js';
+import {availabilityStress,ruleFails} from '../js/markets-jupiter.js';
+import {assertNoMarketData} from '../js/firewall.js';
+const team={f:{p2:.55,p3:.36,r3:.4,tov:.12,orb:.25,ftr:.25,ftp:.8},k:1,dppp:100};
+const params={pace:100,home:team,away:team,uncHome:['A','B'].map(name=>({name,p:.5,off:15,def:0})),uncAway:[],expMarginPerPoss:0,priors:PRIORS};
+const raw=simulate(params,20000,42,undefined,{captureAvailability:true});
+const plain=simulate(params,20000,42);
+assert.deepEqual(raw.homePts,plain.homePts);assert.deepEqual(raw.awayPts,plain.awayPts);
+const h=outcomeHistograms(raw),joint=h.availabilityJoint;
+assertNoMarketData(h);assert.equal(joint.scenarios.length,4);
+assert.equal(joint.scenarios.reduce((s,x)=>s+x.sims,0),raw.N);
+for(const key of ['marginHist','totalHist'])for(let i=0;i<h[key].counts.length;i++)assert.equal(joint.scenarios.reduce((s,x)=>s+x[key].counts[i],0),h[key].counts[i]);
+const bet={totalWins:t=>t>200};const checks=availabilityStress(bet,h);
+assert.equal(checks.filter(x=>x.state==='joint').length,4);
+const single=[{sampleN:100000,prob:.66},{sampleN:100000,prob:.65}];
+const candidate={type:'totals',sampleN:300000,ask:.55,cost:.57,edge:.10};
+// Isolate the roster guard from the separate max-edge rule.
+const check={...candidate,edge:.07,availabilityChecks:single};assert.equal(ruleFails(check,.64).length,0);
+assert(ruleFails({...candidate,edge:.07,availabilityChecks:[...single,{state:'joint',sampleN:50000,prob:.49}]},.64).some(x=>x.includes('IN/OUT')));
+assert(availabilityStress(bet,{...h,availabilityJoint:undefined}).some(x=>x.sampleN===0));
+const many={...raw,availabilityDraws:Array.from({length:9},(_,j)=>({...raw.availabilityDraws[0],name:String(j)}))};
+const capped=outcomeHistograms(many);assert.equal(capped.availabilityJoint.supported,false);
+assert(availabilityStress(bet,capped).some(x=>x.sampleN===0));
+const rare={...raw,availabilityDraws:raw.availabilityDraws.map(x=>({...x,p:.99}))};
+assert.equal(outcomeHistograms(rare).availabilityJoint.scenarios.length,1,'states below one percent are explicitly excluded');
+console.log('Joint roster partitions, unchanged seeded forecasts, material-state cutoff and missing/oversized roster guards passed');

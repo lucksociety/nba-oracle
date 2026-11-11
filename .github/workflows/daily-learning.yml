@@ -7,6 +7,8 @@ on:
     branches: [main]
     paths:
       - scripts/model_learning.py
+      - scripts/bet_learning.py
+      - scripts/test_bet_learning.py
       - scripts/test_model_learning.py
       - learning/config.json
       - .github/workflows/daily-learning.yml

@@ -52,7 +52,7 @@ await new Promise((resolve, reject) => {
 });
 
 const games = slate.games.map((g, i) => {
-  const { ev, prep } = g; const { s, marginHist, totalHist, availabilityConditionals } = results[i];
+  const { ev, prep } = g; const { s, marginHist, totalHist, availabilityConditionals, availabilityJoint } = results[i];
   const r = buildReport(ev, prep, s, { applyInjuries: slate.applyInjuries, injuryNotToday: slate.injuryNotToday });
   const team = (t) => ({ id: t.id, abbr: t.abbr, name: t.name, short: t.short, record: t.record });
   return {
@@ -66,7 +66,7 @@ const games = slate.games.map((g, i) => {
     lineups: r.lineups ? Object.fromEntries(['away', 'home'].map(k => [k, { status: r.lineups[k].status, starters: r.lineups[k].starters, inactive: r.lineups[k].inactive, updatedAt: r.lineups[k].updatedAt, source: r.lineups[k].source }])) : null,
     availability: Object.fromEntries([['away', prep.injA], ['home', prep.injH]].map(([k, l]) => [k, l.filter(p => p.override || p.p < 1).map(p => ({ name: p.name, label: p.label, p: p.p, netPG: +(p.netPG * p.presence).toFixed(2), lineupOverride: !!p.override }))])), keyFactors: r.keyFactors.map(k => `${k.label}: ${k.text}`), uncertainty: r.uncertainty,
     sims: s.N, seed: jobs[i].seed, ms: s.ms, convergence: { seHomeWinPct: s.convergence.winProbSE * 100, splitHalfDiffPct: s.convergence.splitHalfDiff * 100 }, endgameCalibration: s.calibration,
-    marginHist, totalHist, availabilityConditionals,
+    marginHist, totalHist, availabilityConditionals, availabilityJoint,
   };
 });
 const out = {
