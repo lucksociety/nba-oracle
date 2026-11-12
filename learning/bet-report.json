@@ -263,10 +263,62 @@
         "minimum_games": 500,
         "minimum_days": 30
       }
+    },
+    "NBA ORACLE V1.3.3 (regulation endgame correction) / joint-roster-quote-stress-v3 / totals": {
+      "by_direction": {
+        "over": {
+          "n": 2,
+          "wins": 2,
+          "win_rate": 1,
+          "mean_probability": 0.7240966666666666,
+          "brier": 0.07627214072222221,
+          "flat_cost_roi": 0.44957983193277296,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        },
+        "under": {
+          "n": 1,
+          "wins": 1,
+          "win_rate": 1,
+          "mean_probability": 0.7861,
+          "brier": 0.04575320999999999,
+          "flat_cost_roi": 0.33333333333333326,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        }
+      },
+      "n": 3,
+      "wins": 3,
+      "win_rate": 1,
+      "mean_probability": 0.7447644444444445,
+      "brier": 0.06609916381481482,
+      "log_loss": 0.29553906060697716,
+      "flat_cost_roi": 0.41083099906629306,
+      "reliability": [
+        {
+          "lower_exclusive": 0.7,
+          "upper_inclusive": 0.8,
+          "n": 3,
+          "mean_probability": 0.7447644444444445,
+          "win_rate": 1
+        }
+      ],
+      "calibration_status": "monitor_only_no_automatic_probability_changes",
+      "calibration_proposal": {
+        "status": "insufficient_forward_sample",
+        "minimum_games": 500,
+        "minimum_days": 30
+      }
     }
   },
-  "pending_or_ungradable": 5,
+  "pending_or_ungradable": 0,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-11T18:53:09.260377+00:00",
-  "records": 59
+  "generated_at": "2026-11-12T19:09:31.098795+00:00",
+  "records": 69
 }
