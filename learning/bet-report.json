@@ -333,11 +333,11 @@
     "NBA ORACLE V1.3.3 (regulation endgame correction) / joint-roster-quote-stress-v3 / spreads": {
       "by_direction": {
         "away": {
-          "n": 1,
+          "n": 2,
           "wins": 0,
           "win_rate": 0,
-          "mean_probability": 0.7089933333333334,
-          "brier": 0.5026715467111111,
+          "mean_probability": 0.6293533333333334,
+          "brier": 0.4024281477777778,
           "flat_cost_roi": -1.0,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
@@ -359,19 +359,19 @@
           }
         }
       },
-      "n": 2,
+      "n": 3,
       "wins": 0,
       "win_rate": 0,
-      "mean_probability": 0.6298983333333333,
-      "brier": 0.4030279293611111,
-      "log_loss": 1.017351789655292,
+      "mean_probability": 0.60317,
+      "brier": 0.3694135358555556,
+      "log_loss": 0.9441914804377599,
       "flat_cost_roi": -1.0,
       "reliability": [
         {
           "lower_exclusive": 0.5,
           "upper_inclusive": 0.6,
-          "n": 1,
-          "mean_probability": 0.5508033333333333,
+          "n": 2,
+          "mean_probability": 0.5502583333333333,
           "win_rate": 0
         },
         {
@@ -390,8 +390,8 @@
       }
     }
   },
-  "pending_or_ungradable": 0,
+  "pending_or_ungradable": 5,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-14T17:19:21.595682+00:00",
-  "records": 95
+  "generated_at": "2026-11-15T17:59:53.688268+00:00",
+  "records": 109
 }
