@@ -24,5 +24,5 @@ DATA_DIR=/path/bt-data node backtest/fetch-polymarket-history.mjs 2025-10-20 202
 
 Over the first 68 games of 2026-27 alone, V1.3 is worse (log loss 0.609 vs 0.597). That sample is too small to conclude from, and it is reported here anyway. Platt scaling fitted on 2024-25 did not improve out of sample, so it is not shipped.
 
-## Bet rules (Polymarket price history, T-90 min last/mid price + 1¢ assumed half-spread + Jupiter fee)
+## Bet rules (Polymarket price history, T-90 min last/mid price + 1¢ assumed half-spread + the then-current Jupiter fee)
 On every price variant tried (T-150/T-90/T-30, 1–2¢ spread), bets whose model edge was above about 8 pts won at about the market's rate, not the model's. Bets with 3–8 pt edges were close to break-even. **No rule was reliably profitable.** V1.3 rules: model > 50%, edge 3–8 pts, price ≤ 90¢, one bet per game. Direction guard: if any >50% line backing the same side (home, away, over or under) shows an edge above 8 pts, that whole direction is blocked for the game. This was the most stable variant, about break-even across all 8 price/information variants (`bets.mjs`, rule `dirGuard`). They cut exposure; they do not create an edge.

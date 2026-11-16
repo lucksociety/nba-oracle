@@ -53,21 +53,20 @@ python3 -m http.server 8000           # then open http://localhost:8000
 
 *Not betting advice. This project deliberately ignores betting markets.*
 
-## Discord `/nba` + Jupiter best bets
+## Discord `/nba` + Polymarket best bets
 
 ```
 Discord /nba ─► Cloudflare Worker (discord/worker.js)  verify Ed25519 · defer (type 5) · AES-GCM-encrypt interaction token
               └► GitHub Actions workflow_dispatch (.github/workflows/discord-nba.yml)
                    1. test/firewall.test.mjs          engine files may not reference any market source
                    2. scripts/predict.mjs             300k sims/game (worker_threads) → out/predictions.json + SHA-256 (frozen)
-                   3. scripts/compare.mjs             verify hash → only now fetch Jupiter + Polymarket prices → out/bets.json
+                   3. scripts/compare.mjs             verify hash → only now fetch Polymarket prices → out/bets.json
                    4. scripts/discord-post.mjs        interaction follow-ups (fallback: channel webhook)
 ```
 
 * Engine never sees odds; predictions are hashed before the market stage runs.
-* Jupiter (where bets are placed): `GET https://api.jup.ag/prediction/v1/events?category=sports&subcategory=nba&includeMarkets=true&includeAllMarkets=true`. Fee = ceil-to-cent(0.07·C·p·(1−p)).
-* Polymarket (second price source, fallback, liquidity) — public, no key: Gamma `GET https://gamma-api.polymarket.com/events?slug=nba-mia-atl-2026-10-28` (all game markets incl. every alternate line), CLOB `POST https://clob.polymarket.com/books` (order books per outcome token), `GET https://clob.polymarket.com/clob-markets/{conditionId}` (fee curve `fd`). Jupiter's NBA markets are Polymarket markets (`POLY-{gammaMarketId}-{outcomeIndex}`, same `conditionId`), so the venues are joined exactly by id. Polymarket fee = C·rate·(p(1−p))^exponent per market `feeSchedule`; NBA game markets are currently `zero_fees` (rate 0), vs. the 0.05 sports default in Polymarket's docs.
-* Every full-game line is evaluated: moneyline both sides, every alternate spread both sides, every alternate total over and under (≈118–120 outcomes per game). Edge = model probability − (Jupiter ask + Jupiter fee); Polymarket ask + fee is used only when Jupiter has no usable quote, and the Discord post names the venue. A bet needs model probability > 50 %, edge > 0, a two-sided quote ≤ 10¢ wide and ≥ 10 contracts within 1¢ of the ask on the Polymarket CLOB; otherwise **NO BET**. The best line is the highest edge among those; the next three are listed for sanity checks. Edges above 15 points are flagged as likely model blind spots.
+* Polymarket (prices and liquidity) — public, no key: Gamma `GET https://gamma-api.polymarket.com/events?slug=nba-mia-atl-2026-10-28` (all game markets incl. every alternate line), CLOB `POST https://clob.polymarket.com/books` (order books per outcome token), `GET https://clob.polymarket.com/clob-markets/{conditionId}` (fee curve `fd`). Polymarket's NBA markets are Polymarket markets (`POLY-{gammaMarketId}-{outcomeIndex}`, same `conditionId`), so the venues are joined exactly by id. Polymarket fee = C·rate·(p(1−p))^exponent per market `feeSchedule`; NBA game markets are currently `zero_fees` (rate 0), vs. the 0.05 sports default in Polymarket's docs.
+* Every full-game line is evaluated: moneyline both sides, every alternate spread both sides, every alternate total over and under (≈118–120 outcomes per game). Edge = model probability − (Polymarket ask + Polymarket fee); Polymarket ask + fee is used only when Polymarket has no usable quote, and the Discord post names the venue. A bet needs model probability > 50 %, edge > 0, a two-sided quote ≤ 10¢ wide and ≥ 10 contracts within 1¢ of the ask on the Polymarket CLOB; otherwise **NO BET**. The best line is the highest edge among those; the next three are listed for sanity checks. Edges above 15 points are flagged as likely model blind spots.
 * Secrets: Worker — `GITHUB_TOKEN`, `RELAY_KEY`, `DISCORD_BOT_TOKEN`, `DISCORD_WEBHOOK_URL`; repo Actions — `RELAY_KEY`, `DISCORD_APPLICATION_ID`, `DISCORD_WEBHOOK_URL`, `DISCORD_BOT_TOKEN`, optional `JUPITER_API_KEY` (Polymarket needs no key). Nothing secret is committed.
 * `/nba` has an optional `date` option with autocomplete (Today, Tomorrow and the next 5 days in ET; typed `YYYY-MM-DD`, `today`, `tomorrow` also accepted; default today). Registered as a guild command (`node discord/register-command.mjs <guildId>`); handler tests: `node discord/test-worker.mjs`.
 * Local: `node scripts/predict.mjs 2026-10-28 && node scripts/compare.mjs && DRY_RUN=1 node scripts/discord-post.mjs`; `node test/sanity.mjs` for simulator verification.

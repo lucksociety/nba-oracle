@@ -6,7 +6,7 @@
 const app = process.env.DISCORD_APPLICATION_ID, tok = process.env.DISCORD_BOT_TOKEN, guild = process.argv[2];
 if (!app || !tok) { console.error('Set DISCORD_APPLICATION_ID and DISCORD_BOT_TOKEN'); process.exit(1); }
 const cmd = {
-  name: 'nba', type: 1, description: "Run NBA ORACLE V1.2 on today's slate: score predictions + Jupiter best bets",
+  name: 'nba', type: 1, description: "Run NBA ORACLE V1.2 on today's slate: score predictions + Polymarket best bets",
   options: [{ type: 3, name: 'date', description: 'Pick Today / Tomorrow / another day, or type YYYY-MM-DD (default: today, ET)', required: false, autocomplete: true, max_length: 40 }],
   integration_types: [0], contexts: [0],
 };

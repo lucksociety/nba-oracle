@@ -6,12 +6,12 @@ import {spawnSync} from 'node:child_process';
 const dir=await fs.mkdtemp(path.join(os.tmpdir(),'nba-delivery-freshness-'));
 try{
  for(const folder of ['scripts','js','out'])await fs.mkdir(path.join(dir,folder));
- for(const file of ['scripts/discord-post.mjs','js/markets-jupiter.js','js/live-inputs.js'])await fs.copyFile(new URL('../'+file,import.meta.url),path.join(dir,file));
+ for(const file of ['scripts/discord-post.mjs','js/markets-rules.js','js/live-inputs.js'])await fs.copyFile(new URL('../'+file,import.meta.url),path.join(dir,file));
  await fs.writeFile(path.join(dir,'package.json'),'{"type":"module"}');
  const now=Date.now(),iso=ms=>new Date(ms).toISOString();
  const game={id:'g',away:{abbr:'A',name:'Away'},home:{abbr:'H',name:'Home'},final:{away:100,home:110},homeWin:.7,awayWin:.3,expMarginHome:10,expTotal:210,iTotal:[180,240],otProb:.05,confidence:'MODERATE',lineupStatus:'PROBABLE',keyFactors:[],sims:1000,seed:1,convergence:{seHomeWinPct:.1},tip:iso(now+3600000),status:{state:'pre'},sheetLine:'A 100 - H 110'};
  const pred={date:'2099-01-01',modelVersion:'fixture',sims:1000,cutoff:iso(now),sources:[],skipped:[],games:[game],availabilityRefresh:{injuriesLive:true,scheduleLive:true,injuryReportAt:iso(now)}};
- const best={type:'moneyline',side:'home',label:'FRESHNESS_TEST',ask:.5,fee:.0175,cost:.5175,modelProb:.56,edge:.0425,roi:.08,venue:'Jupiter',depth:100};
+ const best={type:'moneyline',side:'home',label:'FRESHNESS_TEST',ask:.5,fee:.0175,cost:.5175,modelProb:.56,edge:.0425,roi:.08,venue:'Polymarket',depth:100};
  const bets={predictionsSha256:'fixture',fetchedAt:iso(now),games:[{gameId:'g',best,alternatives:[{...best,label:'ALTERNATIVE_TEST'}]}]};
  for(const mode of ['fresh','tip-passed','stale-quote','invalid-injury','stale-injury','unverified-schedule']){
   const p=structuredClone(pred),b=structuredClone(bets);

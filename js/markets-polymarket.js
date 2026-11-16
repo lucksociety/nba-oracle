@@ -1,16 +1,14 @@
-// STAGE 2 (post-freeze) — Polymarket public APIs as a second price source + CLOB liquidity.
+// STAGE 2 (post-freeze) — Polymarket public APIs: the price source and the CLOB liquidity check.
 // -----------------------------------------------------------------------------------------
-// FIREWALL: like markets-jupiter.js this module is never imported by the prediction engine (enforced by
-// test/firewall.test.mjs). It only prices markets against an already-frozen, hash-verified predictions file.
+// FIREWALL: this module is never imported by the prediction engine (enforced by test/firewall.test.mjs).
+// It only prices markets against an already-frozen, hash-verified predictions file.
 //
 // Endpoints (public, no key):
+//   Gamma  GET  https://gamma-api.polymarket.com/events?series_slug=nba-YYYY&closed=false&limit=100&offset=N   the day's game events
 //   Gamma  GET  https://gamma-api.polymarket.com/events?slug={slug}                     one game event + all its markets
-//   Gamma  GET  https://gamma-api.polymarket.com/events?series_slug=nba-YYYY&closed=false&limit=100&offset=N   discovery fallback
 //   CLOB   POST https://clob.polymarket.com/books   body [{token_id}, ...]              order books (bids/asks per outcome token)
 //   CLOB   GET  https://clob.polymarket.com/clob-markets/{conditionId}                 fee curve fd:{r,e,to} (authoritative)
-// Jupiter's NBA markets ARE Polymarket markets: Jupiter marketId "POLY-{gammaMarketId}-{outcomeIndex}" and the same
-// conditionId / clobTokenIds, so the two venues are joined exactly by id (no fuzzy matching).
-import { parseMarket, modelProb, feePerContract, RULES, ruleFails, confidenceOrder, scoreSupports, availabilityStress } from './markets-jupiter.js';
+import { parseGammaOutcome, modelProb, RULES, ruleFails, confidenceOrder, scoreSupports, availabilityStress } from './markets-rules.js';
 
 export const GAMMA = 'https://gamma-api.polymarket.com';
 export const CLOB = 'https://clob.polymarket.com';
@@ -24,7 +22,7 @@ export function polyFee(p, sched) {
   return rate * Math.pow(p * (1 - p), e);
 }
 
-/** Convert a Gamma event into the Jupiter-like shape the shared matcher/parser understand. */
+/** Reduce a Gamma event to the identity fields the shared matcher (matchEvent) reads. */
 export function adaptGammaEvent(e) {
   const start = e.markets?.find(m => m.gameStartTime)?.gameStartTime || e.startTime || e.endDate;
   const t = start ? Date.parse(String(start).replace(' ', 'T').replace(/\+00$/, 'Z')) : NaN;
@@ -67,54 +65,46 @@ const venueQuote = (ask, bid, fee) => {
 
 /**
  * Evaluate EVERY full-game line for one game — moneyline both sides, every (alternate) spread both sides, every
- * (alternate) total over and under — on the union of Jupiter and Polymarket markets, joined by Polymarket market id.
- * Recommendation price = Jupiter executable ask + Jupiter fee (where the user bets); Polymarket ask + Polymarket fee
- * is the fallback when Jupiter has no usable quote. Liquidity = Polymarket CLOB depth at the exact best ask.
+ * (alternate) total over and under — on Polymarket. Price = the outcome token's best CLOB ask + the market's own
+ * taker fee; liquidity = CLOB depth at that exact ask.
  */
-export function evaluateCombined(game, jupEvent, gammaEvent, books) {
-  const res = { gameId: game.id, matchup: `${game.away.abbr} @ ${game.home.abbr}`, jupiterEventId: jupEvent?.eventId || null, polymarketEventId: gammaEvent ? `POLY-${gammaEvent.id}` : null,
-    polymarketSlug: gammaEvent?.slug || jupEvent?.metadata?.slug || null, candidates: [], coverage: null, unparsed: 0, idMismatches: 0 };
-  const rows = new Map(); // key gammaMarketId-outcomeIdx
-  for (const m of jupEvent?.markets || []) {
-    if (!TYPES.includes(m.sportsMarketType) || m.periodType || m.status !== 'open') continue;
-    const k = String(m.marketId).replace(/^POLY-/, ''); rows.set(k, { ...(rows.get(k) || {}), jup: m });
-  }
+export function evaluateCombined(game, gammaEvent, books) {
+  const res = { gameId: game.id, matchup: `${game.away.abbr} @ ${game.home.abbr}`, polymarketEventId: gammaEvent ? `POLY-${gammaEvent.id}` : null,
+    polymarketSlug: gammaEvent?.slug || null, candidates: [], coverage: null, unparsed: 0 };
+  const cov = { moneyline: 0, spreads: 0, totals: 0, spreadLines: new Set(), totalLines: new Set(), polymarketPriced: 0 };
   for (const m of gammaEvent?.markets || []) {
     if (!TYPES.includes(m.sportsMarketType) || m.closed || m.active === false || m.acceptingOrders === false) continue;
+    if (m.sportsMarketType === 'moneyline' && gammaEvent.slug && m.slug && m.slug !== gammaEvent.slug) continue;   // the game's own moneyline only
     const outs = jparse(m.outcomes, []), toks = jparse(m.clobTokenIds, []);
-    outs.forEach((o, i) => { const k = `${m.id}-${i}`; rows.set(k, { ...(rows.get(k) || {}), poly: m, outcome: o, token: toks[i] }); });
-  }
-  const cov = { moneyline: 0, spreads: 0, totals: 0, spreadLines: new Set(), totalLines: new Set(), jupiterPriced: 0, polymarketPriced: 0, both: 0 };
-  for (const [key, r] of rows) {
-    const src = r.jup || { sportsMarketType: r.poly.sportsMarketType, rulesPrimary: r.poly.description, title: r.outcome, status: 'open' };
-    const bet = parseMarket(src, game); if (!bet) { res.unparsed++; continue; }
-    if (r.jup && r.poly && r.jup.conditionId && r.jup.conditionId !== r.poly.conditionId) { res.idMismatches++; continue; }
-    cov[bet.type]++; const mk = key.replace(/-\d+$/, ''); if (bet.type === 'spreads') cov.spreadLines.add(mk); if (bet.type === 'totals') cov.totalLines.add(mk);
-    const p = modelProb(bet, game);
-    const jAsk = r.jup ? (r.jup.pricing?.buyYesPriceUsd || 0) / 1e6 : null, jBid = r.jup ? (r.jup.pricing?.sellYesPriceUsd || 0) / 1e6 : null;
-    const jup = jAsk ? venueQuote(jAsk, jBid, feePerContract(jAsk)) : null;
-    const book = r.token ? books?.get(r.token) : null; const sched = r.poly?.feeSchedule || null;
-    const poly = book?.bestAsk ? venueQuote(book.bestAsk, book.bestBid, polyFee(book.bestAsk, sched)) : null;
-    if (poly) { poly.feeRate = sched?.rate ?? 0.05; poly.feeExponent = sched?.exponent ?? 1; poly.feeType = r.poly?.feeType ?? null; }
-    if (jup) cov.jupiterPriced++; if (poly) cov.polymarketPriced++; if (jup && poly) cov.both++;
-    const venue = jup?.twoSided ? 'Jupiter' : poly?.twoSided ? 'Polymarket' : jup ? 'Jupiter' : poly ? 'Polymarket' : null;
-    const q = venue === 'Jupiter' ? jup : venue === 'Polymarket' ? poly : null;
-    const c = { key, marketId: r.jup?.marketId || `POLY-${key}`, conditionId: r.poly?.conditionId || r.jup?.conditionId || null, type: bet.type, label: bet.label, line: bet.line, side: bet.side,
-      sampleN: game.sims, modelProb: p, venue, jupiter: jup ? { ...jup, edge: p - jup.cost } : null, polymarket: poly ? { ...poly, edge: p - poly.cost } : null,
-      depth: book ? book.depthAtAsk : null, minOrder: book?.minOrder ?? null };
-    if (q) Object.assign(c, { ask: q.ask, bid: q.bid, fee: q.fee, cost: q.cost, twoSided: q.twoSided, edge: p - q.cost, roi: p / q.cost - 1 });
-    else Object.assign(c, { ask: null, cost: null, edge: null, twoSided: false });
-    c.liquid = c.depth == null ? false : c.depth >= Math.max(RULES.minDepthContracts,c.minOrder || 0);
-    c.scoreConsistent = scoreSupports(c, game);
-    c.availabilityChecks = availabilityStress(bet, game);
-    const rf = ruleFails(c, p);
-    c.qualifies = c.cost != null && c.twoSided && c.liquid && !rf.length;
-    c.fails = c.qualifies ? [] : [c.cost == null && 'no price', c.cost != null && !c.twoSided && `quote not two-sided ≤${Math.round(RULES.maxBidAskSpread * 100)}¢ (bid ${q?.bid == null ? '—' : (q.bid * 100).toFixed(0) + '¢'})`,
-      !c.liquid && `CLOB depth ${c.depth == null ? '—' : Math.round(c.depth)} < ${RULES.minDepthContracts}`, ...rf].filter(Boolean);
-    res.candidates.push(c);
+    for (let i = 0; i < outs.length; i++) {
+      const key = `${m.id}-${i}`;
+      const bet = parseGammaOutcome(m, outs, i, game); if (!bet) { res.unparsed++; continue; }
+      cov[bet.type]++; if (bet.type === 'spreads') cov.spreadLines.add(String(m.id)); if (bet.type === 'totals') cov.totalLines.add(String(m.id));
+      const p = modelProb(bet, game);
+      const book = toks[i] ? books?.get(String(toks[i])) : null; const sched = m.feesEnabled === false ? { rate: 0, exponent: 1 } : (m.feeSchedule || null);
+      const poly = book?.bestAsk ? venueQuote(book.bestAsk, book.bestBid, polyFee(book.bestAsk, sched)) : null;
+      if (poly) { poly.feeRate = sched?.rate ?? 0.05; poly.feeExponent = sched?.exponent ?? 1; poly.feeType = m.feeType ?? null; cov.polymarketPriced++; }
+      const c = { key, marketId: `POLY-${key}`, tokenId: toks[i] ? String(toks[i]) : null, conditionId: m.conditionId || null, type: bet.type, label: bet.label, line: bet.line, side: bet.side,
+        sampleN: game.sims, modelProb: p, venue: poly ? 'Polymarket' : null, polymarket: poly ? { ...poly, edge: p - poly.cost } : null,
+        liquiditySource: 'Polymarket CLOB', depth: book ? book.depthAtAsk : null, minOrder: book?.minOrder ?? null };
+      if (poly) Object.assign(c, { ask: poly.ask, bid: poly.bid, fee: poly.fee, cost: poly.cost, twoSided: poly.twoSided, edge: p - poly.cost, roi: p / poly.cost - 1,
+        marketMid: poly.twoSided ? (poly.ask + poly.bid) / 2 : null });
+      else Object.assign(c, { ask: null, cost: null, edge: null, twoSided: false });
+      c.liquid = c.depth == null ? false : c.depth >= Math.max(RULES.minDepthContracts, c.minOrder || 0);
+      c.scoreConsistent = scoreSupports(c, game);
+      c.availabilityChecks = availabilityStress(bet, game);
+      const rf = ruleFails(c, p);
+      c.qualifies = c.cost != null && c.twoSided && c.liquid && !rf.length;
+      c.fails = c.qualifies ? [] : [c.cost == null && 'no price', c.cost != null && !c.twoSided && `quote not two-sided ≤${Math.round(RULES.maxBidAskSpread * 100)}¢ (bid ${poly?.bid == null ? '—' : (poly.bid * 100).toFixed(0) + '¢'})`,
+        !c.liquid && `CLOB depth ${c.depth == null ? '—' : Math.round(c.depth)} < ${RULES.minDepthContracts}`, ...rf].filter(Boolean);
+      res.candidates.push(c);
+    }
   }
   res.candidates.sort(confidenceOrder);
   res.coverage = { moneyline: cov.moneyline, spreads: cov.spreads, totals: cov.totals, spreadLines: cov.spreadLines.size, totalLines: cov.totalLines.size,
-    evaluated: res.candidates.length, jupiterPriced: cov.jupiterPriced, polymarketPriced: cov.polymarketPriced, both: cov.both };
+    evaluated: res.candidates.length, polymarketPriced: cov.polymarketPriced };
+  // No-vig pre-game moneyline: the benchmark the model is graded against (never a model input).
+  const ml = Object.fromEntries(res.candidates.filter(c => c.type === 'moneyline' && c.marketMid != null && c.ask - c.bid <= 0.06 + 1e-9).map(c => [c.side, c.marketMid]));
+  res.marketWin = ml.home != null && ml.away != null ? { home: ml.home / (ml.home + ml.away), away: ml.away / (ml.home + ml.away) } : null;
   return res;
 }

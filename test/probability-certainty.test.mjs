@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { ruleFails, confidenceOrder } from '../js/markets-jupiter.js';
+import { ruleFails, confidenceOrder } from '../js/markets-rules.js';
 const c = { sampleN: 300000, cost: .47, edge: .0301, ask: .45 };
 assert(ruleFails({...c}, .5001).length, 'a sampled 50.01% must not qualify');
 assert.equal(ruleFails({...c, cost: .55, edge: .05}, .6).length, 0);

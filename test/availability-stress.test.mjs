@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {simulate,PRIORS} from '../js/engine.js';
 import {outcomeHistograms} from '../js/outcome-histograms.js';
-import {availabilityStress,ruleFails} from '../js/markets-jupiter.js';
+import {availabilityStress,ruleFails} from '../js/markets-rules.js';
 import {assertNoMarketData} from '../js/firewall.js';
 const team={f:{p2:.55,p3:.36,r3:.4,tov:.12,orb:.25,ftr:.25,ftp:.8},k:1,dppp:100};
 const params={pace:100,home:team,away:team,uncHome:[{name:'Uncertain Starter',p:.5,off:20,def:0}],uncAway:[],expMarginPerPoss:0,priors:PRIORS};

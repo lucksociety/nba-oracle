@@ -2,13 +2,12 @@
 import {selectionAudit,candidatePreview} from './selection-audit.mjs';
 // STAGE 2 — runs only AFTER scripts/predict.mjs has frozen out/predictions.json.
 // Verifies the SHA-256 of the frozen predictions, deep-freezes them in memory, then fetches prices from
-// Jupiter prediction markets (where bets are placed) and Polymarket (Gamma + CLOB: second price source, fallback,
-// and order-book liquidity), evaluates every full-game line, and writes out/bets.json. Never writes to predictions.
+// Polymarket (Gamma for the markets, CLOB for executable quotes and order-book depth), evaluates every
+// full-game line, and writes out/bets.json. Never writes to predictions.
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import {inputBetBlock} from '../js/live-inputs.js';
-import { verifyExecutionLiquidity } from '../js/execution-liquidity.js';
-import { fetchNbaEvents, matchEvent, RULES, JUP_BASE } from '../js/markets-jupiter.js';
+import { matchEvent, RULES } from '../js/markets-rules.js';
 import { GAMMA, CLOB, fetchGammaEventBySlug, fetchGammaNbaGames, adaptGammaEvent, fetchBooks, evaluateCombined } from '../js/markets-polymarket.js';
 
 const ROOT = new URL('../', import.meta.url);
@@ -32,47 +31,38 @@ function limited(gapMs, headers = {}) {
     }
   };
 }
-const jupFetch = limited(process.env.JUPITER_API_KEY ? 250 : 2100, process.env.JUPITER_API_KEY ? { 'x-api-key': process.env.JUPITER_API_KEY } : {}); // keyless 0.5 req/s
 const polyGet = limited(150);
 const polyPost = (url, payload) => polyGet(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
 const fetchedAt = new Date().toISOString();
-let jEvents = [], jError = null, gList = null, pError = null;
-try { jEvents = await fetchNbaEvents(jupFetch); } catch (e) { jError = e.message; }
+let gList = null, pError = null;
+try { gList = (await fetchGammaNbaGames(polyGet, pred.date)).map(adaptGammaEvent); } catch (e) { pError = e.message; }
 
 const pct = (x) => (x * 100).toFixed(1);
-const games = []; const priceDiffs = [];
+const games = [];
 for (const g of pred.games) {
-  const jEv = jError ? null : matchEvent(g, jEvents);
   let gEv = null;
-  try {
-    if (jEv?.metadata?.slug) gEv = await fetchGammaEventBySlug(polyGet, jEv.metadata.slug);
-    if (!gEv) { gList ??= (await fetchGammaNbaGames(polyGet, pred.date)).map(adaptGammaEvent); const a = matchEvent(g, gList); gEv = a ? await fetchGammaEventBySlug(polyGet, a.slug) : null; }
-  } catch (e) { pError = e.message; }
+  try { const a = gList ? matchEvent(g, gList) : null; gEv = a ? await fetchGammaEventBySlug(polyGet, a.slug) : null; } catch (e) { pError = e.message; }
   let books = new Map();
   if (gEv) {
     const toks = gEv.markets.filter(m => ['moneyline', 'spreads', 'totals'].includes(m.sportsMarketType) && !m.closed).flatMap(m => JSON.parse(m.clobTokenIds || '[]'));
     try { books = await fetchBooks(polyPost, toks); } catch (e) { pError = e.message; }
   }
-  const r = evaluateCombined(g, jEv, gEv, books);
+  const r = evaluateCombined(g, gEv, books);
   // V1.3 direction guard: if ANY >50% line backing the same direction (home side, away side, over, under) shows an edge
   // above RULES.maxEdge, the model and market disagree too much on that game for any line in that direction to be
   // trusted (re-pricing the same disagreement on an alternate line does not make it credible). Backtest: backtest/README.md.
   const blockedDirs = new Set(r.candidates.filter(c => c.cost != null && c.modelProb > RULES.minModelProb && c.edge > RULES.maxEdge).map(c => c.side));
-  if (g.status?.state === 'pre' && Date.now() < Date.parse(g.tip)) {
-    await verifyExecutionLiquidity(r, id => jupFetch(`${JUP_BASE}/orderbook/${encodeURIComponent(id)}`), { blockedDirections: blockedDirs });
-  }
   for (const c of r.candidates) if (blockedDirs.has(c.side) && c.qualifies) { c.qualifies = false; c.fails = [...(c.fails || []), `another ${c.side} line shows edge > ${RULES.maxEdge * 100} pts — model/market disagreement too large to trust`]; }
   r.blockedDirections = [...blockedDirs];
   const tipPassed = !Number.isFinite(Date.parse(g.tip)) || Date.now() >= Date.parse(g.tip);
   r.started = g.status?.state !== 'pre' || tipPassed; r.best = null;
   const inputBlock = inputBetBlock(pred);
   const availabilityFailed = !!inputBlock;
-  for (const c of r.candidates) if (c.jupiter && c.polymarket) priceDiffs.push({ d: c.jupiter.ask - c.polymarket.ask, game: r.matchup, label: c.label });
   if (availabilityFailed) r.noBetReason = inputBlock;
   else if (tipPassed) r.noBetReason = 'Scheduled tip has passed or is unavailable — pregame forecast is not valid for live markets';
   else if (r.started) r.noBetReason = `Game ${g.status?.state === 'post' ? 'final' : 'in progress'} at prediction time — pregame model not valid for live markets`;
-  else if (!jEv && !gEv) r.noBetReason = `No NBA markets found on Jupiter${jError ? ` (API error: ${jError})` : ''} or Polymarket${pError ? ` (API error: ${pError})` : ''}`;
+  else if (!gEv) r.noBetReason = `No NBA market found on Polymarket${pError ? ` (API error: ${pError})` : ''}`;
   else {
     const q = r.candidates.filter(c => c.qualifies);
     r.best = q[0] || null;
@@ -97,27 +87,23 @@ for (const g of pred.games) {
   // top 3 alternatives (after the best) among >50% lines, ranked by edge — for sanity checks
   r.alternatives = (availabilityFailed || r.started ? [] : r.candidates).filter(c => c !== r.best && c.qualifies && c.modelProb > RULES.minModelProb && c.roi > 0).slice(0, 3);
   r.candidatesTotal = r.candidates.length;
-  r.assessment=selectionAudit(r,{inputBlocked:availabilityFailed,hasMarket:!!(r.jupiterEventId||r.polymarketEventId)});
+  r.assessment=selectionAudit(r,{inputBlocked:availabilityFailed,hasMarket:!!r.polymarketEventId});
   r.candidates=candidatePreview(r); // Preserve the primary and meaningful near-misses in compact artifacts.
   games.push(r);
 }
-const ad = priceDiffs.map(x => Math.abs(x.d));
-const priceComparison = { pairs: priceDiffs.length, identical: ad.filter(x => x < 0.005).length, meanAbsDiffCents: ad.length ? +(ad.reduce((s, x) => s + x, 0) / ad.length * 100).toFixed(2) : null,
-  maxAbsDiffCents: ad.length ? +(Math.max(...ad) * 100).toFixed(1) : null, jupiterHigher: priceDiffs.filter(x => x.d >= 0.005).length, jupiterLower: priceDiffs.filter(x => x.d <= -0.005).length };
 const out = { stage: 'comparison', predictionsSha256: sha, date: pred.date, fetchedAt,
-  sources: { jupiter: `${JUP_BASE} (keyless=${!process.env.JUPITER_API_KEY})`, polymarketGamma: GAMMA, polymarketClob: CLOB },
-  jupiterEventsSeen: jEvents.length, error: jError && pError ? `${jError}; ${pError}` : null, jupiterError: jError, polymarketError: pError, rules: RULES,
-  feeModel: { jupiter: 'Conservative whole-contract fee allowance: ceil-cent(0.07 x p x (1-p)); actual order fee depends on size', polymarket: 'C x rate x (p(1-p))^exponent from each market feeSchedule (CLOB fd); explicit market rates including zero are respected; 0.05 sports default if absent' },
-  pricing: 'Edge uses the Jupiter ask + fee, with depth verified on Jupiter at that exact ask. Polymarket fallback uses its own CLOB quote and depth.',
-  priceComparison, games };
+  sources: { polymarketGamma: GAMMA, polymarketClob: CLOB },
+  polymarketEventsSeen: gList ? gList.length : 0, error: pError, polymarketError: pError, rules: RULES,
+  feeModel: { polymarket: 'C x rate x (p(1-p))^exponent from each market feeSchedule (CLOB fd); explicit market rates including zero are respected; 0.05 sports default if absent' },
+  pricing: 'Edge uses the Polymarket CLOB best ask + the market taker fee, with depth counted only at that exact ask.',
+  games };
 await fs.writeFile(new URL('out/bets.json', ROOT), JSON.stringify(out, null, 1));
 
-console.log(`[compare] ${pred.date}: predictions sha256 verified; Jupiter events ${jEvents.length}${jError ? ' (ERROR ' + jError + ')' : ''}; Polymarket${pError ? ' ERROR ' + pError : ' ok'}`);
-const fmt = (c) => `${c.label} ${pct(c.modelProb)}% | Jup ${c.jupiter ? `${pct(c.jupiter.ask)}+${pct(c.jupiter.fee)}=${pct(c.jupiter.cost)}¢ e${c.jupiter.edge >= 0 ? '+' : ''}${pct(c.jupiter.edge)}` : '—'} | Poly ${c.polymarket ? `${pct(c.polymarket.ask)}+${pct(c.polymarket.fee)}=${pct(c.polymarket.cost)}¢ e${c.polymarket.edge >= 0 ? '+' : ''}${pct(c.polymarket.edge)}` : '—'} | depth ${c.depth == null ? '—' : Math.round(c.depth)}${c.venue && c.venue !== 'Jupiter' ? ` [priced on ${c.venue}]` : ''}${c.fails?.length ? ` ✗ ${c.fails.join(', ')}` : ' ✓'}`;
+console.log(`[compare] ${pred.date}: predictions sha256 verified; Polymarket events ${gList ? gList.length : 0}${pError ? ' (ERROR ' + pError + ')' : ''}`);
+const fmt = (c) => `${c.label} ${pct(c.modelProb)}% | ${c.polymarket ? `${pct(c.polymarket.ask)}+${pct(c.polymarket.fee)}=${pct(c.polymarket.cost)}¢ edge ${c.polymarket.edge >= 0 ? '+' : ''}${pct(c.polymarket.edge)}` : 'no price'} | depth ${c.depth == null ? '—' : Math.round(c.depth)}`;
 for (const r of games) {
   const cv = r.coverage;
-  console.log(`  ${r.matchup}: ${r.best ? `BET [${r.best.venue}] ${fmt(r.best)}` : 'NO BET — ' + r.noBetReason}`);
-  console.log(`     evaluated ${cv.evaluated} outcomes: ML ${cv.moneyline} · spreads ${cv.spreads} sides / ${cv.spreadLines} markets · totals ${cv.totals} sides / ${cv.totalLines} lines · priced Jup ${cv.jupiterPriced} / Poly ${cv.polymarketPriced}${r.unparsed ? ` · unparsed ${r.unparsed}` : ''}${r.idMismatches ? ` · id mismatches ${r.idMismatches}` : ''}`);
+  console.log(`  ${r.matchup}: ${r.best ? `BET ${fmt(r.best)}` : 'NO BET — ' + r.noBetReason}`);
+  console.log(`     evaluated ${cv.evaluated} outcomes: ML ${cv.moneyline} · spreads ${cv.spreads} sides / ${cv.spreadLines} markets · totals ${cv.totals} sides / ${cv.totalLines} lines · priced ${cv.polymarketPriced}${r.unparsed ? ` · unparsed ${r.unparsed}` : ''}`);
   r.alternatives.forEach((c, i) => console.log(`     alt${i + 1}: ${fmt(c)}`));
 }
-console.log(`  price comparison (same outcome, Jupiter ask vs Polymarket CLOB ask): ${JSON.stringify(priceComparison)}`);
