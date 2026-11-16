@@ -43,7 +43,6 @@ jobs:
         run: node scripts/predict.mjs "${{ inputs.date }}" "${{ inputs.sims }}"
       - name: "Stage 2: Polymarket comparison (after freeze)"
         continue-on-error: true
-        env:
         run: node scripts/compare.mjs
       - name: Preserve pre-game forecasts for prospective evaluation
         run: python3 scripts/model_learning.py --capture-only
