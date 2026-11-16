@@ -14,19 +14,28 @@ def read(path,default):
     try:return json.loads(path.read_text())
     except FileNotFoundError:return default
 
-def make_record(event,start,model,bet,source,at,selection_policy='sensitivity-confidence-v1'):
+def benchmark_pair(b):
+    """Pre-game home-win probability from the model and from the no-vig market, for EVERY published game
+    (bet or not). Stored only to grade the model against the price afterwards; never a model input."""
+    try:m,k=float(b['model']),float(b['market'])
+    except (TypeError,KeyError,ValueError):return None
+    return {'model':round(m,6),'market':round(k,6)} if 0<m<1 and 0<k<1 else None
+
+def make_record(event,start,model,bet,source,at,selection_policy='sensitivity-confidence-v1',benchmark=None):
     st=ml.timestamp(start); posted=ml.timestamp(at)
     if not st or not posted or posted>=st:return None
     r={'event_id':str(event),'start':st.isoformat(),'posted_at':posted.isoformat(),'model':model,'selection_policy':selection_policy,'bet':bet,'source':source}
     if bet:
         if (not math.isfinite(bet['probability']) or not .5<bet['probability']<=1
             or not math.isfinite(bet['cost']) or not 0<bet['cost']<bet['probability']):raise ValueError('Invalid posted recommendation')
+    b=benchmark_pair(benchmark)
+    if b:r['benchmark']=b
     r['key']=digest(r);return r
 
 def capture(root,project,at,source):
     out=[]
-    def add(event,start,model,bet,policy='sensitivity-confidence-v1'):
-        r=make_record(event,start,model,bet,source,at,policy)
+    def add(event,start,model,bet,policy='sensitivity-confidence-v1',benchmark=None):
+        r=make_record(event,start,model,bet,source,at,policy,benchmark)
         if r:out.append(r)
     if project=='nba-oracle':
         p=read(root/'out/predictions.json',{});b=read(root/'out/bets.json',{})
@@ -35,7 +44,9 @@ def capture(root,project,at,source):
         for g in p.get('games',[]):
             x=bg.get(str(g['id']),{}).get('best') if fresh else None
             bet=None if not x else {'type':x['type'],'index':0 if x['side']=='home' else 1,'side':x['side'],'line':x.get('line'),'label':x['label'],'probability':x['modelProb'],'selection_probability':x.get('modelStressLower'),'cost':x['cost']}
-            add(g['id'],g['tip'],p['modelVersion'],bet,b.get('rules',{}).get('selection','unversioned'))
+            mw=bg.get(str(g['id']),{}).get('marketWin') if fresh else None
+            add(g['id'],g['tip'],p['modelVersion'],bet,b.get('rules',{}).get('selection','unversioned'),
+                {'model':g.get('homeWin'),'market':(mw or {}).get('home')})
     elif project=='nhl-score-predictor':
         date=os.environ.get('SLATE_DATE') or ml.timestamp(at).astimezone(__import__('zoneinfo').ZoneInfo('America/New_York')).date().isoformat()
         p=read(root/f'data/predictions/{date}.json',{})
@@ -45,7 +56,8 @@ def capture(root,project,at,source):
             if x:
                 label=x['label'];typ={'ML':'moneyline','TOTAL':'totals','PUCKLINE':'spreads'}[x['type']]
                 bet={'type':typ,'index':0 if label.startswith(g['home']+' ') else 1,'side':'under' if label.startswith('Under') else 'over','line':None if typ=='moneyline' else float(label.split()[-1]),'label':label,'probability':x['q'],'selection_probability':x.get('sensitivityLower'),'cost':x['cost']}
-            add(g['id'],g['start'],p['model'],bet)
+            mw=g.get('marketWin') if fresh else None
+            add(g['id'],g['start'],p['model'],bet,benchmark={'model':g.get('pHome'),'market':(mw or {}).get('home')})
     elif project=='lol-scanner':
         import sys
         sys.path.insert(0,str(root))
@@ -119,7 +131,28 @@ def evaluate(rows,outcomes):
             xs=[(b,y) for r,b,y in rs if lo<b['probability']<=hi]
             if xs:bins.append({'lower_exclusive':lo,'upper_inclusive':min(hi,1),'n':len(xs),'mean_probability':statistics.mean(b['probability'] for b,y in xs),'win_rate':statistics.mean(y for b,y in xs)})
         report[model+' / '+policy+' / '+kind]={'by_direction':direction_metrics(rs),'n':n,'wins':sum(y for r,b,y in rs),'win_rate':statistics.mean(y for r,b,y in rs),'mean_probability':statistics.mean(b['probability'] for r,b,y in rs),'brier':statistics.mean((b['probability']-y)**2 for r,b,y in rs),'log_loss':statistics.mean(-math.log(max(1e-12,b['probability'] if y else 1-b['probability'])) for r,b,y in rs),'flat_cost_roi':statistics.mean(y/b['cost']-1 for r,b,y in rs),'reliability':bins,'calibration_status':'monitor_only_no_automatic_probability_changes','calibration_proposal':ml.calibration_proposal([{'start':r['start'],'probabilities':[b['probability'],1-b['probability']],'observed':0 if y else 1} for r,b,y in rs])}
-    return {'settled_by_model_and_market':report,'pending_or_ungradable':pending,'policy':'Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.'}
+    return {'settled_by_model_and_market':report,'model_vs_market':model_vs_market(chosen.values(),outcomes),'pending_or_ungradable':pending,'policy':'Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.'}
+
+def model_vs_market(chosen,outcomes):
+    """Log loss of the model and of the pre-game no-vig market on the same settled games. Negative diff = model better."""
+    rows=[]
+    for r in chosen:
+        b=benchmark_pair(r.get('benchmark'));scores=(outcomes.get(r['event_id']) or {}).get('scores')
+        if not b or not scores or len(scores)!=2 or scores[0]==scores[1]:continue
+        y=scores[0]>scores[1];ll=lambda p:-math.log(max(1e-12,p if y else 1-p))
+        rows.append((ll(b['model']),ll(b['market']),b['model'],b['market'],y))
+    if not rows:return {'n':0}
+    d=[a-k for a,k,*_ in rows];n=len(rows)
+    out={'n':n,'model_log_loss':statistics.mean(a for a,*_ in rows),'market_log_loss':statistics.mean(k for _,k,*_ in rows),
+         'log_loss_diff':statistics.mean(d),'log_loss_diff_se':statistics.stdev(d)/math.sqrt(n) if n>1 else None,
+         'model_accuracy':statistics.mean((m>.5)==y for *_,m,_,y in rows),'market_accuracy':statistics.mean((k>.5)==y for *_,k,y in rows)}
+    big=[(m,k,y) for *_,m,k,y in rows if abs(m-k)>.05]
+    if big:out['disagree_over_5pts']={'n':len(big),'model_side_won':statistics.mean((m>k)==y for m,k,y in big),
+        'model_said':statistics.mean(m if m>k else 1-m for m,k,y in big),'market_said':statistics.mean(k if m>k else 1-k for m,k,y in big)}
+    se=out['log_loss_diff_se']
+    out['verdict']=('too few games to say' if n<200 or se is None else 'model at least matches the market' if out['log_loss_diff']+1.96*se<=0
+                    else 'market is more accurate than the model' if out['log_loss_diff']-1.96*se>0 else 'no measurable difference yet')
+    return out
 
 def collect(state):
     repo=os.environ['GITHUB_REPOSITORY'];token=os.environ['GH_TOKEN'];seen=set(state.get('artifact_ids',[]));rows=[]
