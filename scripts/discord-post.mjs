@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-// STAGE 3 — format frozen predictions + post-freeze Jupiter comparison for Discord and deliver them.
+// STAGE 3 — format frozen predictions + post-freeze Polymarket comparison for Discord and deliver them.
 // Delivery: (1) interaction follow-up webhook (edits the deferred "thinking…" reply, then follow-ups) when an
 // interaction token is supplied; (2) otherwise, or if the interaction token fails/expires (15 min), the channel
 // webhook in DISCORD_WEBHOOK_URL. DRY_RUN=1 prints the payloads instead of sending.
 import fs from 'node:fs/promises';
 import {inputBetBlock} from '../js/live-inputs.js';
-import { RULES, scoreSupports } from '../js/markets-jupiter.js';
+import { RULES, scoreSupports } from '../js/markets-rules.js';
 
 const ROOT = new URL('../', import.meta.url);
 const pred = JSON.parse(await fs.readFile(new URL('out/predictions.json', ROOT), 'utf8'));
@@ -46,10 +46,9 @@ export function buildMessages() {
   });
   let head = `🏀 **${pred.modelVersion || "NBA ORACLE"} — ${pred.date}** · ${n} game${n === 1 ? '' : 's'} · ${pred.sims.toLocaleString('en-US')} sims/game · ${recs} bet${recs === 1 ? '' : 's'} recommended\n`;
   if (process.env.AUTO_RUN === '1') head += `⏰ Auto-run: 30 min before first tip\n`;
-  head += `Predictions frozen ${new Date(pred.cutoff).toISOString().slice(11, 16)} UTC (sha256 \`${sha.slice(0, 12)}\`) **before** any Jupiter/Polymarket price was fetched.\n`;
+  head += `Predictions frozen ${new Date(pred.cutoff).toISOString().slice(11, 16)} UTC (sha256 \`${sha.slice(0, 12)}\`) **before** any Polymarket price was fetched.\n`;
   if (!n) head += `No modelled NBA games on ${pred.date}.` + (pred.skipped.length ? ' Skipped: ' + pred.skipped.map(s => `${s.game} (${s.reason})`).join('; ') : '');
   else head += '```\n' + 'Prediction       Winner %    Total    Best bet\n' + rows.join('\n') + '\n```';
-  if (bets?.jupiterError) head += `\n⚠️ Jupiter unavailable (${short(bets.jupiterError, 120)}) — Polymarket prices used as fallback.`;
   if (bets?.polymarketError) head += `\n⚠️ Polymarket data incomplete (${short(bets.polymarketError, 120)}).`;
   if (!bets) head += '\n⚠️ Market comparison stage did not run; predictions only.';
   if (luSrc) head += `\nLineups: ${short(luSrc.src, 220)}`;
@@ -70,10 +69,9 @@ export function buildMessages() {
     if (ovr.length) d += `Lineup overrides: ${short(ovr.join('; '), 200)}\n`;
     if (b?.best) {
       const x = b.best;
-      d += `\n✅ **BEST BET: ${x.label}** @ ${c(x.ask)} — price from **${x.venue}**${x.venue !== 'Jupiter' ? ' (Jupiter quote unavailable; check Jupiter before betting)' : ''}\nModel ${pct(x.modelProb)} vs cost ${c(x.cost)} (price ${c(x.ask)} + fee ${c(x.fee)}) → **edge +${(x.edge * 100).toFixed(1)} pts**, EV ${x.roi >= 0 ? '+' : ''}${(x.roi * 100).toFixed(0)}%/$` + (x.depth != null ? ` · ${x.liquiditySource || x.venue} depth ~${Math.round(x.depth)} contracts` : '');
+      d += `\n✅ **BEST BET: ${x.label}** @ ${c(x.ask)} — Polymarket ask\nModel ${pct(x.modelProb)} vs cost ${c(x.cost)} (price ${c(x.ask)} + fee ${c(x.fee)}) → **edge +${(x.edge * 100).toFixed(1)} pts**, EV ${x.roi >= 0 ? '+' : ''}${(x.roi * 100).toFixed(0)}%/$` + (x.depth != null ? ` · ${x.liquiditySource || x.venue} depth ~${Math.round(x.depth)} contracts` : '');
       if (Number.isFinite(x.quoteStressEV)) d += `\nOne-cent worse-price stress: ${(100*x.quoteStressEV).toFixed(1)}% EV`;
       if (Number.isFinite(x.modelStressLower)) d += `\nCalibration sensitivity minimum ${pct(x.modelStressLower)} · positive EV after stress (not a confidence interval)`;
-      d += `\nJupiter ${venueTxt(x.jupiter)} · Polymarket ${venueTxt(x.polymarket)}`;
       if (x.edge > RULES.maxEdge) d += `\n⚠️ Very large disagreement with the market — more often a model blind spot (late news, roster change) than free money. Verify injuries first.`;
     } else d += `\n⛔ **NO BET** — ${b ? short(b.noBetReason || 'requirements not met', 220) : 'comparison unavailable'}`;
     const others = (b?.alternatives || []).slice(0, 3);
@@ -89,7 +87,7 @@ export function buildMessages() {
   // ---- final: copy list + rules
   if (n) {
     let tail = '**Copy list (Google Sheets)**\n```\n' + pred.games.map(g => g.sheetLine).join('\n') + '\n```\n';
-    tail += `Rules: every moneyline, alternate spread (both sides) and alternate total (over/under) is checked; a bet is recommended only if model probability > 50% **and** edge after fees is between ${RULES.minEdge * 100} and ${RULES.maxEdge * 100} pts (bigger edges are treated as model error — in the backtest they won at the market's rate, not the model's) at a price ≤ ${Math.round(RULES.maxPrice * 100)}¢, one bet per game, and no other line backing the same side/direction showing > ${RULES.maxEdge * 100} pts (that signals missing news, not value), with a two-sided quote (≤10¢ wide) and ≥10 contracts at the quoted Jupiter ask (Polymarket fallback uses its own book); otherwise NO BET. EV must also survive material joint lineup states and a one-cent worse price. Jupiter uses a conservative rounded whole-contract fee allowance; actual fees depend on order size. Polymarket fallback uses its own market fee schedule.\n`;
+    tail += `Rules: every moneyline, alternate spread (both sides) and alternate total (over/under) is checked; a bet is recommended only if model probability > 50% **and** edge after fees is between ${RULES.minEdge * 100} and ${RULES.maxEdge * 100} pts (bigger edges are treated as model error — in the backtest they won at the market's rate, not the model's) at a price ≤ ${Math.round(RULES.maxPrice * 100)}¢, one bet per game, and no other line backing the same side/direction showing > ${RULES.maxEdge * 100} pts (that signals missing news, not value), with a two-sided quote (≤10¢ wide) and ≥10 contracts at the quoted Polymarket ask; otherwise NO BET. EV must also survive material joint lineup states and a one-cent worse price. Fees are each market's own Polymarket taker schedule.\n`;
     tail += `Model V1.3: walk-forward backtested (2024-25 tune, 2025-26/2026-27 test); no betting rule showed a reliable profit vs Polymarket prices — size small. Odds never enter the model — they are compared only after the forecast is frozen. Not financial advice.`;
     msgs.push({ content: short(tail, 2000) });
   }

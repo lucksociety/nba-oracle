@@ -41,10 +41,9 @@ jobs:
         run: node test/firewall.test.mjs
       - name: "Stage 1: NBA ORACLE V1.3 predictions (zero-market, frozen + hashed)"
         run: node scripts/predict.mjs "${{ inputs.date }}" "${{ inputs.sims }}"
-      - name: "Stage 2: Jupiter + Polymarket comparison (after freeze)"
+      - name: "Stage 2: Polymarket comparison (after freeze)"
         continue-on-error: true
         env:
-          JUPITER_API_KEY: ${{ secrets.JUPITER_API_KEY }}
         run: node scripts/compare.mjs
       - name: Preserve pre-game forecasts for prospective evaluation
         run: python3 scripts/model_learning.py --capture-only

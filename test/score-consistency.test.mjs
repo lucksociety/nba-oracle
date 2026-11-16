@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {scoreSupports,ruleFails} from '../js/markets-jupiter.js';
+import {scoreSupports,ruleFails} from '../js/markets-rules.js';
 const g={final:{away:102,home:104}};
 for(const [type,side,line,yes] of [['moneyline','home',null,true],['moneyline','away',null,false],['totals','over',206.5,false],['totals','under',206.5,true],['totals','over',206,false],['spreads','away',2.5,true],['spreads','home',-2.5,false],['spreads','home',-2,false]])assert.equal(scoreSupports({type,side,line},g),yes);
 assert.equal(scoreSupports({type:'moneyline',side:'home'},{}),false);

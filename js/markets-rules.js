@@ -1,11 +1,10 @@
-// STAGE 2 — POST-FREEZE MARKET COMPARISON (Jupiter prediction markets, api.jup.ag/prediction/v1).
+// STAGE 2 — POST-FREEZE MARKET COMPARISON: shared bet rules, contract parsing and model-probability maths.
 // ---------------------------------------------------------------------------------------------
 // FIREWALL: this module is NEVER imported by the prediction engine (js/engine.js, js/pipeline.js,
 // js/firewall.js, js/app.js, js/worker.js, scripts/predict.mjs, scripts/sim-thread.mjs) — enforced by
 // test/firewall.test.mjs. It only reads an already-frozen, hash-verified predictions file and prices
-// Jupiter's exact lines against the simulated outcome distributions. Nothing here can change a prediction.
+// Polymarket's exact lines (js/markets-polymarket.js) against the simulated outcome distributions.
 
-export const JUP_BASE = 'https://api.jup.ag/prediction/v1';
 // V1.3 betting-layer safeguards (stage 2 only; the engine never sees prices). Walk-forward backtest vs Polymarket price
 // history (backtest/bets.mjs) showed edges above ~8 pts won at roughly the market's rate, not the model's, so they are
 // treated as model error, not value. minEdge 3 pts, maxEdge 8 pts, price cap 90¢, at most one bet per game.
@@ -65,9 +64,7 @@ export function ruleFails(c, p) {
   }
   c.stressEV = c.cost > 0 ? c.modelStressLower / c.cost - 1 : null;
   c.quoteStressAsk=Number.isFinite(c.ask) ? Math.min(1,c.ask+.01) : null;
-  const stressedFee=c.venue==='Polymarket'
-    ? (c.polymarket?.feeRate ?? .05)*Math.pow(c.quoteStressAsk*(1-c.quoteStressAsk),c.polymarket?.feeExponent ?? 1)
-    : feePerContract(c.quoteStressAsk);
+  const stressedFee=(c.polymarket?.feeRate ?? .05)*Math.pow(c.quoteStressAsk*(1-c.quoteStressAsk),c.polymarket?.feeExponent ?? 1);
   c.quoteStressCost=c.cost!=null && c.quoteStressAsk!=null
     ? c.quoteStressAsk+Math.max(c.cost-c.ask,stressedFee) : null;
   c.quoteStressEV=c.quoteStressCost>0 ? c.modelStressLower/c.quoteStressCost-1 : null;
@@ -79,27 +76,10 @@ export function ruleFails(c, p) {
     c.ask != null && c.ask > RULES.maxPrice && `price > ${Math.round(RULES.maxPrice * 100)}¢ cap`].filter(Boolean);
 }
 
-/** Jupiter's documented trading fee, per contract: their published table (e.g. 100 contracts @ $0.25 -> $1.32,
- *  @ $0.40 -> $1.68, @ $0.10 -> $0.63) is reproduced exactly by ceil_cent(0.07 x C x P x (1-P)). */
-// Conservative whole-contract allowance; actual aggregate/fractional-fill fees depend on order size.
-export const feePerContract = (p) => Math.ceil((0.07 * p * (1 - p) - 1e-12)*100)/100;
-
-/** Fetch all NBA events with every market type (moneyline, spreads, totals). Keyless limit: 0.5 req/s. */
-export async function fetchNbaEvents(fetchJSON) {
-  const all = [];
-  for (let start = 0; start < 600; start += 100) {
-    const q = new URLSearchParams({ category: 'sports', subcategory: 'nba', includeMarkets: 'true', includeAllMarkets: 'true', start: String(start), end: String(start + 100) });
-    const page = await fetchJSON(`${JUP_BASE}/events?${q}`);
-    all.push(...(page.data || []));
-    if (!page.pagination?.hasNext) break;
-  }
-  return all;
-}
-
 const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-const nickMatch = (espnName, polyName) => { const a = norm(espnName), b = norm(polyName); return !!b && (a === b || a.endsWith(b)); };
+export const nickMatch = (espnName, polyName) => { const a = norm(espnName), b = norm(polyName); return !!b && (a === b || a.endsWith(b)); };
 
-/** Find the Jupiter event for one frozen game: both team nicknames match and start within 4h of ESPN tipoff. */
+/** Find the Polymarket event (adapted shape) for one frozen game: both team nicknames match and start within 4h of ESPN tipoff. */
 export function matchEvent(game, events) {
   const tip = Date.parse(game.tip) / 1000;
   return events.find(e => {
@@ -145,42 +125,31 @@ export function modelProb(bet, game) {
   const h = game.marginHist; let w = 0, n = 0; h.counts.forEach((c, i) => { n += c; if (bet.wins(h.min + i)) w += c; }); return w / n;
 }
 
-/** Depth (contracts) purchasable at the best YES ask and 1c above it, from GET /orderbook/{marketId}.
- *  YES asks are the complement of NO bids (YES ask = $1 - NO bid). */
-export function depthAtAsk(book, ask, toleranceCents = 1) {
-  if (!Number.isFinite(ask) || !(ask > 0 && ask < 1) || !Array.isArray(book?.no)) return 0;
-  const askC = Math.round(ask * 100); let d = 0; const bids = book?.no || [];
-  for (const row of bids) {
-    if (!Array.isArray(row)) continue;
-    const [price, quantity] = row.map(Number);
-    if (Number.isFinite(price) && price > 0 && price < 100 && Number.isFinite(quantity) && quantity > 0 &&
-        100 - price <= askC + toleranceCents) d += quantity;
+/** Parse one outcome of a Polymarket Gamma market from its structured fields (type, question, outcomes, line).
+ *  idx = which of the two outcomes. Returns the same bet shape as parseMarket, or null if anything is ambiguous. */
+export function parseGammaOutcome(m, outcomes, idx, game) {
+  const type = m.sportsMarketType, who = String(outcomes[idx] ?? '');
+  const sideIs = (name) => { const h = nickMatch(game.home.name, name), a = nickMatch(game.away.name, name); return h && !a ? 'home' : a && !h ? 'away' : null; };
+  if (outcomes.length !== 2) return null;
+  if (type === 'moneyline') {
+    const s = sideIs(who), o = sideIs(outcomes[1 - idx]); if (!s || !o || s === o) return null;
+    return { type, side: s, label: `${game[s].abbr} ML`, wins: (mg) => (s === 'home' ? mg > 0 : mg < 0), line: null };
   }
-  return d;
-}
-
-/** Evaluate every candidate (ML both sides, spreads both sides at every line, totals over/under at every line). */
-export function evaluateGame(game, event) {
-  const res = { gameId: game.id, matchup: `${game.away.abbr} @ ${game.home.abbr}`, eventId: event?.eventId || null, candidates: [], coverage: { moneyline: 0, spreads: 0, totals: 0 }, unparsed: 0 };
-  if (!event) { res.noMarketReason = 'No Jupiter NBA event found for this game'; return res; }
-  for (const m of event.markets || []) {
-    if (!['moneyline', 'spreads', 'totals'].includes(m.sportsMarketType) || m.periodType) continue; // full-game only
-    if (m.status !== 'open') continue;
-    res.coverage[m.sportsMarketType]++;
-    const bet = parseMarket(m, game); if (!bet) { res.unparsed++; continue; }
-    const ask = (m.pricing?.buyYesPriceUsd || 0) / 1e6, bid = (m.pricing?.sellYesPriceUsd || 0) / 1e6;
-    const p = modelProb(bet, game);
-    const fee = ask > 0 && ask < 1 ? feePerContract(ask) : null;
-    const cost = fee == null ? null : ask + fee;
-    const c = { marketId: m.marketId, type: bet.type, label: bet.label, line: bet.line, side: bet.side, sampleN: game.sims, modelProb: p, ask, bid, fee, cost,
-      impliedProb: ask || null, edge: cost == null ? null : p - cost, roi: cost ? p / cost - 1 : null, volume: m.pricing?.volume ?? null };
-    c.twoSided = ask > 0 && ask < 1 && bid > 0 && bid <= ask && ask - bid <= RULES.maxBidAskSpread + 1e-9;
-    c.scoreConsistent = scoreSupports(c, game);
-    c.availabilityChecks = availabilityStress(bet, game);
-    c.ruleFails = ruleFails(c, p);
-    c.qualifies = cost != null && c.twoSided && !c.ruleFails.length;
-    res.candidates.push(c);
+  const line = Number(m.line);
+  if (m.line == null || !Number.isFinite(line) || Math.abs(line % 1) !== 0.5) return null;   // half lines only: no pushes
+  if (type === 'spreads') {
+    const q = /^Spread:\s*(.+?)\s*\(([+-]\d+(?:\.\d+)?)\)\s*$/.exec(String(m.question || ''));
+    if (!q || q[1] !== String(outcomes[0]) || Number(q[2]) !== line || !(line < 0)) return null;   // the line belongs to outcome 0
+    const fav = sideIs(outcomes[0]), other = sideIs(outcomes[1]); if (!fav || !other || fav === other) return null;
+    const X = -line, s = idx === 0 ? fav : other, favMargin = (mg) => (fav === 'home' ? mg : -mg);
+    const wins = s === fav ? (mg) => favMargin(mg) > X : (mg) => !(favMargin(mg) > X);
+    const l = s === fav ? -X : X;
+    return { type, side: s, label: `${game[s].abbr} ${l > 0 ? '+' : ''}${l}`, wins, line: l };
   }
-  res.candidates.sort((a, b) => (b.edge ?? -9) - (a.edge ?? -9));
-  return res;
+  if (type === 'totals') {
+    if (String(outcomes[0]) !== 'Over' || String(outcomes[1]) !== 'Under' || !(line > 0)) return null;
+    const over = idx === 0;
+    return { type, side: over ? 'over' : 'under', label: `${over ? 'Over' : 'Under'} ${line}`, totalWins: over ? (t) => t > line : (t) => !(t > line), line };
+  }
+  return null;
 }

@@ -7,7 +7,9 @@ import crypto from 'node:crypto';
 import {prepareSlate} from '../js/pipeline.js';
 import {simulate} from '../js/engine.js';
 import {outcomeHistograms} from '../js/outcome-histograms.js';
-import {feePerContract,availabilityStress,ruleFails} from '../js/markets-jupiter.js';
+import {availabilityStress,ruleFails} from '../js/markets-rules.js';
+// Historical replay of Jupiter-era cards: Jupiter's ceil-cent 0.07*p*(1-p) fee is kept here only to reproduce them.
+const feePerContract = (p) => Math.ceil((0.07 * p * (1 - p) - 1e-12)*100)/100;
 const root=process.argv[2];
 const read=f=>JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
 for(const stem of ['predictions','model-inputs'])assert.equal(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,stem+'.json'))).digest('hex'),fs.readFileSync(path.join(root,stem+'.sha256'),'utf8').trim());

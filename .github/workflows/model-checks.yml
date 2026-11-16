@@ -23,7 +23,7 @@ jobs:
           node test/quote-stress.test.mjs
           node test/availability.test.mjs
           node test/freshness.test.mjs
-          node test/execution-liquidity.test.mjs
+          node test/polymarket-source.test.mjs
           node test/probability-certainty.test.mjs
           node test/score-consistency.test.mjs
           node test/live-refresh.test.mjs
