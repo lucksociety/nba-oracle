@@ -1,7 +1,7 @@
 // Polymarket-only comparison stage: structured contract parsing and pricing (Gamma shapes copied from live responses, 2026-11-16).
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
-import { parseGammaOutcome, matchEvent, modelProb } from '../js/markets-rules.js';
+import { parseGammaOutcome, matchEvent, modelProb, nickMatch } from '../js/markets-rules.js';
 import { evaluateCombined, adaptGammaEvent, fetchBooks, fetchGammaNbaGames } from '../js/markets-polymarket.js';
 
 const FEE = { exponent: 1, rate: 0.05, takerOnly: true, rebateRate: 0.15 };
@@ -39,6 +39,16 @@ assert.ok(Math.abs(modelProb(P(0, 0), game) - .6) < 1e-12 && Math.abs(modelProb(
 assert.ok(Math.abs(modelProb(P(1, 0), game) - .6) < 1e-12 && Math.abs(modelProb(P(1, 1), game) - .4) < 1e-12, 'DEN -6.5 wins by 8');
 assert.ok(Math.abs(modelProb(P(2, 0), game) - .4) < 1e-12 && Math.abs(modelProb(P(2, 1), game) - .6) < 1e-12, 'POR -2.5 wins by 3');
 assert.ok(Math.abs(modelProb(P(3, 0), game) - .5) < 1e-12 && Math.abs(modelProb(P(3, 1), game) - .5) < 1e-12);
+
+// ---- team matching is by whole words (live case 2026-11-16: "Nets vs. Hornets" — "Hornets" ends with the letters "nets")
+assert.equal(nickMatch('Charlotte Hornets', 'Nets'), false); assert.equal(nickMatch('Brooklyn Nets', 'Nets'), true);
+assert.equal(nickMatch('Portland Trail Blazers', 'Trail Blazers'), true); assert.equal(nickMatch('Philadelphia 76ers', '76ers'), true);
+assert.equal(nickMatch('Portland Trail Blazers', 'Blazers FC'), false); assert.equal(nickMatch('Nets', ''), false);
+const bkn = { ...game, away: { name: 'Brooklyn Nets', abbr: 'BKN' }, home: { name: 'Charlotte Hornets', abbr: 'CHA' } };
+const ml = gm(20, 'moneyline', '', 'Nets vs. Hornets', ['Nets', 'Hornets']);
+assert.deepEqual([parseGammaOutcome(ml, ['Nets', 'Hornets'], 0, bkn).label, parseGammaOutcome(ml, ['Nets', 'Hornets'], 1, bkn).label], ['BKN ML', 'CHA ML']);
+const wrongGame = { eventId: 'POLY-1', slug: 'nba-phi-bkn-2026-11-16', metadata: { title: '76ers vs. Nets' }, beginAt: String(Date.parse(game.tip) / 1000) };
+assert.equal(matchEvent({ ...game, away: { name: 'Philadelphia 76ers' }, home: { name: 'Charlotte Hornets' } }, [wrongGame]), null, 'a Hornets game must not match a Nets market');
 
 // ---- pricing: CLOB best ask + the market's own fee, depth only at that ask
 const raw = (ask, bid, size = 50) => ({ asks: [{ price: '0.99', size: '9' }, { price: String(ask + .01), size: '500' }, { price: String(ask), size: String(size) }], bids: [{ price: '0.01', size: '9' }, { price: String(bid), size: '20' }], min_order_size: '5' });

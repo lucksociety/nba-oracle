@@ -77,7 +77,11 @@ export function ruleFails(c, p) {
 }
 
 const norm = (s) => String(s || '').toLowerCase().replace(/[^a-z0-9]/g, '');
-export const nickMatch = (espnName, polyName) => { const a = norm(espnName), b = norm(polyName); return !!b && (a === b || a.endsWith(b)); };
+const words = (s) => String(s || '').toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+/** ESPN's full name ends with Polymarket's nickname, compared word by word ("Portland Trail Blazers" / "Trail Blazers").
+ *  A plain suffix test is wrong: "Charlotte Hornets" ends with the letters of "Nets". */
+export const nickMatch = (espnName, polyName) => { const a = words(espnName), b = words(polyName);
+  return b.length > 0 && b.length <= a.length && b.every((w, i) => w === a[a.length - b.length + i]); };
 
 /** Find the Polymarket event (adapted shape) for one frozen game: both team nicknames match and start within 4h of ESPN tipoff. */
 export function matchEvent(game, events) {
