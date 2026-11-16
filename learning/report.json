@@ -27,9 +27,9 @@
     }
   },
   "forecast_policy": "Last pre-game freeze per event per model version. No retrospectively generated forecast is graded.",
-  "forecasts": 732,
-  "generated_at": "2026-11-16T19:22:19.210673+00:00",
-  "last_successful_refresh": "2026-11-16T18:43:41+00:00",
+  "forecasts": 740,
+  "generated_at": "2026-11-16T21:15:51.372083+00:00",
+  "last_successful_refresh": "2026-11-16T19:22:26+00:00",
   "project": "nba-oracle",
   "settled_by_version": {
     "NBA ORACLE V1.2 (web build 1.2.1)": {
