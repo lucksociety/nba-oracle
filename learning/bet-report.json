@@ -280,12 +280,12 @@
           }
         },
         "under": {
-          "n": 4,
-          "wins": 2,
-          "win_rate": 0.5,
-          "mean_probability": 0.6748233333333333,
-          "brier": 0.30461326614999995,
-          "flat_cost_roi": -0.17647058823529416,
+          "n": 8,
+          "wins": 5,
+          "win_rate": 0.625,
+          "mean_probability": 0.6636029166666666,
+          "brier": 0.24774828455694442,
+          "flat_cost_roi": 0.02045450948741076,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
             "minimum_games": 500,
@@ -293,34 +293,34 @@
           }
         }
       },
-      "n": 7,
-      "wins": 5,
-      "win_rate": 0.7142857142857143,
-      "mean_probability": 0.6898271428571429,
-      "brier": 0.2103664159126984,
-      "log_loss": 0.6157917794230445,
-      "flat_cost_roi": 0.1079681872749099,
+      "n": 11,
+      "wins": 8,
+      "win_rate": 0.7272727272727273,
+      "mean_probability": 0.6762109090909091,
+      "brier": 0.20328164756767675,
+      "log_loss": 0.5979596033002895,
+      "flat_cost_roi": 0.14775415816043927,
       "reliability": [
         {
           "lower_exclusive": 0.5,
           "upper_inclusive": 0.6,
-          "n": 2,
-          "mean_probability": 0.56343,
-          "win_rate": 0.5
+          "n": 3,
+          "mean_probability": 0.57441,
+          "win_rate": 0.6666666666666666
         },
         {
           "lower_exclusive": 0.6,
           "upper_inclusive": 0.7,
-          "n": 1,
-          "mean_probability": 0.6813033333333334,
-          "win_rate": 1
+          "n": 3,
+          "mean_probability": 0.6444777777777778,
+          "win_rate": 0.6666666666666666
         },
         {
           "lower_exclusive": 0.7,
           "upper_inclusive": 0.8,
-          "n": 4,
-          "mean_probability": 0.7551566666666667,
-          "win_rate": 0.75
+          "n": 5,
+          "mean_probability": 0.7563313333333334,
+          "win_rate": 0.8
         }
       ],
       "calibration_status": "monitor_only_no_automatic_probability_changes",
@@ -333,12 +333,12 @@
     "NBA ORACLE V1.3.3 (regulation endgame correction) / joint-roster-quote-stress-v3 / spreads": {
       "by_direction": {
         "away": {
-          "n": 2,
-          "wins": 0,
-          "win_rate": 0,
-          "mean_probability": 0.6293533333333334,
-          "brier": 0.4024281477777778,
-          "flat_cost_roi": -1.0,
+          "n": 3,
+          "wins": 1,
+          "win_rate": 0.3333333333333333,
+          "mean_probability": 0.6019511111111111,
+          "brier": 0.3366441456888889,
+          "flat_cost_roi": -0.34640522875817,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
             "minimum_games": 500,
@@ -359,20 +359,20 @@
           }
         }
       },
-      "n": 3,
-      "wins": 0,
-      "win_rate": 0,
-      "mean_probability": 0.60317,
-      "brier": 0.3694135358555556,
-      "log_loss": 0.9441914804377599,
-      "flat_cost_roi": -1.0,
+      "n": 4,
+      "wins": 1,
+      "win_rate": 0.25,
+      "mean_probability": 0.5891641666666667,
+      "brier": 0.3283291872694445,
+      "log_loss": 0.858903206156031,
+      "flat_cost_roi": -0.5098039215686274,
       "reliability": [
         {
           "lower_exclusive": 0.5,
           "upper_inclusive": 0.6,
-          "n": 2,
-          "mean_probability": 0.5502583333333333,
-          "win_rate": 0
+          "n": 3,
+          "mean_probability": 0.5492211111111112,
+          "win_rate": 0.3333333333333333
         },
         {
           "lower_exclusive": 0.7,
@@ -390,8 +390,11 @@
       }
     }
   },
+  "model_vs_market": {
+    "n": 0
+  },
   "pending_or_ungradable": 5,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-15T17:59:53.688268+00:00",
-  "records": 109
+  "generated_at": "2026-11-16T19:22:21.434368+00:00",
+  "records": 117
 }
