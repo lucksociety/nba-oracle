@@ -280,12 +280,12 @@
           }
         },
         "under": {
-          "n": 10,
-          "wins": 6,
-          "win_rate": 0.6,
-          "mean_probability": 0.6736383333333333,
-          "brier": 0.25244437412777776,
-          "flat_cost_roi": -0.03889345586537478,
+          "n": 11,
+          "wins": 7,
+          "win_rate": 0.6363636363636364,
+          "mean_probability": 0.6639687878787879,
+          "brier": 0.246517828120202,
+          "flat_cost_roi": 0.04446093173077815,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
             "minimum_games": 500,
@@ -293,20 +293,20 @@
           }
         }
       },
-      "n": 15,
-      "wins": 11,
-      "win_rate": 0.7333333333333333,
-      "mean_probability": 0.6767166666666666,
-      "brier": 0.20406950079037037,
-      "log_loss": 0.5976704176101741,
-      "flat_cost_roi": 0.16610563198401726,
+      "n": 16,
+      "wins": 12,
+      "win_rate": 0.75,
+      "mean_probability": 0.6698764583333333,
+      "brier": 0.20301842999375,
+      "log_loss": 0.5957481428871343,
+      "flat_cost_roi": 0.21059933046578538,
       "reliability": [
         {
           "lower_exclusive": 0.5,
           "upper_inclusive": 0.6,
-          "n": 4,
-          "mean_probability": 0.5624866666666667,
-          "win_rate": 0.75
+          "n": 5,
+          "mean_probability": 0.563444,
+          "win_rate": 0.8
         },
         {
           "lower_exclusive": 0.6,
@@ -346,11 +346,11 @@
           }
         },
         "home": {
-          "n": 1,
+          "n": 3,
           "wins": 0,
           "win_rate": 0,
-          "mean_probability": 0.5508033333333333,
-          "brier": 0.3033843120111111,
+          "mean_probability": 0.5809877777777778,
+          "brier": 0.34079825333703706,
           "flat_cost_roi": -1.0,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
@@ -359,20 +359,27 @@
           }
         }
       },
-      "n": 4,
+      "n": 6,
       "wins": 1,
-      "win_rate": 0.25,
-      "mean_probability": 0.5891641666666667,
-      "brier": 0.3283291872694445,
-      "log_loss": 0.858903206156031,
-      "flat_cost_roi": -0.5098039215686274,
+      "win_rate": 0.16666666666666666,
+      "mean_probability": 0.5914694444444445,
+      "brier": 0.338721199512963,
+      "log_loss": 0.8791218628921068,
+      "flat_cost_roi": -0.673202614379085,
       "reliability": [
         {
           "lower_exclusive": 0.5,
           "upper_inclusive": 0.6,
-          "n": 3,
-          "mean_probability": 0.5492211111111112,
-          "win_rate": 0.3333333333333333
+          "n": 4,
+          "mean_probability": 0.5447458333333334,
+          "win_rate": 0.25
+        },
+        {
+          "lower_exclusive": 0.6,
+          "upper_inclusive": 0.7,
+          "n": 1,
+          "mean_probability": 0.66084,
+          "win_rate": 0
         },
         {
           "lower_exclusive": 0.7,
@@ -388,26 +395,65 @@
         "minimum_games": 500,
         "minimum_days": 30
       }
+    },
+    "NBA ORACLE V1.3.3 (regulation endgame correction) / joint-roster-quote-stress-v3 / moneyline": {
+      "by_direction": {
+        "home": {
+          "n": 1,
+          "wins": 0,
+          "win_rate": 0,
+          "mean_probability": 0.7306266666666666,
+          "brier": 0.5338153260444444,
+          "flat_cost_roi": -1.0,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        }
+      },
+      "n": 1,
+      "wins": 0,
+      "win_rate": 0,
+      "mean_probability": 0.7306266666666666,
+      "brier": 0.5338153260444444,
+      "log_loss": 1.3116570053049048,
+      "flat_cost_roi": -1.0,
+      "reliability": [
+        {
+          "lower_exclusive": 0.7,
+          "upper_inclusive": 0.8,
+          "n": 1,
+          "mean_probability": 0.7306266666666666,
+          "win_rate": 0
+        }
+      ],
+      "calibration_status": "monitor_only_no_automatic_probability_changes",
+      "calibration_proposal": {
+        "status": "insufficient_forward_sample",
+        "minimum_games": 500,
+        "minimum_days": 30
+      }
     }
   },
   "model_vs_market": {
-    "n": 8,
-    "model_log_loss": 0.8454777024480712,
-    "market_log_loss": 0.813250403583316,
-    "log_loss_diff": 0.03222729886475516,
-    "log_loss_diff_se": 0.06995362510057018,
-    "model_accuracy": 0.5,
-    "market_accuracy": 0.5,
+    "n": 13,
+    "model_log_loss": 0.8607085057514169,
+    "market_log_loss": 0.8218762192196508,
+    "log_loss_diff": 0.03883228653176604,
+    "log_loss_diff_se": 0.04427798123324388,
+    "model_accuracy": 0.5384615384615384,
+    "market_accuracy": 0.5384615384615384,
     "disagree_over_5pts": {
-      "n": 5,
-      "model_side_won": 0.4,
-      "model_said": 0.550196,
-      "market_said": 0.46099999999999997
+      "n": 6,
+      "model_side_won": 0.3333333333333333,
+      "model_said": 0.5802678333333333,
+      "market_said": 0.49666666666666665
     },
     "verdict": "too few games to say"
   },
   "pending_or_ungradable": 0,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-17T20:01:54.748750+00:00",
-  "records": 125
+  "generated_at": "2026-11-18T19:38:12.839531+00:00",
+  "records": 135
 }
