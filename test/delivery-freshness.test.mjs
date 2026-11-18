@@ -6,7 +6,7 @@ import {spawnSync} from 'node:child_process';
 const dir=await fs.mkdtemp(path.join(os.tmpdir(),'nba-delivery-freshness-'));
 try{
  for(const folder of ['scripts','js','out'])await fs.mkdir(path.join(dir,folder));
- for(const file of ['scripts/discord-post.mjs','js/markets-rules.js','js/live-inputs.js'])await fs.copyFile(new URL('../'+file,import.meta.url),path.join(dir,file));
+ for(const file of ['scripts/discord-post.mjs','js/markets-rules.js','js/live-inputs.js','js/top-pick.js'])await fs.copyFile(new URL('../'+file,import.meta.url),path.join(dir,file));
  await fs.writeFile(path.join(dir,'package.json'),'{"type":"module"}');
  const now=Date.now(),iso=ms=>new Date(ms).toISOString();
  const game={id:'g',away:{abbr:'A',name:'Away'},home:{abbr:'H',name:'Home'},final:{away:100,home:110},homeWin:.7,awayWin:.3,expMarginHome:10,expTotal:210,iTotal:[180,240],otProb:.05,confidence:'MODERATE',lineupStatus:'PROBABLE',keyFactors:[],sims:1000,seed:1,convergence:{seHomeWinPct:.1},tip:iso(now+3600000),status:{state:'pre'},sheetLine:'A 100 - H 110'};
