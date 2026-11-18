@@ -17,6 +17,7 @@ jobs:
       - name: Offline model and Discord routing regressions
         run: |
           node test/data-recovery.test.mjs
+          node test/top-pick.test.mjs
           node test/history.test.mjs
           node test/availability-stress.test.mjs
           node test/joint-roster.test.mjs
