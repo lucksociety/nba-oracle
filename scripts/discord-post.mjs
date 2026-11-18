@@ -6,6 +6,7 @@
 import fs from 'node:fs/promises';
 import {inputBetBlock} from '../js/live-inputs.js';
 import { RULES, scoreSupports } from '../js/markets-rules.js';
+import { topPick } from '../js/top-pick.js';
 
 const ROOT = new URL('../', import.meta.url);
 const pred = JSON.parse(await fs.readFile(new URL('out/predictions.json', ROOT), 'utf8'));
@@ -74,6 +75,7 @@ export function buildMessages() {
       if (Number.isFinite(x.modelStressLower)) d += `\nCalibration sensitivity minimum ${pct(x.modelStressLower)} · positive EV after stress (not a confidence interval)`;
       if (x.edge > RULES.maxEdge) d += `\n⚠️ Very large disagreement with the market — more often a model blind spot (late news, roster change) than free money. Verify injuries first.`;
     } else d += `\n⛔ **NO BET** — ${b ? short(b.noBetReason || 'requirements not met', 220) : 'comparison unavailable'}`;
+    if (!b?.best) d += '\n' + topPick(fav.abbr, Math.max(g.homeWin, g.awayWin), b?.marketWin?.[g.homeWin >= 0.5 ? 'home' : 'away']);
     const others = (b?.alternatives || []).slice(0, 3);
     if (others.length) d += `\nNext best: ` + others.map(x => `${x.label} ${pct(x.modelProb)} vs ${c(x.cost)} (${x.edge >= 0 ? '+' : ''}${(x.edge * 100).toFixed(1)}${x.qualifies ? '' : ', fails filters'})`).join(' · ');
     if (b?.coverage) d += `\nLines checked: ${b.coverage.evaluated} (ML ${b.coverage.moneyline} · ${b.coverage.spreadLines} spread mkts × 2 sides · ${b.coverage.totalLines} totals × O/U)`;
