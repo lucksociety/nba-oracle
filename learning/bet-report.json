@@ -267,12 +267,12 @@
     "NBA ORACLE V1.3.3 (regulation endgame correction) / joint-roster-quote-stress-v3 / totals": {
       "by_direction": {
         "over": {
-          "n": 5,
-          "wins": 5,
+          "n": 7,
+          "wins": 7,
           "win_rate": 1,
-          "mean_probability": 0.6828733333333333,
-          "brier": 0.10731975411555554,
-          "flat_cost_roi": 0.5761038076828013,
+          "mean_probability": 0.68938,
+          "brier": 0.1045016582126984,
+          "flat_cost_roi": 0.5678102766715832,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
             "minimum_games": 500,
@@ -293,13 +293,13 @@
           }
         }
       },
-      "n": 16,
-      "wins": 12,
-      "win_rate": 0.75,
-      "mean_probability": 0.6698764583333333,
-      "brier": 0.20301842999375,
-      "log_loss": 0.5957481428871343,
-      "flat_cost_roi": 0.21059933046578538,
+      "n": 18,
+      "wins": 14,
+      "win_rate": 0.7777777777777778,
+      "mean_probability": 0.6738509259259259,
+      "brier": 0.1912893176006173,
+      "log_loss": 0.5695114138365814,
+      "flat_cost_roi": 0.24798567698553567,
       "reliability": [
         {
           "lower_exclusive": 0.5,
@@ -311,9 +311,9 @@
         {
           "lower_exclusive": 0.6,
           "upper_inclusive": 0.7,
-          "n": 4,
-          "mean_probability": 0.6555275,
-          "win_rate": 0.5
+          "n": 5,
+          "mean_probability": 0.6447546666666667,
+          "win_rate": 0.6
         },
         {
           "lower_exclusive": 0.7,
@@ -321,6 +321,13 @@
           "n": 7,
           "mean_probability": 0.7540990476190477,
           "win_rate": 0.8571428571428571
+        },
+        {
+          "lower_exclusive": 0.8,
+          "upper_inclusive": 0.9,
+          "n": 1,
+          "mean_probability": 0.80963,
+          "win_rate": 1
         }
       ],
       "calibration_status": "monitor_only_no_automatic_probability_changes",
@@ -333,12 +340,12 @@
     "NBA ORACLE V1.3.3 (regulation endgame correction) / joint-roster-quote-stress-v3 / spreads": {
       "by_direction": {
         "away": {
-          "n": 3,
-          "wins": 1,
-          "win_rate": 0.3333333333333333,
-          "mean_probability": 0.6019511111111111,
-          "brier": 0.3366441456888889,
-          "flat_cost_roi": -0.34640522875817,
+          "n": 4,
+          "wins": 2,
+          "win_rate": 0.5,
+          "mean_probability": 0.6282283333333334,
+          "brier": 0.27393657016666667,
+          "flat_cost_roi": -0.13734779690011345,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
             "minimum_games": 500,
@@ -346,11 +353,11 @@
           }
         },
         "home": {
-          "n": 3,
+          "n": 4,
           "wins": 0,
           "win_rate": 0,
-          "mean_probability": 0.5809877777777778,
-          "brier": 0.34079825333703706,
+          "mean_probability": 0.6098841666666667,
+          "brier": 0.3769022921805556,
           "flat_cost_roi": -1.0,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
@@ -359,13 +366,13 @@
           }
         }
       },
-      "n": 6,
-      "wins": 1,
-      "win_rate": 0.16666666666666666,
-      "mean_probability": 0.5914694444444445,
-      "brier": 0.338721199512963,
-      "log_loss": 0.8791218628921068,
-      "flat_cost_roi": -0.673202614379085,
+      "n": 8,
+      "wins": 2,
+      "win_rate": 0.25,
+      "mean_probability": 0.61905625,
+      "brier": 0.3254194311736111,
+      "log_loss": 0.8517482814461123,
+      "flat_cost_roi": -0.5686738984500568,
       "reliability": [
         {
           "lower_exclusive": 0.5,
@@ -377,16 +384,16 @@
         {
           "lower_exclusive": 0.6,
           "upper_inclusive": 0.7,
-          "n": 1,
-          "mean_probability": 0.66084,
+          "n": 2,
+          "mean_probability": 0.6787066666666667,
           "win_rate": 0
         },
         {
           "lower_exclusive": 0.7,
           "upper_inclusive": 0.8,
-          "n": 1,
-          "mean_probability": 0.7089933333333334,
-          "win_rate": 0
+          "n": 2,
+          "mean_probability": 0.7080266666666667,
+          "win_rate": 0.5
         }
       ],
       "calibration_status": "monitor_only_no_automatic_probability_changes",
@@ -437,23 +444,23 @@
     }
   },
   "model_vs_market": {
-    "n": 13,
-    "model_log_loss": 0.8607085057514169,
-    "market_log_loss": 0.8218762192196508,
-    "log_loss_diff": 0.03883228653176604,
-    "log_loss_diff_se": 0.04427798123324388,
-    "model_accuracy": 0.5384615384615384,
-    "market_accuracy": 0.5384615384615384,
+    "n": 25,
+    "model_log_loss": 0.8130129970951591,
+    "market_log_loss": 0.7827925762415694,
+    "log_loss_diff": 0.03022042085358977,
+    "log_loss_diff_se": 0.030711123045159057,
+    "model_accuracy": 0.48,
+    "market_accuracy": 0.48,
     "disagree_over_5pts": {
-      "n": 6,
-      "model_side_won": 0.3333333333333333,
-      "model_said": 0.5802678333333333,
-      "market_said": 0.49666666666666665
+      "n": 10,
+      "model_side_won": 0.4,
+      "model_said": 0.580408,
+      "market_said": 0.498
     },
     "verdict": "too few games to say"
   },
   "pending_or_ungradable": 0,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-18T19:38:12.839531+00:00",
-  "records": 135
+  "generated_at": "2026-11-19T19:38:43.691046+00:00",
+  "records": 147
 }
