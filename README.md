@@ -4,6 +4,13 @@
 
 **Live:** https://lucksociety.github.io/nba-oracle/
 
+The dashboard has four tabs (same layout as the soccer and NHL dashboards):
+
+* **Simulator** (front page, `js/simulator.js`): pick one game and it runs 100,000 simulations with a fresh random seed. It shows win chances, the predicted score, margin and total bands, the most likely exact scores, the official line-ups, and the listed players who matter most. Fixing a listed player as "plays" or "sits out" re-runs the game through the same injury logic (`userAvailability` in `prepareGame`) and shows the win chance before and after. You can type a price in to see the gap; the page itself still fetches no prices.
+* **Forecasts**: the full slate report described below (fixed seed, 300,000 simulations by default).
+* **Results & Record**: graded forecasts against final scores (`learning/report.json`).
+* **How it works**.
+
 A static (HTML/JS, no backend) dashboard. Pick a date (defaults to today, America/New_York) and press **SIMULATE**: the page pulls that day's schedule and the injury report, rebuilds team strength, and runs a seeded possession-level Monte Carlo (300,000 games per matchup by default; 100k/500k selectable) inside Web Workers. It outputs the full NBA ORACLE V1.3 Section 16 per-game report and the Section 17 slate view.
 
 ## Zero-market firewall (Section 1)

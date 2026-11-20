@@ -31,43 +31,98 @@
 </header>
 
 <main>
-  <section class="controls card">
-    <div class="field"><label for="date">Game date (ET)</label><input type="date" id="date"></div>
-    <div class="field"><label for="sims">Simulations / game</label>
-      <select id="sims"><option value="100000">100,000</option><option value="300000" selected>300,000</option><option value="500000">500,000</option></select></div>
-    <div class="field"><label for="seed">Random seed</label><input type="text" id="seed" placeholder="auto: oracle-YYYY-MM-DD"></div>
-    <button id="simulate" class="sim-btn"><span class="ball">🍀</span><span class="sim-label">SIMULATE SLATE</span></button>
-  </section>
-
-  <section id="progress" class="card hidden">
-    <div class="prog-text" id="progText">Loading…</div>
-    <div class="bar"><div id="progBar"></div></div>
-  </section>
-
-  <section id="error" class="card error hidden"></section>
-
-  <section id="results" class="hidden">
-    <div class="card">
-      <h2>Slate forecast <small>ranked by predicted-winner probability</small></h2>
-      <div class="table-wrap"><table id="slate"></table></div>
+  <nav class="tabs card" role="tablist">
+    <div class="tab-btns">
+      <button data-tab="simulator" class="active">Simulator</button>
+      <button data-tab="forecasts">Forecasts</button>
+      <button data-tab="record">Results &amp; Record</button>
+      <button data-tab="model">How it works</button>
     </div>
-    <div class="grid2">
-      <div class="card" id="leans"></div>
-      <div class="card">
-        <h2>Google Sheets list <small>schedule order</small></h2>
-        <textarea id="sheet" readonly rows="6"></textarea>
-        <button id="copy" class="small-btn">Copy</button>
+    <div class="field"><label for="date">Game date (ET)</label><input type="date" id="date"></div>
+  </nav>
+
+  <section id="tab-simulator" class="tab active">
+    <div class="card sim-controls">
+      <div class="field sim-grow"><label for="sim-game">Game</label><select id="sim-game"><option value="">Loading games…</option></select></div>
+      <button id="sim-run" class="small-btn sim-go" disabled>Run 100,000 simulations</button>
+    </div>
+    <div id="sim-note" class="card sim-note">Loading schedule, injury report and team data…</div>
+    <div class="grid2 sim-grid">
+      <div class="sim-col">
+        <div class="card">
+          <h2 id="sim-title">Simulation <small id="sim-info"></small></h2>
+          <div class="probbar sim-bar" id="sim-bar"></div>
+          <div class="probtxt sim-bar" id="sim-bartxt"></div>
+          <div class="table-wrap"><table><thead><tr><th>Result</th><th class="num">Simulated</th><th class="num" title="Type a price in cents to compare. Nothing is fetched: this page reads no prices.">Your price ¢</th><th class="num">Gap</th></tr></thead><tbody id="sim-odds"></tbody></table></div>
+          <p class="muted sim-small">Simulated is the model's own number and uses the availability choices below. This page fetches no prices; type one in to see the gap.</p>
+          <div class="sim-kv" id="sim-kv"></div>
+        </div>
+        <div class="card">
+          <h2>Who plays <small>change a listed player and the game is re-run</small></h2>
+          <div id="sim-avail"></div>
+        </div>
+        <div class="card"><h2>Starting line-ups <small>NBA.com official</small></h2><div id="sim-xi"></div></div>
+      </div>
+      <div class="sim-col">
+        <div class="card">
+          <h2>Final margin</h2>
+          <div id="sim-margin" class="sim-bands"></div>
+          <h2 style="margin-top:18px">Total points</h2>
+          <div id="sim-total" class="sim-bands"></div>
+          <p class="muted sim-small" id="sim-band-note"></p>
+        </div>
+        <div class="card">
+          <h2>Most likely exact scores</h2>
+          <div class="table-wrap"><table><thead><tr><th>Score</th><th class="num">Chance</th></tr></thead><tbody id="sim-top"></tbody></table></div>
+          <p class="muted sim-small">Basketball has thousands of possible scores, so each one is rare. The predicted score uses the middle of the range, not the single most common score.</p>
+        </div>
       </div>
     </div>
-    <h2 class="section-title"><span>Game forecasts</span></h2>
-    <div id="games"></div>
-    <div class="card" id="integrity"></div>
   </section>
 
+  <section id="tab-forecasts" class="tab">
+    <section class="controls card">
+      <div class="field"><label for="sims">Simulations / game</label>
+        <select id="sims"><option value="100000">100,000</option><option value="300000" selected>300,000</option><option value="500000">500,000</option></select></div>
+      <div class="field"><label for="seed">Random seed</label><input type="text" id="seed" placeholder="auto: oracle-YYYY-MM-DD"></div>
+      <button id="simulate" class="sim-btn"><span class="ball">🍀</span><span class="sim-label">SIMULATE SLATE</span></button>
+    </section>
+
+    <section id="progress" class="card hidden">
+      <div class="prog-text" id="progText">Loading…</div>
+      <div class="bar"><div id="progBar"></div></div>
+    </section>
+
+    <section id="error" class="card error hidden"></section>
+
+    <section id="results" class="hidden">
+      <div class="card">
+        <h2>Slate forecast <small>ranked by predicted-winner probability</small></h2>
+        <div class="table-wrap"><table id="slate"></table></div>
+      </div>
+      <div class="grid2">
+        <div class="card" id="leans"></div>
+        <div class="card">
+          <h2>Google Sheets list <small>schedule order</small></h2>
+          <textarea id="sheet" readonly rows="6"></textarea>
+          <button id="copy" class="small-btn">Copy</button>
+        </div>
+      </div>
+      <h2 class="section-title"><span>Game forecasts</span></h2>
+      <div id="games"></div>
+      <div class="card" id="integrity"></div>
+    </section>
+    <p class="muted" id="fc-hint" style="text-align:center">Press SIMULATE SLATE to run every game on this date.</p>
+  </section>
+
+  <section id="tab-record" class="tab"><div id="record"><div class="card"><p class="muted">Loading record…</p></div></div></section>
+
+  <section id="tab-model" class="tab">
   <section class="card about">
     <h2>About this build</h2>
     <p>Each click fetches the day's schedule and the injury report live from ESPN's public API through the NBA Oracle Cloudflare proxy (which strips market fields), then directly from ESPN if the proxy is unreachable, and only then falls back to a repository snapshot refreshed about every 30 minutes by GitHub Actions; the data-sources panel shows which source was actually used on every run, rebuilds opponent-adjusted team ratings with early-season Bayesian shrinkage toward regressed prior-season ratings, applies home court, rest/back-to-back/travel and scenario-weighted injury effects, and runs a seeded possession-by-possession Monte Carlo (shared pace, team shooting shocks with fat tails, game-state feedback, garbage time, late-game fouling, overtime) in a Web Worker.</p>
     <p><strong>Honesty notes:</strong> probabilities are <em>provisional model estimates</em>; no walk-forward backtest or calibration has been performed. There is no tracking, lineup-level or play-by-play data; player impact is a simple box-score estimate. See the <a href="https://github.com/lucksociety/nba-oracle#readme" target="_blank" rel="noopener">README</a> for exactly what is implemented, simplified, or missing.</p>
+  </section>
   </section>
 </main>
 <footer>

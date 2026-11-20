@@ -33,6 +33,7 @@ jobs:
           node test/delivery-freshness.test.mjs
           node test/endgame.test.mjs
           node test/firewall.test.mjs
+          node test/simulator-whatif.test.mjs
           node discord/test-worker.mjs
           node discord/test-auto.mjs
       - name: Prospective evaluation regressions
