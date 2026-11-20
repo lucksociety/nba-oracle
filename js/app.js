@@ -5,6 +5,7 @@ const LIVE_PROXY = 'https://nba-oracle-discord.dreiss324.workers.dev/espn';
 // NBA.com's official lineups file sends no CORS header, so the browser reads it through the same Worker.
 const LINEUP_PROXY = 'https://nba-oracle-discord.dreiss324.workers.dev/nba/lineups';
 import { buildReport, hashSeed, MODEL_VERSION } from './engine.js';
+import { initSimulator } from './simulator.js';
 
 const $ = s => document.querySelector(s);
 const pct = x => (x * 100).toFixed(1) + '%';
@@ -15,6 +16,37 @@ const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '
 
 $('#date').value = etToday();
 const getJSON = async (u) => { const r = await fetch(u, { cache: 'no-store' }); if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); };
+
+// One place that reads the schedule, injury report, line-ups and team data (shared by both tabs).
+const fetchInputs = date => loadInputs(date, getJSON, 'data', [
+  { base: LIVE_PROXY, label: 'live via NBA Oracle Cloudflare proxy (market fields stripped at the proxy and again here)' },
+  { base: ESPN, label: 'live, direct from ESPN' },
+], [{ url: ymd => `${LINEUP_PROXY}/${ymd}`, label: 'live via NBA Oracle Cloudflare proxy' }]);
+const fetchSlate = async date => { const inputs = await fetchInputs(date); return { date, inputs, slate: prepareSlate(date, inputs) }; };
+const sim = initSimulator({ fetchSlate, tipET, esc, pct, f1 });
+
+function showTab(name) {
+  document.querySelectorAll('.tab-btns button').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.id === 'tab-' + name));
+}
+document.querySelectorAll('.tab-btns button').forEach(b => b.addEventListener('click', () => showTab(b.dataset.tab)));
+document.addEventListener('click', e => { const b = e.target.closest('.sim-open'); if (b) { showTab('simulator'); sim.open(b.dataset.id); window.scrollTo({ top: 0 }); } });
+$('#date').addEventListener('change', () => { $('#results').classList.add('hidden'); $('#fc-hint').classList.remove('hidden'); sim.load($('#date').value || etToday()); });
+
+// Graded forecast record, written by the daily learning workflow. Model output against final scores only.
+async function loadRecord() {
+  try {
+    const rep = await getJSON('learning/report.json');
+    const rows = Object.entries(rep.settled_by_version || {}).map(([k, v]) => `<tr><td>${esc(k)}</td><td class="num">${v.n}</td><td class="num">${pct(v.winner_accuracy)}</td><td class="num">${v.log_loss.toFixed(3)}</td><td class="num">${v.score_mae_per_team == null ? '—' : f1(v.score_mae_per_team)}</td><td class="num">${v.total_mae == null ? '—' : f1(v.total_mae)}</td><td class="num">${v.margin_mae == null ? '—' : f1(v.margin_mae)}</td></tr>`).join('');
+    const all = Object.values(rep.settled_by_version || {}), n = all.reduce((s, v) => s + v.n, 0), w = k => n ? all.reduce((s, v) => s + v.n * v[k], 0) / n : NaN;
+    $('#record').innerHTML = `<div class="card"><h2>Forecast record <small>updated ${fmtET(rep.generated_at)}</small></h2>
+      <p class="muted sim-small" style="margin:0 0 12px">Every game is graded on the last forecast frozen before tip-off, against the final score. Each row is one version of the model, so the samples are small.</p>
+      <div class="sim-kv" style="margin:0 0 14px"><div><span>Graded games</span><b>${n}</b></div><div><span>Winner right</span><b>${n ? pct(w('winner_accuracy')) : '—'}</b></div><div><span title="Lower is better. A coin flip scores 0.693.">Log loss (coin flip 0.693)</span><b>${n ? w('log_loss').toFixed(3) : '—'}</b></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Model version</th><th class="num">Games</th><th class="num">Winner right</th><th class="num">Log loss</th><th class="num">Score miss / team</th><th class="num">Total miss</th><th class="num">Margin miss</th></tr></thead><tbody>${rows || '<tr><td colspan="7" class="muted">No graded games yet.</td></tr>'}</tbody></table></div>
+      <p class="muted sim-small">This page shows the model against final scores only. Bets and comparisons with prices are posted in Discord, not here.</p></div>`;
+  } catch (e) { $('#record').innerHTML = `<div class="card"><p class="muted">The record could not be loaded (${esc(e.message)}).</p></div>`; }
+}
+loadRecord();
 
 function progress(text, p) { $('#progress').classList.remove('hidden'); $('#progText').textContent = text; if (p != null) $('#progBar').style.width = (p * 100).toFixed(1) + '%'; }
 
@@ -47,13 +79,11 @@ async function run() {
   const clickAt = new Date().toISOString();
   try {
     progress('Fetching schedule, injury report and team data… (market fields are stripped at ingestion)', 0.02);
-    const inputs = await loadInputs(date, getJSON, 'data', [
-      { base: LIVE_PROXY, label: 'live via NBA Oracle Cloudflare proxy (market fields stripped at the proxy and again here)' },
-      { base: ESPN, label: 'live, direct from ESPN' },
-    ], [{ url: ymd => `${LINEUP_PROXY}/${ymd}`, label: 'live via NBA Oracle Cloudflare proxy' }]);
+    const inputs = await fetchInputs(date);
     const cutoff = new Date().toISOString();
     progress('Rebuilding team strength, rotations and schedule context…', 0.05);
     const slate = prepareSlate(date, inputs);
+    sim.setSlate({ date, inputs, slate });
     if (!slate.games.length) {
       $('#results').classList.add('hidden');
       throw new Error(`No modelled NBA games on ${date}.` + (slate.skipped.length ? ' Skipped: ' + slate.skipped.map(s => `${s.ev.shortName} (${s.reason})`).join('; ') : ''));
@@ -64,6 +94,7 @@ async function run() {
     const elapsed = (performance.now() - t0) / 1000;
     const out = slate.games.map((g, i) => ({ ...g, date, s: res[i].s, seed: res[i].seed, r: buildReport(g.ev, g.prep, res[i].s, { applyInjuries: slate.applyInjuries, injuryNotToday: slate.injuryNotToday }) }));
     render({ date, N, seedBase, inputs, slate, out, cutoff, clickAt, elapsed });
+    $('#fc-hint').classList.add('hidden');
     progress(`Done — ${(N * jobs.length).toLocaleString()} simulated games in ${elapsed.toFixed(1)}s.`, 1);
   } catch (e) {
     console.error(e); $('#error').textContent = '⚠️ ' + e.message; $('#error').classList.remove('hidden'); $('#progress').classList.add('hidden');
@@ -128,6 +159,7 @@ function gameCard(g) {
   </div>
   <div class="probbar"><div style="width:${s.awayWin * 100}%;background:${esc(ev.away.color || '#4da3ff')}"></div><div style="width:${s.homeWin * 100}%;background:${esc(ev.home.color || '#ff7a18')}"></div></div>
   <div class="probtxt"><span>${esc(ev.away.abbr)} ${pct(s.awayWin)}</span><span>${esc(ev.home.abbr)} ${pct(s.homeWin)}</span></div>
+  <div class="meta-line"><button class="small-btn sim-open" data-id="${esc(ev.id)}">Open in simulator</button></div>
   <div class="meta-line">GAME: ${esc(ev.away.name)} @ ${esc(ev.home.name)} · DATE: ${esc(g.date)} · MODEL: NBA ORACLE V1.3 · LINEUP STATUS: <span class="status ${r.lineupStatus}">${r.lineupStatus}</span> · <span class="tier ${r.confidence}">${r.confidence} CONFIDENCE</span></div>
   ${actual ? `<div class="meta-line">${actual}</div>` : ''}
   <div class="final-line">${esc(r.finalLine)} <span class="muted" style="font-weight:400">· predicted winner: ${esc(homeWins ? ev.home.name : ev.away.name)}</span></div>
@@ -180,3 +212,4 @@ function gameCard(g) {
 
 $('#simulate').addEventListener('click', run);
 $('#copy').addEventListener('click', async () => { const t = $('#sheet'); t.select(); try { await navigator.clipboard.writeText(t.value); $('#copy').textContent = 'Copied ✓'; } catch { document.execCommand('copy'); } setTimeout(() => $('#copy').textContent = 'Copy', 1500); });
+sim.load($('#date').value, { jump: true });

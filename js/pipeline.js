@@ -113,5 +113,7 @@ export function prepareSlate(date, inputs, { today = etToday() } = {}) {
       games.push({ ev, prep });
     } catch (e) { skipped.push({ ev, reason: e.message }); }
   }
-  return { date, model, games, skipped, applyInjuries, injuryNotToday, modelVersion: MODEL_VERSION };
+  // `context` lets the Simulator tab re-prepare one game with a what-if availability choice, from the same inputs.
+  return { date, model, games, skipped, applyInjuries, injuryNotToday, modelVersion: MODEL_VERSION,
+    context: { model, data, injuries, lineups, recentGames: recent, applyInjuries, repl, date } };
 }

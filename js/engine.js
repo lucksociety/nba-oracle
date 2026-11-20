@@ -221,6 +221,9 @@ export function injuryImpacts(teamId, injList, data, model, repl, options={}) {
       ? { ...rep, label: `${rep.label} · expected lineup unconfirmed` }
       : o.floor && rep.p >= o.p ? { ...rep, label: `${rep.label} · ${o.label}` }
       : { p: o.p, label: o.label, basis: o.basis, reportLabel: rep.label };
+    // Simulator what-if only: the user fixes a listed player as playing or sitting out. Never set by the forecast pipeline.
+    const pickU = options.userAvailability?.[inj.athleteId];
+    if (pickU === 'in' || pickU === 'out') Object.assign(av, { p: pickU === 'in' ? 1 : 0, label: pickU === 'in' ? 'PLAYS (your choice)' : 'OUT (your choice)', basis: 'Simulator what-if', reportLabel: av.reportLabel || av.label, reportP: av.p });
     const cRow = pc.find(r => r[0] === inj.athleteId);
     const pAll = priorAll[inj.athleteId];
     const pRow = pAll ? pAll.rows.reduce((s, r) => s ? s.map((v, i) => (typeof v === 'number' ? v + r[i] : v)) : r.slice(), null) : null;
@@ -300,7 +303,7 @@ export function prepareGame(ev, ctx) {
   const pH = scheduleMarginPenalty(sH, model.cal), pA = scheduleMarginPenalty(sA, model.cal);
   const ctxMarginHome = hca + altitude - pH.pts + pA.pts; // margin points in home team's favour
   // injuries
-  const exposure={participationWeighting:ctx.participationWeighting};
+  const exposure={participationWeighting:ctx.participationWeighting,userAvailability:ctx.userAvailability};
   const injH = applyInjuries ? injuryImpacts(ev.home.id, applyLineup(injuries?.teams?.[ev.home.id], lineup?.home, rows(ev.home.id)), data, model, repl,exposure) : [];
   const injA = applyInjuries ? injuryImpacts(ev.away.id, applyLineup(injuries?.teams?.[ev.away.id], lineup?.away, rows(ev.away.id)), data, model, repl,exposure) : [];
   const split = (list) => {
