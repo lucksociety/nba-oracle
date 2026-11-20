@@ -77,7 +77,7 @@ export function initSimulator({ fetchSlate, tipET, esc, pct, f1 }) {
     const when = ev.status.completed ? `Final: ${ev.away.abbr} ${ev.away.score} – ${ev.home.score} ${ev.home.abbr}.` : ev.status.state === 'in' ? `In progress (${ev.status.detail}); the model uses no in-game information.` : `Tip-off ${tipET(ev.date)}.`;
     const inj = sl.applyInjuries ? (sl.injuryNotToday ? 'Uses today\'s injury report for a future date, so statuses may change.' : 'Uses the current injury report and official line-ups.') : 'Past date: the injury report is not applied.';
     const src = pack.inputs.live ? 'Schedule and injuries read live.' : 'Live data could not be read; using the stored copy, refreshed about every 30 minutes.';
-    $('sim-note').innerHTML = `<b>${esc(ev.away.name)} at ${esc(ev.home.name)}</b>${ev.venue?.name ? ' · ' + esc(ev.venue.name) : ''}. ${esc(when)}<br>${esc(inj)} ${esc(src)} Probabilities are the model's own and are still being checked against results.${extra ? '<br>' + extra : ''}`;
+    $('sim-note').innerHTML = `<b>${esc(ev.away.name)} at ${esc(ev.home.name)}</b>${ev.venue?.name ? ' · ' + esc(ev.venue.name) : ''}. ${esc(when)}<br>${esc(inj)} ${esc(src)} Probabilities are the model's own; see Results & Record for how they have held up.${extra ? '<br>' + extra : ''}`;
   }
   function availability(g) {
     const el = $('sim-avail'), sl = pack.slate;

@@ -1,0 +1,290 @@
+{
+ "games": 1457,
+ "from": "2025-10-21",
+ "to": "2026-11-19",
+ "files": [
+  "out/wf-2026.json",
+  "out/wf-2027.json"
+ ],
+ "winner": {
+  "reliability": [
+   {
+    "band": "50-55%",
+    "n": 268,
+    "said": 0.5248,
+    "happened": 0.5858
+   },
+   {
+    "band": "55-60%",
+    "n": 231,
+    "said": 0.5753,
+    "happened": 0.5714
+   },
+   {
+    "band": "60-65%",
+    "n": 209,
+    "said": 0.6242,
+    "happened": 0.5885
+   },
+   {
+    "band": "65-70%",
+    "n": 196,
+    "said": 0.6729,
+    "happened": 0.7551
+   },
+   {
+    "band": "70-75%",
+    "n": 188,
+    "said": 0.7237,
+    "happened": 0.7394
+   },
+   {
+    "band": "75-80%",
+    "n": 143,
+    "said": 0.7742,
+    "happened": 0.8042
+   },
+   {
+    "band": "80-85%",
+    "n": 108,
+    "said": 0.8232,
+    "happened": 0.8056
+   },
+   {
+    "band": "85-90%",
+    "n": 77,
+    "said": 0.8712,
+    "happened": 0.8961
+   },
+   {
+    "band": "90-100%",
+    "n": 37,
+    "said": 0.9195,
+    "happened": 0.9189
+   }
+  ],
+  "overall": {
+   "n": 1457,
+   "said": 0.6676,
+   "happened": 0.6891,
+   "gap_ci95": [
+    -0.0444,
+    0.0051
+   ],
+   "log_loss": 0.5933
+  },
+  "fit_all": {
+   "slope": 1.0948,
+   "slope_ci95": [
+    0.9523,
+    1.2681
+   ],
+   "intercept": -0.0148
+  },
+  "forward_test": {
+   "n": 960,
+   "months": 6,
+   "log_loss_before": 0.5819,
+   "log_loss_after": 0.5835,
+   "change": 0.00158,
+   "change_ci95": [
+    -0.00053,
+    0.00366
+   ],
+   "slopes_used": [
+    0.8707,
+    1.129
+   ]
+  },
+  "verdict": "no correction is supported"
+ },
+ "spread": {
+  "reliability": [
+   {
+    "band": "50-55%",
+    "n": 1675,
+    "said": 0.5184,
+    "happened": 0.5206
+   },
+   {
+    "band": "55-60%",
+    "n": 1797,
+    "said": 0.5792,
+    "happened": 0.5815
+   },
+   {
+    "band": "60-65%",
+    "n": 1656,
+    "said": 0.62,
+    "happened": 0.6123
+   },
+   {
+    "band": "65-70%",
+    "n": 2021,
+    "said": 0.6774,
+    "happened": 0.6962
+   },
+   {
+    "band": "70-75%",
+    "n": 1780,
+    "said": 0.7236,
+    "happened": 0.7213
+   },
+   {
+    "band": "75-80%",
+    "n": 1262,
+    "said": 0.7679,
+    "happened": 0.7718
+   },
+   {
+    "band": "80-85%",
+    "n": 8,
+    "said": 0.8016,
+    "happened": 0.875
+   },
+   {
+    "band": "85-90%",
+    "n": 0,
+    "said": null,
+    "happened": null
+   },
+   {
+    "band": "90-100%",
+    "n": 0,
+    "said": null,
+    "happened": null
+   }
+  ],
+  "overall": {
+   "n": 10199,
+   "said": 0.644,
+   "happened": 0.6474,
+   "gap_ci95": [
+    -0.0128,
+    0.0062
+   ],
+   "log_loss": 0.6337
+  },
+  "fit_all": {
+   "slope": 1.0221,
+   "slope_ci95": [
+    0.9602,
+    1.0953
+   ],
+   "intercept": 0
+  },
+  "forward_test": {
+   "n": 6720,
+   "months": 6,
+   "log_loss_before": 0.6365,
+   "log_loss_after": 0.6366,
+   "change": 0.00017,
+   "change_ci95": [
+    -0.00025,
+    0.00057
+   ],
+   "slopes_used": [
+    1.0249,
+    1.0758
+   ]
+  },
+  "verdict": "no correction is supported"
+ },
+ "total": {
+  "reliability": [
+   {
+    "band": "50-55%",
+    "n": 1941,
+    "said": 0.5195,
+    "happened": 0.5152
+   },
+   {
+    "band": "55-60%",
+    "n": 2455,
+    "said": 0.5679,
+    "happened": 0.5682
+   },
+   {
+    "band": "60-65%",
+    "n": 2834,
+    "said": 0.6257,
+    "happened": 0.6267
+   },
+   {
+    "band": "65-70%",
+    "n": 2536,
+    "said": 0.6808,
+    "happened": 0.6782
+   },
+   {
+    "band": "70-75%",
+    "n": 433,
+    "said": 0.7048,
+    "happened": 0.7483
+   },
+   {
+    "band": "75-80%",
+    "n": 0,
+    "said": null,
+    "happened": null
+   },
+   {
+    "band": "80-85%",
+    "n": 0,
+    "said": null,
+    "happened": null
+   },
+   {
+    "band": "85-90%",
+    "n": 0,
+    "said": null,
+    "happened": null
+   },
+   {
+    "band": "90-100%",
+    "n": 0,
+    "said": null,
+    "happened": null
+   }
+  ],
+  "overall": {
+   "n": 10199,
+   "said": 0.6086,
+   "happened": 0.6094,
+   "gap_ci95": [
+    -0.0095,
+    0.0084
+   ],
+   "log_loss": 0.6605
+  },
+  "fit_all": {
+   "slope": 1.0122,
+   "slope_ci95": [
+    0.9277,
+    1.0952
+   ],
+   "intercept": 0
+  },
+  "forward_test": {
+   "n": 6720,
+   "months": 6,
+   "log_loss_before": 0.6587,
+   "log_loss_after": 0.6588,
+   "change": 0.00009,
+   "change_ci95": [
+    -0.00012,
+    0.00031
+   ],
+   "slopes_used": [
+    0.9402,
+    1.0071
+   ]
+  },
+  "verdict": "no correction is supported"
+ },
+ "ranges_80": {
+  "n": 1457,
+  "margin": 0.7865,
+  "total": 0.8099
+ }
+}

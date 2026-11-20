@@ -13,6 +13,17 @@ The dashboard has four tabs (same layout as the soccer and NHL dashboards):
 
 A static (HTML/JS, no backend) dashboard. Pick a date (defaults to today, America/New_York) and press **SIMULATE**: the page pulls that day's schedule and the injury report, rebuilds team strength, and runs a seeded possession-level Monte Carlo (300,000 games per matchup by default; 100k/500k selectable) inside Web Workers. It outputs the full NBA ORACLE V1.3 Section 16 per-game report and the Section 17 slate view.
 
+## Calibration check (2026-11-20)
+`research/calibration-check.mjs` reads walk-forward forecasts (4,000 simulations per game, absences mode, every game predicted only from earlier games) and asks whether the probabilities match what happened and whether a correction would have helped on later games. Result on 1,457 games, 21 Oct 2025 to 19 Nov 2026 (`research/calibration-check.json`):
+
+| Question | Checks | Model said | Happened | Fitted slope [95%] | Correction on later games |
+|---|---|---|---|---|---|
+| Who wins | 1,457 | 66.8% | 68.9% | 1.09 [0.95, 1.27] | log loss +0.0016 (worse) |
+| Margin, seven lines per game | 10,199 | 64.4% | 64.7% | 1.02 [0.96, 1.10] | +0.0002 (worse) |
+| Total, seven lines per game | 10,199 | 60.9% | 60.9% | 1.01 [0.93, 1.10] | +0.0001 (worse) |
+
+The 80% ranges held the real margin 78.6% of the time and the real total 81.0%. A slope of 1 means no correction is needed; all three intervals include 1, and a correction fitted on earlier months and applied to later months made each slightly worse. **No correction is applied.** The check uses the players who actually missed each game, which is more than a morning forecast knows. Re-run it with the commands in `backtest/README.md` followed by `node research/calibration-check.mjs out/wf-2026.json out/wf-2027.json --out research/calibration-check.json`.
+
 ## Zero-market firewall (Section 1)
 * The model **never** fetches, reads, uses or displays odds, spreads, totals, moneylines, implied probabilities, line movement, betting percentages, picks, consensus, power indexes or other models' predictions.
 * ESPN's public scoreboard/summary payloads *do* contain sportsbook fields (`odds`, `pickcenter`, `againstTheSpread`, `winprobability`, `predictor`, …). [`js/firewall.js`](js/firewall.js) strips them **unread** at ingestion: a **whitelist** sanitizer copies only named basketball fields, a recursive delete removes market-like keys, and `assertNoMarketData` throws if any survive. The data builder parses only `boxscore` from game summaries.
@@ -48,7 +59,7 @@ The page fetches live data through the NBA Oracle Cloudflare Worker (`/espn/scor
 * Lineup status is never CONFIRMED pregame (no verified starting-lineup feed); it is PROBABLE or UNCERTAIN.
 * Recent-form weighting is not separate from the season blend.
 
-**Missing:** tracking data, lineup/on-off data, play-by-play calibration, shot-location data, coaching-tendency data, player-level fatigue/minutes loads, time-zone effects, and — most importantly — **Section 13/14 chronological walk-forward validation and calibration** (Brier, log loss, reliability, interval coverage). Until that exists, every probability is a provisional, uncalibrated model estimate, and the HIGH confidence tier is withheld. No backtesting is claimed.
+**Missing:** tracking data, lineup/on-off data, play-by-play calibration, shot-location data, coaching-tendency data, player-level fatigue/minutes loads, time-zone effects, and a live record long enough to confirm the walk-forward calibration check above on real pre-game forecasts. Until that exists, treat every probability as a model estimate, and the HIGH confidence tier is withheld. No backtesting is claimed.
 
 ## Run locally
 ```bash
