@@ -105,6 +105,11 @@ export function prepareSlate(date, inputs, { today = etToday() } = {}) {
     if (ev.seasonType === 1) { skipped.push({ ev, reason: 'Preseason game (not modelled)' }); continue; }
     try {
       const prep = prepareGame(ev, { model, data, injuries, lineups, recentGames: recent, applyInjuries, repl, date });
+      if(applyInjuries && data.playersCurrent?.participation) {
+        const alternate=prepareGame(ev,{model,data,injuries,lineups,recentGames:recent,applyInjuries,repl,date,participationWeighting:true});
+        const delta=['home','away'].reduce((s,k)=>s+Math.abs(prep.params.targetPts[k]-alternate.params.targetPts[k]),0);
+        if(delta>.05) prep.params.sensitivityAlternative=alternate.params;
+      }
       games.push({ ev, prep });
     } catch (e) { skipped.push({ ev, reason: e.message }); }
   }

@@ -13,7 +13,7 @@
 export const CALIBRATION_RESERVE = { moneyline: 0.001, spreads: 0.011, totals: 0.008 };
 export const confidenceOrder = (a, b) => (b.modelStressLower ?? b.modelProb) - (a.modelStressLower ?? a.modelProb)
   || (b.roi ?? -Infinity) - (a.roi ?? -Infinity);
-export const RULES = { selection: 'joint-roster-quote-stress-v3', minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
+export const RULES = { selection: 'participation-roster-quote-stress-v4', minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
 /** Shared V1.3 qualification test (both venues). Returns the list of failed rules (empty = qualifies). */
 export function scoreSupports(c, game) {
   const a = game?.final?.away, h = game?.final?.home;
@@ -27,9 +27,10 @@ export function scoreSupports(c, game) {
 // Conditional probabilities retain the original simulation mixture for every other player.
 // Single-player checks plus joint states of at least 1% modeled mass (up to eight players).
 export function availabilityStress(bet, game) {
+  const modelChecks=(game.modelSensitivity||[]).map(s=>({name:s.name,state:'model-input',sampleN:s.sims,prob:modelProb(bet,s)}));
   if (!Array.isArray(game.availabilityConditionals)) {
     const uncertain = Object.values(game.availability || {}).flat().some(x => x.p > 0 && x.p < 1);
-    return uncertain ? [{name:'missing conditional availability forecast',sampleN:0,prob:NaN}] : [];
+    return [...modelChecks,...(uncertain ? [{name:'missing conditional availability forecast',sampleN:0,prob:NaN}] : [])];
   }
   const checks=game.availabilityConditionals.flatMap(g => ['in','out'].map(state => ({
     name:g.name,side:g.side,state,sampleN:g[state].sims,prob:modelProb(bet,g[state])
@@ -43,7 +44,7 @@ export function availabilityStress(bet, game) {
       state:'joint',sampleN:scenario.sims,prob:scenario.sims ? modelProb(bet,scenario) : NaN
     });
   }
-  return checks;
+  return [...checks,...modelChecks];
 }
 export function ruleFails(c, p) {
   // Numerical sampling error only; this is not a confidence interval for model accuracy.

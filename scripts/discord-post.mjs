@@ -62,6 +62,7 @@ export function buildMessages() {
     let d = `**${g.away.abbr} ${g.final.away} – ${g.home.abbr} ${g.final.home}**  ·  ${fav.abbr} win ${pct(Math.max(g.homeWin, g.awayWin))}\n`;
     d += `Exp. margin ${fav.abbr} ${mFav.toFixed(1)} · total ${g.expTotal.toFixed(1)} (80%: ${g.iTotal[0].toFixed(0)}–${g.iTotal[1].toFixed(0)}) · OT ${pct(g.otProb)}\n`;
     d += `Confidence **${g.confidence}** · lineups **${g.lineupStatus}**\n`;
+    if(g.modelSensitivity?.length)d+='Injury exposure checked against recency-weighted participation as well as the season-average baseline.\n';
     if (g.lineups) for (const k of ['away', 'home']) {
       const L = g.lineups[k]; const tag = { CONFIRMED: '✅ confirmed', EXPECTED: '🕒 expected', NONE: '❔ not posted' }[L.status] || L.status;
       d += `${g[k].abbr} ${tag}: ${L.starters.length ? L.starters.map(p => p.name.split(' ').slice(1).join(' ') || p.name).join(', ') : '—'}${L.updatedAt ? ` (${etHM(L.updatedAt)} ET)` : ''}\n`;
