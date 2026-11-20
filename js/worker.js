@@ -2,10 +2,11 @@
 import { simulate, summarize } from './engine.js';
 // Final-margin and total-points bands for the Simulator tab (model output only).
 function scoreBands(sim, s) {
-  const N = sim.N, margin = new Array(10).fill(0), base = Math.floor(s.medTotal / 10) * 10 - 20, total = new Array(7).fill(0);
+  const N = sim.N, margin = new Array(14).fill(0), base = Math.floor(s.medTotal / 10) * 10 - 20, total = new Array(7).fill(0);
   for (let i = 0; i < N; i++) {
     const m = sim.homePts[i] - sim.awayPts[i], t = sim.homePts[i] + sim.awayPts[i];
-    margin[m <= -20 ? 0 : m <= -15 ? 1 : m <= -10 ? 2 : m <= -5 ? 3 : m < 0 ? 4 : m < 5 ? 5 : m < 10 ? 6 : m < 15 ? 7 : m < 20 ? 8 : 9]++;
+    // five-point bands out to 30, so the open-ended last band is a true tail (home margin m; a game cannot end level)
+    margin[m <= -30 ? 0 : m >= 30 ? 13 : m < 0 ? 6 - Math.floor(-m / 5) : 7 + Math.floor(m / 5)]++;
     total[Math.max(0, Math.min(6, Math.floor((t - base) / 10) + 1))]++;
   }
   return { margin: margin.map(c => c / N), total: { base, p: total.map(c => c / N) } };
