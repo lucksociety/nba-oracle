@@ -1,0 +1,32 @@
+# One-off research probes. Runs only on pushes to probe/** branches; never touches main, the site or Discord.
+name: probe
+on:
+  push:
+    branches: ["probe/**"]
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    env:
+      DATA_DIR: ${{ github.workspace }}/bt-data
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Fetch box-score history (basketball fields only)
+        run: node scripts/backtest-fetch.mjs 2025 2026 2027
+      - name: Walk-forward forecasts, 2025-26 and 2026-27 to date
+        run: |
+          node backtest/walkforward.mjs --season 2026 --mode absences --sims 4000 --out wf-2026.json
+          node backtest/walkforward.mjs --season 2027 --mode absences --sims 4000 --out wf-2027.json
+      - name: Calibration check
+        run: node research/calibration-check.mjs wf-2026.json wf-2027.json --out research/calibration-check.json
+      - name: Save result to this branch
+        if: always()
+        run: |
+          git config user.name "nba-oracle-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add research/calibration-check.json || true
+          git diff --cached --quiet || (git commit -m "probe: calibration check" && git push)
