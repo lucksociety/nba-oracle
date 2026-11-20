@@ -64,7 +64,8 @@ export function initSimulator({ fetchSlate, tipET, esc, pct, f1 }) {
     $('sim-kv').innerHTML = [[`${A} ${r.fin.away} – ${r.fin.home} ${H}`, 'Predicted score'], [`${mH >= 0 ? H : A} by ${f1(Math.abs(mH))}`, 'Expected margin'], [f1(s.expTotal), 'Expected total'],
       [pct(s.otProb), 'Goes to overtime'], [pct(s.close5), 'Decided by 5 or fewer'], [pct((homeFav ? s.blowouts.home : s.blowouts.away)[0]), `${fav} by 10 or more`]]
       .map(([b, l]) => `<div><span>${esc(l)}</span><b>${esc(b)}</b></div>`).join('');
-    bands('sim-margin', [`${A} by 20+`, `${A} by 15–19`, `${A} by 10–14`, `${A} by 5–9`, `${A} by 1–4`, `${H} by 1–4`, `${H} by 5–9`, `${H} by 10–14`, `${H} by 15–19`, `${H} by 20+`], s.bands.margin, 5);
+    const R = ['1–4', '5–9', '10–14', '15–19', '20–24', '25–29', '30+'];
+    bands('sim-margin', [...R.slice().reverse().map(x => `${A} by ${x}`), ...R.map(x => `${H} by ${x}`)], s.bands.margin, 7);
     const b0 = s.bands.total.base;
     bands('sim-total', [`Under ${b0}`, ...[0, 1, 2, 3, 4].map(k => `${b0 + 10 * k}–${b0 + 10 * k + 9}`), `${b0 + 50} or more`], s.bands.total.p, 0);
     $('sim-band-note').textContent = `Eight games in ten land between ${s.iTotal[0].toFixed(0)} and ${s.iTotal[1].toFixed(0)} total points. Sampling error on the win chance is about ±${(196 * s.convergence.winProbSE).toFixed(1)} points.`;
