@@ -48,6 +48,26 @@ async function loadRecord() {
 }
 loadRecord();
 
+// Calibration check: research/calibration-check.json, produced by research/calibration-check.mjs from walk-forward forecasts.
+async function loadCalibration() {
+  try {
+    const c = await getJSON('research/calibration-check.json'), w = c.winner, pc = x => (x * 100).toFixed(1) + '%';
+    const band = b => b.n ? `<tr><td>${esc(b.band)}</td><td class="num">${b.n}</td><td class="num">${pc(b.said)}</td><td class="num">${pc(b.happened)}</td></tr>` : '';
+    const line = (name, o) => `<tr><td>${name}</td><td class="num">${o.overall.n.toLocaleString()}</td><td class="num">${pc(o.overall.said)}</td><td class="num">${pc(o.overall.happened)}</td><td class="num">${o.forward_test.change > 0 ? 'worse by ' : 'better by '}${Math.abs(o.forward_test.change).toFixed(4)}</td><td>${o.forward_test.change < 0 && o.forward_test.change_ci95[1] < 0 ? 'Apply it' : 'Leave as is'}</td></tr>`;
+    const el = document.createElement('div'); el.className = 'card';
+    el.innerHTML = `<h2>Are the probabilities right? <small>${c.games.toLocaleString()} games, ${esc(c.from)} to ${esc(c.to)}</small></h2>
+      <p class="muted sim-small" style="margin:0 0 12px">Every game was forecast using only games played before it. "Said" is the chance the model gave its favoured side; "happened" is how often that side came through. A correction was then fitted on earlier months and tried on later ones.</p>
+      <div class="table-wrap"><table><thead><tr><th>Question</th><th class="num">Checks</th><th class="num">Model said</th><th class="num">Happened</th><th class="num" title="Change in log loss on later games when a correction fitted on earlier games is applied. Lower is better.">With a correction</th><th>Decision</th></tr></thead><tbody>
+      ${line('Who wins', w)}${line('Margin (seven lines per game)', c.spread)}${line('Total points (seven lines per game)', c.total)}</tbody></table></div>
+      <p class="muted sim-small">The model's 80% ranges held the real margin ${pc(c.ranges_80.margin)} of the time and the real total ${pc(c.ranges_80.total)} of the time.</p>
+      <h2 style="margin-top:16px">Who wins, by how sure the model was</h2>
+      <div class="table-wrap"><table><thead><tr><th>Model said</th><th class="num">Games</th><th class="num">Average said</th><th class="num">Happened</th></tr></thead><tbody>${w.reliability.map(band).join('')}</tbody></table></div>
+      <p class="muted sim-small">Bands with a couple of hundred games move by several points from luck alone. This check knows who actually sat out each game, which a morning forecast does not, so live results can be somewhat worse.</p>`;
+    $('#record').appendChild(el);
+  } catch { /* the check file is optional */ }
+}
+loadCalibration();
+
 function progress(text, p) { $('#progress').classList.remove('hidden'); $('#progText').textContent = text; if (p != null) $('#progBar').style.width = (p * 100).toFixed(1) + '%'; }
 
 function runPool(jobs, N, onProg) {
@@ -123,7 +143,7 @@ function render(ctx) {
       <div class="blk wide"><h3>Status</h3><ul>
         <li>Zero-market firewall: ESPN <code>odds</code> and all market fields are deleted unread at ingestion (whitelist sanitizer + key scan). No sportsbook, consensus, expert-pick or third-party model data is used anywhere.</li>
         <li>Injuries: ${slate.applyInjuries ? (slate.injuryNotToday ? 'current ESPN report applied to a future date — statuses may change (UNCERTAIN).' : 'current ESPN report applied with scenario weighting (Out / Doubtful / Questionable / Probable).') : 'NOT applied — the current report would be post-cutoff information for a past date.'} Starting lineups are not available from a verified feed, so no game is marked CONFIRMED.</li>
-        <li>Calibration: probabilities are <strong>provisional</strong>. No chronological walk-forward validation, Brier/log-loss audit or reliability curve has been run. Home court (${m.cal.homeCourtPts} pts) and back-to-back (${m.cal.backToBackPts} pts) are fitted on ${m.cal.sampleGames} prior-season results; other effects are documented priors.</li>
+        <li>Calibration: checked on 1,457 past games forecast in date order (see Results &amp; Record). No correction is applied because none improved later games. Home court (${m.cal.homeCourtPts} pts) and back-to-back (${m.cal.backToBackPts} pts) are fitted on ${m.cal.sampleGames} prior-season results; other effects are documented priors.</li>
         ${slate.skipped.length ? `<li>Skipped: ${slate.skipped.map(s => esc(`${s.ev.shortName} — ${s.reason}`)).join('; ')}</li>` : ''}
       </ul></div>
     </div>`;
@@ -203,7 +223,7 @@ function gameCard(g) {
       <div class="kv"><span>Schedule</span><span>${esc(ev.away.abbr)}: ${F.sA.rest}d rest${F.sA.b2b ? ', B2B' : ''}${F.sA.travelMi ? `, ${F.sA.travelMi} mi since last game` : ''} · ${esc(ev.home.abbr)}: ${F.sH.rest}d rest${F.sH.b2b ? ', B2B' : ''}</span></div>
       <div class="kv"><span>Ratings sample</span><span>${esc(ev.away.abbr)} ${prep.A.gCur} gp (${Math.round(prep.A.wCur * 100)}% weight) · ${esc(ev.home.abbr)} ${prep.H.gCur} gp (${Math.round(prep.H.wCur * 100)}% weight)</span></div>
       <div class="kv"><span>Score selection</span><span>${esc(r.fin.rule)}</span></div>
-      <div class="kv"><span>Probabilities</span><span>Provisional / uncalibrated. ${esc(r.confidenceNote)}</span></div>
+      <div class="kv"><span>Probabilities</span><span>Checked against past results; no correction applied. ${esc(r.confidenceNote)}</span></div>
       ${inj ? `<details><summary>Availability inputs (${prep.injA.length + prep.injH.length} listed)</summary><table class="inj"><thead><tr><th>Team</th><th>Player</th><th>Status</th><th>P(play)</th><th>MPG</th><th>Net pts if out</th><th>Report</th></tr></thead><tbody>${inj}</tbody></table></details>` : '<div class="muted" style="font-size:12.5px">No listed injuries for either team in the report used.</div>'}
     </div>
   </div>

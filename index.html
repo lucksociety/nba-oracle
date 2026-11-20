@@ -18,7 +18,7 @@
   <a class="tb-brand" href="./"><img src="assets/brand/coin-192.png" alt="Luck Society"><span>LUCK SOCIETY</span></a>
   <div class="badges">
     <span class="badge fw" title="No odds, spreads, totals, moneylines, picks or other models are fetched, used or shown. ESPN odds fields are stripped at ingestion.">🛡️ Zero-market firewall ON</span>
-    <span class="badge warn" title="No chronological walk-forward calibration has been run yet.">Probabilities provisional · uncalibrated</span>
+    <span class="badge fw" title="Checked on 1,457 past games forecast in date order (20 Nov 2026). When the model said about 67%, it happened 69% of the time. No correction improved results on later games, so none is applied. See Results &amp; Record.">Probabilities checked on 1,457 games</span>
   </div>
 </nav>
 <header class="hero">
@@ -121,7 +121,7 @@
   <section class="card about">
     <h2>About this build</h2>
     <p>Each click fetches the day's schedule and the injury report live from ESPN's public API through the NBA Oracle Cloudflare proxy (which strips market fields), then directly from ESPN if the proxy is unreachable, and only then falls back to a repository snapshot refreshed about every 30 minutes by GitHub Actions; the data-sources panel shows which source was actually used on every run, rebuilds opponent-adjusted team ratings with early-season Bayesian shrinkage toward regressed prior-season ratings, applies home court, rest/back-to-back/travel and scenario-weighted injury effects, and runs a seeded possession-by-possession Monte Carlo (shared pace, team shooting shocks with fat tails, game-state feedback, garbage time, late-game fouling, overtime) in a Web Worker.</p>
-    <p><strong>Honesty notes:</strong> probabilities are <em>provisional model estimates</em>; no walk-forward backtest or calibration has been performed. There is no tracking, lineup-level or play-by-play data; player impact is a simple box-score estimate. See the <a href="https://github.com/lucksociety/nba-oracle#readme" target="_blank" rel="noopener">README</a> for exactly what is implemented, simplified, or missing.</p>
+    <p><strong>Honesty notes:</strong> the probabilities were checked on 20 November 2026 against 1,457 past games forecast in date order (every game predicted only from earlier games). They matched what happened closely, and no correction improved later games, so none is applied; the figures are on the Results &amp; Record tab. That check knows who actually missed each game, which a morning forecast does not, so live results can be somewhat worse. There is no tracking, lineup-level or play-by-play data; player impact is a simple box-score estimate. See the <a href="https://github.com/lucksociety/nba-oracle#readme" target="_blank" rel="noopener">README</a> for exactly what is implemented, simplified, or missing.</p>
   </section>
   </section>
 </main>
