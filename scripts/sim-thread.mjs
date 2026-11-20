@@ -6,5 +6,11 @@ parentPort.on('message', ({ i, params, N, seed }) => {
   const t0 = Date.now();
   const sim = simulate(params, N, seed, undefined, {captureAvailability:true});
   const s = summarize(sim); s.ms = Date.now() - t0; s.calibration = sim.calibration;
-  parentPort.postMessage({ i, s, ...outcomeHistograms(sim) });
+  const modelSensitivity=[];
+  if(params.sensitivityAlternative) {
+    const alternative=simulate(params.sensitivityAlternative,Math.min(N,50000),seed);
+    const {sims,marginHist,totalHist}=outcomeHistograms(alternative);
+    modelSensitivity.push({name:'recency-weighted participation baseline',sims,marginHist,totalHist});
+  }
+  parentPort.postMessage({ i, s, ...outcomeHistograms(sim),modelSensitivity });
 });

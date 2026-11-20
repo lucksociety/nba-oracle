@@ -13,7 +13,7 @@
 export const CALIBRATION_RESERVE = { moneyline: 0.001, spreads: 0.011, totals: 0.008 };
 export const confidenceOrder = (a, b) => (b.modelStressLower ?? b.modelProb) - (a.modelStressLower ?? a.modelProb)
   || (b.roi ?? -Infinity) - (a.roi ?? -Infinity);
-export const RULES = { selection: 'joint-roster-quote-stress-v3', minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
+export const RULES = { selection: 'participation-roster-quote-stress-v4', minModelProb: 0.5, minEdge: 0.03, maxEdge: 0.08, maxPrice: 0.90, maxBidAskSpread: 0.10, minDepthContracts: 10 };
 /** Shared V1.3 qualification test (both venues). Returns the list of failed rules (empty = qualifies). */
 export function scoreSupports(c, game) {
   const a = game?.final?.away, h = game?.final?.home;
@@ -27,9 +27,10 @@ export function scoreSupports(c, game) {
 // Conditional probabilities retain the original simulation mixture for every other player.
 // Single-player checks plus joint states of at least 1% modeled mass (up to eight players).
 export function availabilityStress(bet, game) {
+  const modelChecks=(game.modelSensitivity||[]).map(s=>({name:s.name,state:'model-input',sampleN:s.sims,prob:modelProb(bet,s)}));
   if (!Array.isArray(game.availabilityConditionals)) {
     const uncertain = Object.values(game.availability || {}).flat().some(x => x.p > 0 && x.p < 1);
-    return uncertain ? [{name:'missing conditional availability forecast',sampleN:0,prob:NaN}] : [];
+    return [...modelChecks,...(uncertain ? [{name:'missing conditional availability forecast',sampleN:0,prob:NaN}] : [])];
   }
   const checks=game.availabilityConditionals.flatMap(g => ['in','out'].map(state => ({
     name:g.name,side:g.side,state,sampleN:g[state].sims,prob:modelProb(bet,g[state])
@@ -43,7 +44,7 @@ export function availabilityStress(bet, game) {
       state:'joint',sampleN:scenario.sims,prob:scenario.sims ? modelProb(bet,scenario) : NaN
     });
   }
-  return checks;
+  return [...checks,...modelChecks];
 }
 export function ruleFails(c, p) {
   // Numerical sampling error only; this is not a confidence interval for model accuracy.
@@ -68,7 +69,7 @@ export function ruleFails(c, p) {
   c.quoteStressCost=c.cost!=null && c.quoteStressAsk!=null
     ? c.quoteStressAsk+Math.max(c.cost-c.ask,stressedFee) : null;
   c.quoteStressEV=c.quoteStressCost>0 ? c.modelStressLower/c.quoteStressCost-1 : null;
-  return [c.cost!=null && !(c.quoteStressEV>0) && 'EV does not survive one-cent worse quote after roster/calibration stress', checks.some(x => !(x.stressLower > RULES.minModelProb) || (c.cost != null && !(x.stressLower > c.cost))) && 'bet not robust to uncertain-player IN/OUT outcomes (or insufficient conditional sims)', c.scoreConsistent === false && 'bet does not win at displayed predicted score', !(c.modelStressLower > RULES.minModelProb) && 'probability not above 50% after calibration stress',
+  return [c.cost!=null && !(c.quoteStressEV>0) && 'EV does not survive one-cent worse quote after roster/calibration stress', checks.some(x => !(x.stressLower > RULES.minModelProb) || (c.cost != null && !(x.stressLower > c.cost))) && 'bet not robust to uncertain-player IN/OUT or participation-baseline outcomes (or insufficient conditional sims)', c.scoreConsistent === false && 'bet does not win at displayed predicted score', !(c.modelStressLower > RULES.minModelProb) && 'probability not above 50% after calibration stress',
     c.cost != null && !(c.modelStressLower > c.cost) && 'EV does not survive historical calibration stress', !(lower > RULES.minModelProb) && 'probability not above 50% after Monte Carlo error',
     c.cost != null && !(lower > c.cost) && 'positive EV not resolved beyond Monte Carlo error', (!Number.isFinite(p) || p > 1) && 'invalid model probability', !(p > RULES.minModelProb) && 'model ≤50%', c.cost != null && !(c.edge > 0) && 'edge ≤0',
     c.cost != null && c.edge > 0 && !(c.edge >= RULES.minEdge) && `edge < ${RULES.minEdge * 100} pts minimum`,

@@ -23,6 +23,7 @@ jobs:
           node test/joint-roster.test.mjs
           node test/quote-stress.test.mjs
           node test/availability.test.mjs
+          node test/participation.test.mjs
           node test/freshness.test.mjs
           node test/polymarket-source.test.mjs
           node test/probability-certainty.test.mjs

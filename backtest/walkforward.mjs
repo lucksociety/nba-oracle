@@ -12,6 +12,7 @@ import os from 'node:os';
 import { Worker } from 'node:worker_threads';
 import { PRIORS, buildModel, prepareGame, replacementRates, hashSeed } from '../js/engine.js';
 import { calibrate } from '../scripts/build-data.mjs';
+import { participationHistory } from '../js/participation.js';
 
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
 const DIR = process.env.DATA_DIR || '/workspace/bt-data';
@@ -23,6 +24,10 @@ const calOver = over.cal || {};
 const read = async f => JSON.parse(await fs.readFile(`${DIR}/${f}`, 'utf8'));
 const [gamesCur, gamesPrior, playersPrior, teams, lines] = await Promise.all([read(`games-${S}.json`), read(`games-${S - 1}.json`), read(`players-${S - 1}.json`), read('teams.json'), read(`cache/lines-${S}.json`)]);
 const cal = { ...calibrate(gamesPrior.games), ...calOver };
+if(PRIORS.participationWeighting) {
+  const priorLines=await read(`cache/lines-${S-1}.json`);
+  playersPrior.participation=participationHistory(priorLines);
+}
 if (calOver.hcaScale) cal.homeCourtPts *= calOver.hcaScale;
 const repl = replacementRates(playersPrior);
 const abbr = id => teams[id]?.abbr;
@@ -36,7 +41,10 @@ function addGame(g) {
     for (const r of rows) { const a = agg[t][r[0]] ||= [r[0], r[1], 0, ...Array(17).fill(0), '']; a[2] += 1; for (let k = 2; k <= 17; k++) a[k + 1] += r[k]; a[19] += r[18]; a[20] = g.d; }
   }
 }
-const playersNow = () => ({ season: S, teamGames: { ...teamGames }, teams: Object.fromEntries(Object.entries(agg).map(([t, m]) => [t, Object.values(m).map(r => r.slice())])) });
+const processedLines={};
+const playersNow = () => ({ season: S, teamGames: { ...teamGames },
+  ...(PRIORS.participationWeighting?{participation:participationHistory(processedLines)}:{}),
+  teams: Object.fromEntries(Object.entries(agg).map(([t, m]) => [t, Object.values(m).map(r => r.slice())])) });
 
 const byDate = {};
 for (const [id, g] of Object.entries(lines)) (byDate[g.d] ||= []).push({ id, ...g });
@@ -65,7 +73,7 @@ for (const d of dates) {
       gH: model.teams[g.h].gCur, gA: model.teams[g.a].gCur, out: MODE === 'absences' ? [g.h, g.a].map(t => (injuries.teams[t] || []).length) : null });
     if (SIMS) jobs.push({ i: recs.length - 1, params: P, N: SIMS, seed: hashSeed(`bt-${g.id}`) });
   }
-  for (const g of byDate[d]) addGame(g);
+  for (const g of byDate[d]) {addGame(g);processedLines[g.id]=g;}
 }
 if (SIMS) {
   await new Promise((resolve, reject) => {

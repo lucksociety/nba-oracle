@@ -1,0 +1,34 @@
+{
+  "2026": {
+    "baseline": {
+      "n": 1231,
+      "analytic_log_loss": 0.5910598605866508,
+      "analytic_brier": 0.20243727052858154,
+      "margin_mae": 11.233721886034106,
+      "total_mae": 15.036861030858192
+    },
+    "weighted": {
+      "n": 1231,
+      "analytic_log_loss": 0.5907139430432641,
+      "analytic_brier": 0.20229787992273374,
+      "margin_mae": 11.230648427682135,
+      "total_mae": 15.044882509780992
+    }
+  },
+  "2027": {
+    "baseline": {
+      "n": 226,
+      "analytic_log_loss": 0.6033285698729351,
+      "analytic_brier": 0.2088366949474771,
+      "margin_mae": 12.044436160295936,
+      "total_mae": 14.237817374010712
+    },
+    "weighted": {
+      "n": 226,
+      "analytic_log_loss": 0.6035634425835134,
+      "analytic_brier": 0.20892227741259506,
+      "margin_mae": 12.044050141624009,
+      "total_mae": 14.242206297777518
+    }
+  }
+}

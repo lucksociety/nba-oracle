@@ -4,8 +4,9 @@
 // Nothing in this file reads, accepts or produces sportsbook / market information.
 
 import { lineupsForEvent, applyLineup, gameLineupStatus } from './lineups.js';
+import { participationShare } from './participation.js';
 
-export const MODEL_VERSION = 'NBA ORACLE V1.3.3 (regulation endgame correction)';
+export const MODEL_VERSION = 'NBA ORACLE V1.3.4 (participation exposure sensitivity)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
 export const PRIORS = {
@@ -18,6 +19,7 @@ export const PRIORS = {
   leaguePseudoTeamGames: 200,
   threeInFourPts: 0.6, travelPtsPer1000mi: 0.3, travelCapPts: 1.0, altitudePts: 0.7, prevOTb2bPts: 0.3, scheduleCapPts: 3.5,
   injuryRedistribution: 1.0, injuryTeamCapPer100: 12, replacementPPU: 0.96,
+  participationWeighting: false,
   availability: { out: 0.0, doubtful: 0.25, questionable: 0.55, probable: 0.85, available: 0.93, dtdDefault: 0.6, offNote: 0.05 },
   restrictedProb: 0.25, restrictedMinFrac: 0.7,
   // variance structure: hand-tuned on the 2026-10-27/28 slates so average simulated margin SD (~13.7) is close to the
@@ -200,7 +202,7 @@ export function parseAvailability(inj) {
 }
 
 /** Build player impact entries for a team's injury list. Values are net points per game if absent (positive = team worse). */
-export function injuryImpacts(teamId, injList, data, model, repl) {
+export function injuryImpacts(teamId, injList, data, model, repl, options={}) {
   const pc = data.playersCurrent?.teams?.[teamId] || [];
   const tgC = data.playersCurrent?.teamGames?.[teamId] || 0, tgP = data.playersPrior?.teamGames?.[teamId] || 0;
   const priorAll = {};
@@ -208,6 +210,7 @@ export function injuryImpacts(teamId, injList, data, model, repl) {
     const x = priorAll[r[0]] ||= { rows: [], sameTeam: null }; x.rows.push(r); if (t === teamId) x.sameTeam = r;
   }
   const team = model.teams[teamId]; const w = team?.wCur ?? 0;
+  const weighted=options.participationWeighting ?? PRIORS.participationWeighting;
   const out = [];
   for (const inj of injList || []) {
     const rep = parseAvailability(inj); const o = inj.override;
@@ -232,8 +235,10 @@ export function injuryImpacts(teamId, injList, data, model, repl) {
     const shrinkMin = (curMin + 0.5 * priMin) / (curMin + 0.5 * priMin + 300); // small samples shrink toward replacement
     const offPG = Math.max(-1, (offR - repl.off) * mpg * shrinkMin * PRIORS.injuryRedistribution);
     const defPG = Math.max(-0.5, (defR - repl.def) * mpg * shrinkMin * PRIORS.injuryRedistribution);
-    const shareC = tgC ? (cRow ? cRow[PF.gp] / tgC : 0) : 0;
-    const shareP = tgP && pAll?.sameTeam ? pAll.sameTeam[PF.gp] / tgP : 0;
+    const shareC = (weighted?participationShare(data.playersCurrent,teamId,inj.athleteId,model.cutoffDate,PRIORS.recencyHalfLifeGames):null)
+      ?? (tgC ? (cRow ? cRow[PF.gp] / tgC : 0) : 0);
+    const shareP = (weighted?participationShare(data.playersPrior,teamId,inj.athleteId,model.cutoffDate,PRIORS.recencyHalfLifeGames):null)
+      ?? (tgP && pAll?.sameTeam ? pAll.sameTeam[PF.gp] / tgP : 0);
     const presence = clamp(tgC ? w * shareC + (1 - w) * shareP : shareP, 0, 1);
     out.push({ ...inj, ...av, mpg, offPG, defPG, netPG: offPG + defPG, presence, gpCur: cRow ? cRow[PF.gp] : 0, gpPrior: pRow ? pRow[PF.gp] : 0,
       note: presence < 0.3 ? 'Mostly absent from baseline sample already (effect largely priced into team ratings)' : '' });
@@ -295,8 +300,9 @@ export function prepareGame(ev, ctx) {
   const pH = scheduleMarginPenalty(sH, model.cal), pA = scheduleMarginPenalty(sA, model.cal);
   const ctxMarginHome = hca + altitude - pH.pts + pA.pts; // margin points in home team's favour
   // injuries
-  const injH = applyInjuries ? injuryImpacts(ev.home.id, applyLineup(injuries?.teams?.[ev.home.id], lineup?.home, rows(ev.home.id)), data, model, repl) : [];
-  const injA = applyInjuries ? injuryImpacts(ev.away.id, applyLineup(injuries?.teams?.[ev.away.id], lineup?.away, rows(ev.away.id)), data, model, repl) : [];
+  const exposure={participationWeighting:ctx.participationWeighting};
+  const injH = applyInjuries ? injuryImpacts(ev.home.id, applyLineup(injuries?.teams?.[ev.home.id], lineup?.home, rows(ev.home.id)), data, model, repl,exposure) : [];
+  const injA = applyInjuries ? injuryImpacts(ev.away.id, applyLineup(injuries?.teams?.[ev.away.id], lineup?.away, rows(ev.away.id)), data, model, repl,exposure) : [];
   const split = (list) => {
     let fixedOff = 0, fixedDef = 0; const unc = [];
     for (const p of list) {
