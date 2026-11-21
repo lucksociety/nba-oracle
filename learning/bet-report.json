@@ -441,26 +441,117 @@
         "minimum_games": 500,
         "minimum_days": 30
       }
+    },
+    "NBA ORACLE V1.3.4 (participation exposure sensitivity) / participation-roster-quote-stress-v4 / totals": {
+      "by_direction": {
+        "over": {
+          "n": 1,
+          "wins": 1,
+          "win_rate": 1,
+          "mean_probability": 0.60967,
+          "brier": 0.15235750889999997,
+          "flat_cost_roi": 0.74727425216662,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        },
+        "under": {
+          "n": 2,
+          "wins": 0,
+          "win_rate": 0,
+          "mean_probability": 0.6461683333333333,
+          "brier": 0.4182690998055556,
+          "flat_cost_roi": -1.0,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        }
+      },
+      "n": 3,
+      "wins": 1,
+      "win_rate": 0.3333333333333333,
+      "mean_probability": 0.6340022222222222,
+      "brier": 0.329631902837037,
+      "log_loss": 0.8595327331915072,
+      "flat_cost_roi": -0.4175752492777933,
+      "reliability": [
+        {
+          "lower_exclusive": 0.6,
+          "upper_inclusive": 0.7,
+          "n": 3,
+          "mean_probability": 0.6340022222222222,
+          "win_rate": 0.3333333333333333
+        }
+      ],
+      "calibration_status": "monitor_only_no_automatic_probability_changes",
+      "calibration_proposal": {
+        "status": "insufficient_forward_sample",
+        "minimum_games": 500,
+        "minimum_days": 30
+      }
+    },
+    "NBA ORACLE V1.3.4 (participation exposure sensitivity) / participation-roster-quote-stress-v4 / spreads": {
+      "by_direction": {
+        "away": {
+          "n": 1,
+          "wins": 1,
+          "win_rate": 1,
+          "mean_probability": 0.5240466666666667,
+          "brier": 0.2265315755111111,
+          "flat_cost_roi": 1.030539311241066,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        }
+      },
+      "n": 1,
+      "wins": 1,
+      "win_rate": 1,
+      "mean_probability": 0.5240466666666667,
+      "brier": 0.2265315755111111,
+      "log_loss": 0.6461745401023968,
+      "flat_cost_roi": 1.030539311241066,
+      "reliability": [
+        {
+          "lower_exclusive": 0.5,
+          "upper_inclusive": 0.6,
+          "n": 1,
+          "mean_probability": 0.5240466666666667,
+          "win_rate": 1
+        }
+      ],
+      "calibration_status": "monitor_only_no_automatic_probability_changes",
+      "calibration_proposal": {
+        "status": "insufficient_forward_sample",
+        "minimum_games": 500,
+        "minimum_days": 30
+      }
     }
   },
   "model_vs_market": {
-    "n": 29,
-    "model_log_loss": 0.7570543716379229,
-    "market_log_loss": 0.7258974680414518,
-    "log_loss_diff": 0.031156903596471105,
-    "log_loss_diff_se": 0.027124784953049253,
-    "model_accuracy": 0.5172413793103449,
-    "market_accuracy": 0.5517241379310345,
+    "n": 38,
+    "model_log_loss": 0.7066890498476021,
+    "market_log_loss": 0.6733448236888493,
+    "log_loss_diff": 0.03334422615875283,
+    "log_loss_diff_se": 0.022315711411390913,
+    "model_accuracy": 0.5526315789473685,
+    "market_accuracy": 0.6052631578947368,
     "disagree_over_5pts": {
-      "n": 13,
-      "model_side_won": 0.38461538461538464,
-      "model_said": 0.5848725384615384,
-      "market_said": 0.5057692307692307
+      "n": 16,
+      "model_side_won": 0.3125,
+      "model_said": 0.5597675,
+      "market_said": 0.481875
     },
     "verdict": "too few games to say"
   },
-  "pending_or_ungradable": 0,
+  "pending_or_ungradable": 3,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-20T19:16:51.620113+00:00",
-  "records": 155
+  "generated_at": "2026-11-21T18:14:29.005577+00:00",
+  "records": 185
 }
