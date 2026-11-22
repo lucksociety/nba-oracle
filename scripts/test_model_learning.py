@@ -23,6 +23,17 @@ class LearningTests(unittest.TestCase):
         self.assertAlmostEqual(score['brier_multiclass_sum'],(.98+.08)/2)
         self.assertEqual(score['winner_accuracy'],.5)
         self.assertEqual(m.calibration_proposal([])['status'],'insufficient_forward_sample')
+    def test_rotation_budget_capture_and_actual_minutes_are_scored_prospectively(self):
+        rotation={'home':{'status':'expected','teamId':'H','players':[{'id':str(i),'minutes':40.,'baselineProjectedMinutes':48. if i<5 else 0.}for i in range(6)]}}
+        row=m.record('R','2026-11-02T23:00Z','2026-11-02T12:00Z','rotation-v1',[.7,.3],['H','A'],'test',expected_scores=[110,100],rotation_forecasts=rotation)
+        actual={'R':{'label':'H','scores':[110,100],'rotation_actual':{'H':{str(i):48. for i in range(5)}}}}
+        report=m.metrics(m.graded([row],actual))
+        self.assertEqual(report['rotation_teams'],1)
+        self.assertEqual(report['rotation_misallocated_minutes_per_team'],40.)
+        self.assertEqual(report['rotation_baseline_misallocated_minutes_per_team'],0.)
+        self.assertEqual(report['score_mae_per_team'],0.)
+        bad={'home':{'status':'expected','players':[{'id':'x','minutes':49.}]}}
+        with self.assertRaises(ValueError):m.record('R','2026-11-02T23:00Z','2026-11-02T12:00Z','v',[.7,.3],['H','A'],'test',rotation_forecasts=bad)
     def test_adapter_all_sports(self):
         examples={
         'oracle-fc':('data/forecasts/2026/x/v1.json',{'status':'ok','fixture':{'event_id':'1','kickoff_utc':'2026-10-29T12:00Z'},'frozen_at':'2026-10-28T12:00Z','model_version':'v1','simulation':{'p_home':.5,'p_draw':.2,'p_away':.3}}),

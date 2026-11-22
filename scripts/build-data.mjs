@@ -150,7 +150,8 @@ async function buildSeason(season, now, teamMeta) {
     }
   }
   const {participationHistory}=await import('../js/participation.js');
-  const players = { season, teamGames, participation:participationHistory(cache), teams: Object.fromEntries(Object.entries(agg).map(([t, m]) => [t, Object.values(m).sort((x, y) => y[3] - x[3])])) };
+  const {rotationHistory}=await import('../js/rotation.js');
+  const players = { season, teamGames, participation:participationHistory(cache), rotationHistory:rotationHistory(cache), teams: Object.fromEntries(Object.entries(agg).map(([t, m]) => [t, Object.values(m).sort((x, y) => y[3] - x[3])])) };
   await writeJSON(path.join(DATA, `games-${season}.json`), { season, fields: ['id', 'etDate', 'homeId', 'awayId', 'homeScore', 'awayScore', 'periods', 'neutral', 'homeBox', 'awayBox'], boxFields: ['fgm', 'fga', 'fg3m', 'fg3a', 'ftm', 'fta', 'oreb', 'dreb', 'tov', 'pf'], games });
   await writeJSON(path.join(DATA, `players-${season}.json`), { ...players, fields: ['athleteId', 'name', 'gp', 'min', 'pts', 'fgm', 'fga', 'fg3m', 'fg3a', 'ftm', 'fta', 'oreb', 'dreb', 'ast', 'stl', 'blk', 'tov', 'pf', 'plusMinus', 'starts', 'lastDate'] });
   return games;

@@ -6,7 +6,7 @@
 import { lineupsForEvent, applyLineup, gameLineupStatus } from './lineups.js';
 import { participationShare } from './participation.js';
 
-export const MODEL_VERSION = 'NBA ORACLE V1.3.4 (participation exposure sensitivity)';
+export const MODEL_VERSION = 'NBA ORACLE V1.3.5 (projected rotation evaluation)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
 export const PRIORS = {
