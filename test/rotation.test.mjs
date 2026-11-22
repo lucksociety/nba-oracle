@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {allocateMinutes,rotationHistory,projectRotation}from '../js/rotation.js';
+const raw=Object.fromEntries(Array.from({length:8},(_,i)=>[String(i),30]));
+const m=allocateMinutes(raw,240,{'0':0,'1':20});
+assert(Math.abs(Object.values(m).reduce((a,b)=>a+b,0)-240)<1e-8);
+assert.equal(m['0'],0);assert(m['1']<=20);assert(Object.values(m).every(x=>x<=48));
+assert.throws(()=>allocateMinutes({'1':10,'2':10}));
+const cache={};
+for(let d=1;d<=4;d++)cache[String(d)]={d:`2026-11-0${d}`,h:'H',a:'A',pl:{H:Array.from({length:8},(_,i)=>[String(i),'P'+i,33.125]),A:Array.from({length:8},(_,i)=>['A'+i,'A'+i,33.125])}};
+const history=rotationHistory(cache),data={playersCurrent:{rotationHistory:history}};
+assert(Math.abs(history.H[0].players.reduce((s,p)=>s+p.minutes,0)-240)<1e-8,'normalize overtime minutes');
+const g=projectRotation('H','2026-11-04',data,[{name:'P0',p:0},{name:'P1',p:.5}]);
+assert.equal(g.status,'expected');assert.equal(g.through,'2026-11-03');
+assert.equal(g.players.find(p=>p.id==='0').minutes,0);assert(g.players.find(p=>p.id==='1').minutes<=24);
+assert(Math.abs(g.players.reduce((s,p)=>s+p.minutes,0)-240)<1e-8);
+assert.equal(projectRotation('H','2026-11-05',data,[],{status:'CONFIRMED',starters:[{name:'Unknown'}],active:[],inactive:[]}).status,'incomplete_rotation');
+assert.equal(projectRotation('H','2026-11-05',{...data,gamesCurrent:{games:[['missing','2026-11-04','H','A']]}}).status,'incomplete_history');
+console.log('Rotation budgets, availability/capacity, overtime normalization, strict dates and missing-player fallbacks passed');

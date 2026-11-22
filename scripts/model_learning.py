@@ -16,7 +16,7 @@ def timestamp(value):
     except (ValueError, TypeError): return None
 
 
-def record(event, start, frozen, model, probabilities, labels, source, cutoff=None, expected_scores=None):
+def record(event, start, frozen, model, probabilities, labels, source, cutoff=None, expected_scores=None, rotation_forecasts=None):
     values = [float(p) for p in probabilities]
     if len(values) != len(labels) or any(not math.isfinite(p) or not 0 <= p <= 1 for p in values):
         raise ValueError('Invalid probability vector')
@@ -34,6 +34,13 @@ def record(event, start, frozen, model, probabilities, labels, source, cutoff=No
         if len(expected_scores)!=2 or any(not math.isfinite(x) or x<0 for x in expected_scores):raise ValueError('Invalid score prediction')
     row = dict(schema_version=1, expected_scores=expected_scores, event_id=str(event), start=begin.astimezone(timezone.utc).isoformat(), frozen_at=freeze.astimezone(timezone.utc).isoformat(),
                model=str(model), probabilities=values, labels=labels, source=source, cutoff=cutoff)
+    if rotation_forecasts is not None:
+        for side in rotation_forecasts.values():
+            if side.get('status')!='expected':continue
+            ps=side.get('players',[])
+            if not ps or any(not math.isfinite(float(p['minutes']))or not 0<=p['minutes']<=48+1e-8 for p in ps)or abs(sum(p['minutes']for p in ps)-240)>1e-5:
+                raise ValueError('Invalid regulation rotation budget')
+        row['rotation_forecasts']=json.loads(json.dumps(rotation_forecasts))
     row['key'] = hashlib.sha256(json.dumps(row, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
     return row
 
@@ -62,11 +69,19 @@ def collect_local(root, project):
     elif project == 'nba-oracle':
         for path, f in documents(root, 'out/predictions.json'):
             for g in f.get('games', []):
-                add(g['id'], g['tip'], f.get('generatedAt'), f['modelVersion'], [g['homeWin'],g['awayWin']], ['H','A'], path, f.get('cutoff'), [g['expHome'],g['expAway']] if g.get('expHome') is not None else None)
+                add(g['id'], g['tip'], f.get('generatedAt'), f['modelVersion'], [g['homeWin'],g['awayWin']], ['H','A'], path, f.get('cutoff'), [g['expHome'],g['expAway']] if g.get('expHome') is not None else None, g.get('rotations'))
         for path, f in documents(root, 'data/games-*.json'):
             for g in f.get('games', []):
                 if g[4] is not None and g[5] is not None and g[4] != g[5]:
                     outcomes[str(g[0])] = dict(label='H' if g[4]>g[5] else 'A', source=path, scores=[g[4],g[5]])
+        for path, lines in documents(root, 'data/cache/lines-*.json'):
+            for eid,g in lines.items():
+                if eid not in outcomes:continue
+                actual={}
+                for team,ps in (g.get('pl')or{}).items():
+                    total=sum(p[2]for p in ps)
+                    if 216<total<480:actual[str(team)]={str(p[0]):240*p[2]/total for p in ps if p[2]>0}
+                if actual:outcomes[eid]['rotation_actual']=actual
     elif project == 'nhl-score-predictor':
         for path, f in documents(root, 'data/predictions/*.json'):
             for g in f.get('games', []):
@@ -134,7 +149,7 @@ def graded(rows,outcomes):
     for r in chosen.values():
         outcome=outcomes.get(r['event_id'])
         if outcome and outcome['label'] in r['labels']:
-            out.append({**r,'observed':r['labels'].index(outcome['label']),'actual_scores':outcome.get('scores')})
+            out.append({**r,'observed':r['labels'].index(outcome['label']),'actual_scores':outcome.get('scores'),'rotation_actual':outcome.get('rotation_actual')})
     return sorted(out,key=lambda r:(r['start'],r['event_id']))
 
 
@@ -158,10 +173,23 @@ def metrics(rows):
     ll,bs=losses(rows)
     scored=[r for r in rows if r.get('expected_scores') is not None and r.get('actual_scores') is not None]
     score_metrics={}
+    minute_errors=[];baseline_errors=[]
+    for r in rows:
+        for side in (r.get('rotation_forecasts')or{}).values():
+            actual=(r.get('rotation_actual')or{}).get(str(side.get('teamId')))
+            if side.get('status')!='expected'or not actual:continue
+            predicted={str(p['id']):p['minutes']for p in side['players']}
+            ids=set(predicted)|set(actual)
+            minute_errors.append(sum(abs(predicted.get(p,0)-actual.get(p,0))for p in ids)/2)
+            if all('baselineProjectedMinutes'in p for p in side['players']):
+                baseline={str(p['id']):p['baselineProjectedMinutes']for p in side['players']}
+                baseline_errors.append(sum(abs(baseline.get(p,0)-actual.get(p,0))for p in ids)/2)
+    if minute_errors:score_metrics.update(rotation_teams=len(minute_errors),rotation_misallocated_minutes_per_team=statistics.mean(minute_errors),
+        rotation_baseline_misallocated_minutes_per_team=statistics.mean(baseline_errors)if baseline_errors else None)
     if scored:
-        score_metrics={'score_n':len(scored),'score_mae_per_team':statistics.mean(abs(p-y) for r in scored for p,y in zip(r['expected_scores'],r['actual_scores'])),
+        score_metrics.update({'score_n':len(scored),'score_mae_per_team':statistics.mean(abs(p-y) for r in scored for p,y in zip(r['expected_scores'],r['actual_scores'])),
                        'total_mae':statistics.mean(abs(sum(r['expected_scores'])-sum(r['actual_scores'])) for r in scored),
-                       'margin_mae':statistics.mean(abs((r['expected_scores'][0]-r['expected_scores'][1])-(r['actual_scores'][0]-r['actual_scores'][1])) for r in scored)}
+                       'margin_mae':statistics.mean(abs((r['expected_scores'][0]-r['expected_scores'][1])-(r['actual_scores'][0]-r['actual_scores'][1])) for r in scored)})
     return {**score_metrics,'n':len(rows),'log_loss':statistics.mean(ll),'brier_multiclass_sum':statistics.mean(bs),
             'winner_accuracy':statistics.mean(int(max(range(len(r['probabilities'])),key=r['probabilities'].__getitem__)==r['observed']) for r in rows)}
 
@@ -236,7 +264,7 @@ def collect_artifacts(state):
                         doc=json.loads(z.read(f))
                         if doc.get('stage')!='prediction':continue
                         for g in doc.get('games',[]):
-                            row=record(g['id'],g['tip'],doc.get('generatedAt'),doc['modelVersion'],[g['homeWin'],g['awayWin']],['H','A'],f'artifact:{a["id"]}/predictions.json',doc.get('cutoff'),[g['expHome'],g['expAway']] if g.get('expHome') is not None else None)
+                            row=record(g['id'],g['tip'],doc.get('generatedAt'),doc['modelVersion'],[g['homeWin'],g['awayWin']],['H','A'],f'artifact:{a["id"]}/predictions.json',doc.get('cutoff'),[g['expHome'],g['expAway']] if g.get('expHome') is not None else None,g.get('rotations'))
                             if row:incoming.append(row)
             new.add(a['id'])
         if len(artifacts)<100:break
