@@ -133,7 +133,7 @@ def collect_local(root, project):
 def merge_records(existing, incoming):
     result={}
     for row in [*existing,*incoming]:
-        checked=record(row['event_id'],row['start'],row['frozen_at'],row['model'],row['probabilities'],row['labels'],row['source'],row.get('cutoff'),row.get('expected_scores'))
+        checked=record(row['event_id'],row['start'],row['frozen_at'],row['model'],row['probabilities'],row['labels'],row['source'],row.get('cutoff'),row.get('expected_scores'),row.get('rotation_forecasts'))
         if not checked or checked['key'] != row.get('key'): raise ValueError('Invalid or modified forecast record')
         result[checked['key']]=checked
     return sorted(result.values(),key=lambda r:(r['start'],r['event_id'],r['frozen_at'],r['key']))
