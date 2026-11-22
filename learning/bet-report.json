@@ -458,12 +458,12 @@
           }
         },
         "under": {
-          "n": 2,
-          "wins": 0,
-          "win_rate": 0,
-          "mean_probability": 0.6461683333333333,
-          "brier": 0.4182690998055556,
-          "flat_cost_roi": -1.0,
+          "n": 4,
+          "wins": 1,
+          "win_rate": 0.25,
+          "mean_probability": 0.5940825,
+          "brier": 0.32339804258055554,
+          "flat_cost_roi": -0.5215265217848974,
           "calibration_proposal": {
             "status": "insufficient_forward_sample",
             "minimum_games": 500,
@@ -471,14 +471,21 @@
           }
         }
       },
-      "n": 3,
-      "wins": 1,
-      "win_rate": 0.3333333333333333,
-      "mean_probability": 0.6340022222222222,
-      "brier": 0.329631902837037,
-      "log_loss": 0.8595327331915072,
-      "flat_cost_roi": -0.4175752492777933,
+      "n": 5,
+      "wins": 2,
+      "win_rate": 0.4,
+      "mean_probability": 0.5972,
+      "brier": 0.2891899358444444,
+      "log_loss": 0.77566503431723,
+      "flat_cost_roi": -0.267766366994594,
       "reliability": [
+        {
+          "lower_exclusive": 0.5,
+          "upper_inclusive": 0.6,
+          "n": 2,
+          "mean_probability": 0.5419966666666667,
+          "win_rate": 0.5
+        },
         {
           "lower_exclusive": 0.6,
           "upper_inclusive": 0.7,
@@ -508,21 +515,41 @@
             "minimum_games": 500,
             "minimum_days": 30
           }
+        },
+        "home": {
+          "n": 1,
+          "wins": 1,
+          "win_rate": 1,
+          "mean_probability": 0.7347166666666667,
+          "brier": 0.07037524694444444,
+          "flat_cost_roi": 0.46831019521184025,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
         }
       },
-      "n": 1,
-      "wins": 1,
+      "n": 2,
+      "wins": 2,
       "win_rate": 1,
-      "mean_probability": 0.5240466666666667,
-      "brier": 0.2265315755111111,
-      "log_loss": 0.6461745401023968,
-      "flat_cost_roi": 1.030539311241066,
+      "mean_probability": 0.6293816666666667,
+      "brier": 0.14845341122777778,
+      "log_loss": 0.4772224408597296,
+      "flat_cost_roi": 0.7494247532264531,
       "reliability": [
         {
           "lower_exclusive": 0.5,
           "upper_inclusive": 0.6,
           "n": 1,
           "mean_probability": 0.5240466666666667,
+          "win_rate": 1
+        },
+        {
+          "lower_exclusive": 0.7,
+          "upper_inclusive": 0.8,
+          "n": 1,
+          "mean_probability": 0.7347166666666667,
           "win_rate": 1
         }
       ],
@@ -535,23 +562,23 @@
     }
   },
   "model_vs_market": {
-    "n": 38,
-    "model_log_loss": 0.7066890498476021,
-    "market_log_loss": 0.6733448236888493,
-    "log_loss_diff": 0.03334422615875283,
-    "log_loss_diff_se": 0.022315711411390913,
-    "model_accuracy": 0.5526315789473685,
-    "market_accuracy": 0.6052631578947368,
+    "n": 44,
+    "model_log_loss": 0.7037797631291374,
+    "market_log_loss": 0.6637519135233289,
+    "log_loss_diff": 0.040027849605808484,
+    "log_loss_diff_se": 0.020740324751335675,
+    "model_accuracy": 0.5909090909090909,
+    "market_accuracy": 0.6363636363636364,
     "disagree_over_5pts": {
-      "n": 16,
-      "model_side_won": 0.3125,
-      "model_said": 0.5597675,
-      "market_said": 0.481875
+      "n": 17,
+      "model_side_won": 0.29411764705882354,
+      "model_said": 0.554294705882353,
+      "market_said": 0.4773529411764706
     },
     "verdict": "too few games to say"
   },
-  "pending_or_ungradable": 3,
+  "pending_or_ungradable": 0,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-21T18:14:29.005577+00:00",
+  "generated_at": "2026-11-22T15:20:25.043031+00:00",
   "records": 185
 }
