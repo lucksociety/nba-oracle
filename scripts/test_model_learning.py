@@ -26,6 +26,7 @@ class LearningTests(unittest.TestCase):
     def test_rotation_budget_capture_and_actual_minutes_are_scored_prospectively(self):
         rotation={'home':{'status':'expected','teamId':'H','players':[{'id':str(i),'minutes':40.,'baselineProjectedMinutes':48. if i<5 else 0.}for i in range(6)]}}
         row=m.record('R','2026-11-02T23:00Z','2026-11-02T12:00Z','rotation-v1',[.7,.3],['H','A'],'test',expected_scores=[110,100],rotation_forecasts=rotation)
+        self.assertEqual(m.merge_records([row],[row]),[row])
         actual={'R':{'label':'H','scores':[110,100],'rotation_actual':{'H':{str(i):48. for i in range(5)}}}}
         report=m.metrics(m.graded([row],actual))
         self.assertEqual(report['rotation_teams'],1)
