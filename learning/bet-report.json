@@ -559,26 +559,104 @@
         "minimum_games": 500,
         "minimum_days": 30
       }
+    },
+    "NBA ORACLE V1.3.5 (projected rotation evaluation) / participation-roster-quote-stress-v4 / totals": {
+      "by_direction": {
+        "under": {
+          "n": 2,
+          "wins": 1,
+          "win_rate": 0.5,
+          "mean_probability": 0.6629366666666667,
+          "brier": 0.2984758417888889,
+          "flat_cost_roi": -0.16956626445992729,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        }
+      },
+      "n": 2,
+      "wins": 1,
+      "win_rate": 0.5,
+      "mean_probability": 0.6629366666666667,
+      "brier": 0.2984758417888889,
+      "log_loss": 0.798641556686238,
+      "flat_cost_roi": -0.16956626445992729,
+      "reliability": [
+        {
+          "lower_exclusive": 0.6,
+          "upper_inclusive": 0.7,
+          "n": 2,
+          "mean_probability": 0.6629366666666667,
+          "win_rate": 0.5
+        }
+      ],
+      "calibration_status": "monitor_only_no_automatic_probability_changes",
+      "calibration_proposal": {
+        "status": "insufficient_forward_sample",
+        "minimum_games": 500,
+        "minimum_days": 30
+      }
+    },
+    "NBA ORACLE V1.3.5 (projected rotation evaluation) / participation-roster-quote-stress-v4 / spreads": {
+      "by_direction": {
+        "home": {
+          "n": 1,
+          "wins": 1,
+          "win_rate": 1,
+          "mean_probability": 0.9062966666666666,
+          "brier": 0.008780314677777783,
+          "flat_cost_roi": 0.18102796674225252,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        }
+      },
+      "n": 1,
+      "wins": 1,
+      "win_rate": 1,
+      "mean_probability": 0.9062966666666666,
+      "brier": 0.008780314677777783,
+      "log_loss": 0.09838857988616251,
+      "flat_cost_roi": 0.18102796674225252,
+      "reliability": [
+        {
+          "lower_exclusive": 0.9,
+          "upper_inclusive": 1,
+          "n": 1,
+          "mean_probability": 0.9062966666666666,
+          "win_rate": 1
+        }
+      ],
+      "calibration_status": "monitor_only_no_automatic_probability_changes",
+      "calibration_proposal": {
+        "status": "insufficient_forward_sample",
+        "minimum_games": 500,
+        "minimum_days": 30
+      }
     }
   },
   "model_vs_market": {
-    "n": 44,
-    "model_log_loss": 0.7037797631291374,
-    "market_log_loss": 0.6637519135233289,
-    "log_loss_diff": 0.040027849605808484,
-    "log_loss_diff_se": 0.020740324751335675,
-    "model_accuracy": 0.5909090909090909,
-    "market_accuracy": 0.6363636363636364,
+    "n": 51,
+    "model_log_loss": 0.7030145680206904,
+    "market_log_loss": 0.6678378603084839,
+    "log_loss_diff": 0.035176707712206504,
+    "log_loss_diff_se": 0.020139778285112174,
+    "model_accuracy": 0.5686274509803921,
+    "market_accuracy": 0.6274509803921569,
     "disagree_over_5pts": {
-      "n": 17,
-      "model_side_won": 0.29411764705882354,
-      "model_said": 0.554294705882353,
-      "market_said": 0.4773529411764706
+      "n": 20,
+      "model_side_won": 0.3,
+      "model_said": 0.52939285,
+      "market_said": 0.448
     },
     "verdict": "too few games to say"
   },
   "pending_or_ungradable": 0,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-22T18:39:42.751913+00:00",
-  "records": 185
+  "generated_at": "2026-11-23T22:55:55.714031+00:00",
+  "records": 192
 }
