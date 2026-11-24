@@ -15,6 +15,7 @@ import { calibrate } from '../scripts/build-data.mjs';
 import { participationHistory } from '../js/participation.js';
 
 const arg = (k, d) => { const i = process.argv.indexOf('--' + k); return i > 0 ? process.argv[i + 1] : d; };
+const FROM=arg('from','0000-01-01');
 const DIR = process.env.DATA_DIR || '/workspace/bt-data';
 const S = Number(arg('season', 2026)), MODE = arg('mode', 'absences'), SIMS = Number(arg('sims', 0));
 const over = JSON.parse(arg('priors', '{}'));
@@ -58,6 +59,7 @@ for (const d of dates) {
   const model = buildModel(data, d);
   const recent = recentAll.filter(r => r.date < d && r.date >= new Date(Date.parse(d) - 10 * 864e5).toISOString().slice(0, 10));
   for (const g of byDate[d]) {
+    if(d<FROM)continue;
     if (!model.teams[g.h] || !model.teams[g.a]) continue;
     const ev = { id: g.id, shortName: `${abbr(g.a)} @ ${abbr(g.h)}`, neutral: !!g.n, home: { id: g.h, abbr: abbr(g.h) }, away: { id: g.a, abbr: abbr(g.a) } };
     let injuries = { teams: {} };
