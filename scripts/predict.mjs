@@ -64,6 +64,7 @@ const games = slate.games.map((g, i) => {
     expAway: s.expAway, expHome: s.expHome, expMarginHome: s.expMarginHome, medMarginHome: s.medMarginHome,
     expTotal: s.expTotal, medTotal: s.medTotal, iTotal: s.iTotal, iMarginHome: s.iMarginHome, sdMargin: s.sdMargin, sdTotal: s.sdTotal,
     confidence: r.confidence, lineupStatus: r.lineupStatus,
+    tempoCorrection:prep.params.tempoCorrection||null,
     rotations:{home:projectRotation(ev.home.id,date,inputs.data,prep.injH,prep.lineup?.home),away:projectRotation(ev.away.id,date,inputs.data,prep.injA,prep.lineup?.away)},
     lineups: r.lineups ? Object.fromEntries(['away', 'home'].map(k => [k, { status: r.lineups[k].status, starters: r.lineups[k].starters, inactive: r.lineups[k].inactive, updatedAt: r.lineups[k].updatedAt, source: r.lineups[k].source }])) : null,
     availability: Object.fromEntries([['away', prep.injA], ['home', prep.injH]].map(([k, l]) => [k, l.filter(p => p.override || p.p < 1).map(p => ({ name: p.name, label: p.label, p: p.p, netPG: +(p.netPG * p.presence).toFixed(2), lineupOverride: !!p.override }))])), keyFactors: r.keyFactors.map(k => `${k.label}: ${k.text}`), uncertainty: r.uncertainty,

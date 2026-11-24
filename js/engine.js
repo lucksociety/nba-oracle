@@ -6,7 +6,7 @@
 import { lineupsForEvent, applyLineup, gameLineupStatus } from './lineups.js';
 import { participationShare } from './participation.js';
 
-export const MODEL_VERSION = 'NBA ORACLE V1.3.5 (projected rotation evaluation)';
+export const MODEL_VERSION = 'NBA ORACLE V1.3.6 (regulation tempo totals)';
 
 // ---------------- Tunable priors (documented; NOT fitted by walk-forward validation) ----------------
 export const PRIORS = {
@@ -14,6 +14,9 @@ export const PRIORS = {
   // recency-weighted opponent-adjusted ratings (half-life 20 team games), less prior-season weight on the rating
   // (shrinkK.rating 15 -> 8) and larger absent-player impact (injuryRedistribution 0.8 -> 1.0).
   recencyHalfLifeGames: 20,
+  tempoTotalCorrection: true,
+  normalizePaceOvertime: false,
+  paceHalfLifeGames: 0, // zero retains the season-average tempo baseline
   shrinkK: { rating: 8, p2: 20, p3: 25, r3: 6, tov: 10, orb: 10, ftr: 15, ftp: 25, pace: 8 }, // games of prior-season weight
   priorRegressBase: 0.45, priorRegressContinuity: 0.35, // prior-season deviation kept = base + cont*continuity
   leaguePseudoTeamGames: 200,
@@ -43,24 +46,27 @@ const clamp = (x, lo, hi) => Math.max(lo, Math.min(hi, x));
 function emptyAgg() { return { g: 0, poss: 0, pts: 0, o: new Array(10).fill(0), d: new Array(10).fill(0), oppPts: 0, games: [] }; }
 
 /** Aggregate one season's games up to (not including) cutoffDate. */
-export function seasonAggregates(gamesFile, cutoffDate, hcaPer100) {
-  const T = {}; const L = { g: 0, poss: 0, pts: 0, o: new Array(10).fill(0) };
+export function seasonAggregates(gamesFile, cutoffDate, hcaPer100, paceOptions={}) {
+  const normalize=paceOptions.normalize ?? PRIORS.normalizePaceOvertime, paceHalfLife=paceOptions.halfLife ?? PRIORS.paceHalfLifeGames;
+  const T = {}; const L = { g: 0, poss: 0, pacePoss:0, extraMinutes:0, pts: 0, o: new Array(10).fill(0) };
   for (const g of [...gamesFile.games].sort((a, b) => a[1].localeCompare(b[1]) || String(a[0]).localeCompare(String(b[0])))) {
     const [id, d, h, a, hs, as, per, n, hb, ab] = g;
     if (cutoffDate && d >= cutoffDate) continue;
     const P = 0.5 * (poss(hb) + poss(ab));
     for (const [t, ob, db, o, home] of [[h, hb, ab, a, 1], [a, ab, hb, h, 0]]) {
       const x = T[t] ||= emptyAgg();
+      const extraMinutes=5*Math.max(0,(per||4)-4),paceP=normalize?P*48/(48+extraMinutes):P;
+      x.pacePoss=(x.pacePoss||0)+paceP;L.pacePoss+=paceP;L.extraMinutes+=extraMinutes;
       x.g++; x.poss += P; x.pts += pts(ob); x.oppPts += pts(db);
       for (let k = 0; k < 10; k++) { x.o[k] += ob[k]; x.d[k] += db[k]; }
-      x.games.push({ opp: o, P, ortg: 100 * pts(ob) / P, drtg: 100 * pts(db) / P, home: n ? 0 : (home ? 1 : -1), d });
+      x.games.push({ opp: o, P, paceP, ortg: 100 * pts(ob) / P, drtg: 100 * pts(db) / P, home: n ? 0 : (home ? 1 : -1), d });
       L.g++; L.poss += P; L.pts += pts(ob); for (let k = 0; k < 10; k++) L.o[k] += ob[k];
     }
   }
-  const lg = { ortg: L.g ? 100 * L.pts / L.poss : null, pace: L.g ? L.poss / L.g : null, teamGames: L.g, f: L.g ? factorsFrom(L.o, L.o, L.poss) : null };
+  const lg = { ortg: L.g ? 100 * L.pts / L.poss : null, pace: L.g ? L.pacePoss/L.g*(normalize?1+L.extraMinutes/L.g/48:1) : null, teamGames: L.g, f: L.g ? factorsFrom(L.o, L.o, L.poss) : null };
   // Opponent adjustment (iterative, home-court neutralised)
   const ids = Object.keys(T);
-  for (const t of ids) { T[t].adjO = 100 * T[t].pts / T[t].poss; T[t].adjD = 100 * T[t].oppPts / T[t].poss; T[t].adjPace = T[t].poss / T[t].g; }
+  for (const t of ids) { T[t].adjO = 100 * T[t].pts / T[t].poss; T[t].adjD = 100 * T[t].oppPts / T[t].poss; T[t].adjPace = T[t].pacePoss/T[t].g*(normalize?1+L.extraMinutes/L.g/48:1); }
   for (let it = 0; it < 12; it++) {
     const nO = {}, nD = {}, nP = {};
     for (const t of ids) {
@@ -71,9 +77,11 @@ export function seasonAggregates(gamesFile, cutoffDate, hcaPer100) {
         const rw = HL > 0 ? Math.pow(0.5, (G.length - 1 - gi) / HL) : 1; // recency weight (off when HL = 0)
         so += (gm.ortg - (opp.adjD - lg.ortg) - gm.home * hcaPer100 / 2) * gm.P * rw;
         sd += (gm.drtg - (opp.adjO - lg.ortg) + gm.home * hcaPer100 / 2) * gm.P * rw;
-        sp += gm.P - (opp.adjPace - lg.pace); w += gm.P * rw;
+        const pw = paceHalfLife > 0 ? Math.pow(.5,(G.length-1-gi)/paceHalfLife) : 1;
+        sp += (gm.paceP*(normalize?1+L.extraMinutes/L.g/48:1) - (opp.adjPace - lg.pace))*pw; w += gm.P*rw;
       }
-      nO[t] = so / w; nD[t] = sd / w; nP[t] = sp / T[t].g;
+      const paceW=G.reduce((sum,_,i)=>sum+(paceHalfLife>0?Math.pow(.5,(G.length-1-i)/paceHalfLife):1),0);
+      nO[t] = so / w; nD[t] = sd / w; nP[t] = sp / paceW;
     }
     for (const t of ids) { T[t].adjO = nO[t]; T[t].adjD = nD[t]; T[t].adjPace = nP[t]; }
   }
@@ -125,6 +133,9 @@ export function buildModel(data, cutoffDate) {
   lg.ppp = lg.ortg / 100;
   lg.fCal = solveK(lg.f, lg.ppp); // league-level calibration of the analytic engine
 
+  const tempoPrior=PRIORS.tempoTotalCorrection?seasonAggregates(data.gamesPrior,cutoffDate,hcaPer100,{normalize:true,halfLife:10}):null;
+  const tempoCurrent=PRIORS.tempoTotalCorrection?seasonAggregates(data.gamesCurrent,cutoffDate,hcaPer100,{normalize:true,halfLife:10}):null;
+  const tempoLeague=tempoPrior?blendLg(tempoCurrent.lg.pace,tempoPrior.lg.pace):null;
   const continuity = rosterContinuity(data);
   const teams = {};
   const allIds = new Set([...Object.keys(prior.teams), ...Object.keys(cur.teams)]);
@@ -150,9 +161,10 @@ export function buildModel(data, cutoffDate) {
       out.off[k] = bl(c?.offF[k], p?.offF[k], lg.f[k], prior.lg.f[k], K[k]);
       out.def[k] = bl(c?.defF[k], p?.defF[k], lg.f[k], prior.lg.f[k], K[k]);
     }
+    if(tempoPrior)out.tempoPace=bl(tempoCurrent.teams[t]?.adjPace,tempoPrior.teams[t]?.adjPace,tempoLeague,tempoPrior.lg.pace,K.pace);
     teams[t] = out;
   }
-  return { lg, teams, cal, hcaPer100, cutoffDate, curGames: cur.lg.teamGames / 2, priorGames: prior.lg.teamGames / 2 };
+  return { lg, teams, cal, tempoLeague, hcaPer100, cutoffDate, curGames: cur.lg.teamGames / 2, priorGames: prior.lg.teamGames / 2 };
 }
 
 /** Share of each team's current-season minutes played by players who were on the same team last season. */
@@ -329,6 +341,14 @@ export function prepareGame(ev, ctx) {
     uncHome: iH.unc, uncAway: iA.unc, priors: PRIORS, expMarginPerPoss: (tH - tA) / 100,
     targetPts: { home: tH * pace / 100, away: tA * pace / 100 }, // expected points with all listed players available as sampled below
   };
+  if(PRIORS.tempoTotalCorrection && Number.isFinite(H.tempoPace) && Number.isFinite(A.tempoPace) && model.tempoLeague>0){
+    const correctedPace=clamp(H.tempoPace*A.tempoPace/model.tempoLeague,85,115);
+    const totalShift=(ratingH+ratingA+interH+interA)*(correctedPace-pace)/100;
+    if(Number.isFinite(totalShift)){
+      params.totalShift=totalShift;
+      params.tempoCorrection={policy:'regulation-tempo-total-v1',baselinePace:pace,correctedPace,totalShift};
+    }
+  }
   // expected injury effect incl. uncertain players (for reporting)
   // fix v1.2.1: include the restricted-minutes scenario the simulator samples (previously omitted from the report)
   const expUnc = (u) => u.reduce((s, x) => s + ((1 - x.p) + (x.p < 0.9 ? x.p * PRIORS.restrictedProb * (1 - PRIORS.restrictedMinFrac) : 0)) * (x.off + x.def), 0);
@@ -374,7 +394,19 @@ export function simulate(params, N, seed, onProgress, opts = {}) {
   }
   const sim = runSim(params, N, seed, onProgress, adj, !!opts.noAvailability, !!opts.captureAvailability);
   sim.calibration = { kAdjHome: adj.h, kAdjAway: adj.a };
+  if(params.totalShift && !opts.noTotalCorrection)applyTotalShift(sim,params.totalShift,seed);
   return sim;
+}
+// A common integer offset preserves every simulated margin, winner, OT flag and score parity.
+// Independent stochastic rounding matches a fractional target without consuming possession RNG.
+export function applyTotalShift(sim,totalShift,seed){
+  if(!Number.isFinite(totalShift))throw new Error('Invalid tempo score correction');
+  const half=totalShift/2,lo=Math.floor(half),frac=half-lo,rng=mulberry32((seed^0x46ac195d)>>>0);
+  for(let i=0;i<sim.N;i++){
+    const k=Math.max(-Math.min(sim.homePts[i],sim.awayPts[i]),lo+Number(rng()<frac));
+    sim.homePts[i]+=k;sim.awayPts[i]+=k;
+  }
+  sim.tempoCorrection={totalShift,policy:'regulation-tempo-total-v1'};
 }
 function runSim(params, N, seed, onProgress, adj, noAvail, captureAvailability = false) {
   const P = params.overridePriors ? { ...params.priors, ...params.overridePriors } : params.priors; const rnd = mulberry32(seed);

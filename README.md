@@ -88,3 +88,8 @@ Discord /nba ─► Cloudflare Worker (discord/worker.js)  verify Ed25519 · def
 * Secrets: Worker — `GITHUB_TOKEN`, `RELAY_KEY`, `DISCORD_BOT_TOKEN`, `DISCORD_WEBHOOK_URL`; repo Actions — `RELAY_KEY`, `DISCORD_APPLICATION_ID`, `DISCORD_WEBHOOK_URL`, `DISCORD_BOT_TOKEN`, optional `JUPITER_API_KEY` (Polymarket needs no key). Nothing secret is committed.
 * `/nba` has an optional `date` option with autocomplete (Today, Tomorrow and the next 5 days in ET; typed `YYYY-MM-DD`, `today`, `tomorrow` also accepted; default today). Registered as a guild command (`node discord/register-command.mjs <guildId>`); handler tests: `node discord/test-worker.mjs`.
 * Local: `node scripts/predict.mjs 2026-10-28 && node scripts/compare.mjs && DRY_RUN=1 node scripts/discord-post.mjs`; `node test/sanity.mjs` for simulator verification.
+
+
+### November 24 scoring calibration (V1.3.6)
+
+A recent regulation-tempo estimate now calibrates the shared scoring level, accounting for overtime-heavy historical schedules. Equal point offsets keep the existing simulated margin/winner model intact while modestly improving historical score/total errors. Inputs remain independent of market prices. [Validation, limitations and reproduction](research/nov24/README.md).

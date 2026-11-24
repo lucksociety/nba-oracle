@@ -1,0 +1,185 @@
+{
+  "metrics": [
+    "winner_log_loss",
+    "winner_brier",
+    "team_mae",
+    "margin_mae",
+    "total_mae",
+    "fixed_total_brier",
+    "fixed_spread_brier"
+  ],
+  "comparisons": {
+    "2026-team": {
+      "n": 411,
+      "dates": [
+        "2026-02-19",
+        "2026-04-12"
+      ],
+      "baseline": {
+        "winner_log_loss": 0.5211119216059679,
+        "winner_brier": 0.1716781339720196,
+        "team_mae": 9.440747262773723,
+        "margin_mae": 11.437006690997578,
+        "total_mae": 14.484758515815082,
+        "fixed_total_brier": 0.1225127783935597,
+        "fixed_spread_brier": 0.13831126210403802
+      },
+      "challenger": {
+        "winner_log_loss": 0.5211119216059679,
+        "winner_brier": 0.1716781339720196,
+        "team_mae": 9.353233880778584,
+        "margin_mae": 11.437006690997578,
+        "total_mae": 14.433260948905115,
+        "fixed_total_brier": 0.1218234643672465,
+        "fixed_spread_brier": 0.13831126210403802
+      },
+      "delta": {
+        "winner_log_loss": 0.0,
+        "winner_brier": 0.0,
+        "team_mae": -0.08751338199513368,
+        "margin_mae": 0.0,
+        "total_mae": -0.0514975669099761,
+        "fixed_total_brier": -0.0006893140263134194,
+        "fixed_spread_brier": 0.0
+      },
+      "paired_se": {
+        "winner_log_loss": 0.0,
+        "winner_brier": 0.0,
+        "team_mae": 0.0450674322044329,
+        "margin_mae": 0.0,
+        "total_mae": 0.11672974678431679,
+        "fixed_total_brier": 0.0008084698725491188,
+        "fixed_spread_brier": 0.0
+      }
+    },
+    "2026-absences": {
+      "n": 411,
+      "dates": [
+        "2026-02-19",
+        "2026-04-12"
+      ],
+      "baseline": {
+        "winner_log_loss": 0.5191458821114183,
+        "winner_brier": 0.17102875182481753,
+        "team_mae": 9.410444951338194,
+        "margin_mae": 11.322910583941615,
+        "total_mae": 14.580687956204374,
+        "fixed_total_brier": 0.12371007882010152,
+        "fixed_spread_brier": 0.1375330567623527
+      },
+      "challenger": {
+        "winner_log_loss": 0.5191458821114183,
+        "winner_brier": 0.17102875182481753,
+        "team_mae": 9.336230231143546,
+        "margin_mae": 11.322910583941615,
+        "total_mae": 14.52428406326034,
+        "fixed_total_brier": 0.12321521149297095,
+        "fixed_spread_brier": 0.1375330567623527
+      },
+      "delta": {
+        "winner_log_loss": 0.0,
+        "winner_brier": 0.0,
+        "team_mae": -0.07421472019464688,
+        "margin_mae": 0.0,
+        "total_mae": -0.056403892944038,
+        "fixed_total_brier": -0.000494867327130457,
+        "fixed_spread_brier": 0.0
+      },
+      "paired_se": {
+        "winner_log_loss": 0.0,
+        "winner_brier": 0.0,
+        "team_mae": 0.04619673873492907,
+        "margin_mae": 0.0,
+        "total_mae": 0.11660685569234748,
+        "fixed_total_brier": 0.0008082098928941208,
+        "fixed_spread_brier": 0.0
+      }
+    },
+    "2027-team": {
+      "n": 258,
+      "dates": [
+        "2026-10-20",
+        "2026-11-23"
+      ],
+      "baseline": {
+        "winner_log_loss": 0.606660952718686,
+        "winner_brier": 0.2102820869670544,
+        "team_mae": 9.651332848837212,
+        "margin_mae": 11.509278100775191,
+        "total_mae": 14.851028100775196,
+        "fixed_total_brier": 0.12640127088716618,
+        "fixed_spread_brier": 0.1427403582802251
+      },
+      "challenger": {
+        "winner_log_loss": 0.606660952718686,
+        "winner_brier": 0.2102820869670544,
+        "team_mae": 9.586510174418606,
+        "margin_mae": 11.509278100775191,
+        "total_mae": 14.746762596899222,
+        "fixed_total_brier": 0.1252971798407742,
+        "fixed_spread_brier": 0.1427403582802251
+      },
+      "delta": {
+        "winner_log_loss": 0.0,
+        "winner_brier": 0.0,
+        "team_mae": -0.0648226744186047,
+        "margin_mae": 0.0,
+        "total_mae": -0.10426550387597007,
+        "fixed_total_brier": -0.0011040910463919987,
+        "fixed_spread_brier": 0.0
+      },
+      "paired_se": {
+        "winner_log_loss": 0.0,
+        "winner_brier": 0.0,
+        "team_mae": 0.038710718099799,
+        "margin_mae": 0.0,
+        "total_mae": 0.10809576304332844,
+        "fixed_total_brier": 0.0007773509672648542,
+        "fixed_spread_brier": 0.0
+      }
+    },
+    "2027-absences": {
+      "n": 258,
+      "dates": [
+        "2026-10-20",
+        "2026-11-23"
+      ],
+      "baseline": {
+        "winner_log_loss": 0.6027908173075375,
+        "winner_brier": 0.2087066916182171,
+        "team_mae": 9.592244670542641,
+        "margin_mae": 11.483394379844965,
+        "total_mae": 14.864601744186054,
+        "fixed_total_brier": 0.12592621878887927,
+        "fixed_spread_brier": 0.1415198974265802
+      },
+      "challenger": {
+        "winner_log_loss": 0.6027908173075375,
+        "winner_brier": 0.2087066916182171,
+        "team_mae": 9.528415213178297,
+        "margin_mae": 11.483394379844965,
+        "total_mae": 14.772874999999999,
+        "fixed_total_brier": 0.12497877174849269,
+        "fixed_spread_brier": 0.1415198974265802
+      },
+      "delta": {
+        "winner_log_loss": 0.0,
+        "winner_brier": 0.0,
+        "team_mae": -0.06382945736434126,
+        "margin_mae": 0.0,
+        "total_mae": -0.09172674418604787,
+        "fixed_total_brier": -0.0009474470403866357,
+        "fixed_spread_brier": 0.0
+      },
+      "paired_se": {
+        "winner_log_loss": 0.0,
+        "winner_brier": 0.0,
+        "team_mae": 0.03882333203530715,
+        "margin_mae": 0.0,
+        "total_mae": 0.10927018995984658,
+        "fixed_total_brier": 0.000768060154947225,
+        "fixed_spread_brier": 0.0
+      }
+    }
+  }
+}
