@@ -42,8 +42,8 @@
     }
   },
   "forecast_policy": "Last pre-game freeze per event per model version. No retrospectively generated forecast is graded.",
-  "forecasts": 978,
-  "generated_at": "2026-11-24T21:31:28.756591+00:00",
+  "forecasts": 1011,
+  "generated_at": "2026-11-25T20:40:59.618720+00:00",
   "last_successful_refresh": "2026-11-24T19:05:02+00:00",
   "project": "nba-oracle",
   "settled_by_version": {
@@ -108,20 +108,30 @@
       "winner_accuracy": 0.7333333333333333
     },
     "NBA ORACLE V1.3.5 (projected rotation evaluation)": {
-      "brier_multiclass_sum": 0.44628911078562084,
-      "log_loss": 0.6290735890901065,
-      "margin_mae": 8.01517294117647,
-      "n": 17,
-      "rotation_baseline_misallocated_minutes_per_team": 38.69521267292707,
-      "rotation_misallocated_minutes_per_team": 37.19451609970375,
-      "rotation_teams": 33,
-      "score_mae_per_team": 9.925761372549019,
-      "score_n": 17,
-      "total_mae": 17.700615294117647,
-      "winner_accuracy": 0.5882352941176471
+      "brier_multiclass_sum": 0.4511303180666666,
+      "log_loss": 0.6351631513966136,
+      "margin_mae": 9.111772166666665,
+      "n": 20,
+      "rotation_baseline_misallocated_minutes_per_team": 38.285629459245555,
+      "rotation_misallocated_minutes_per_team": 36.02739826316022,
+      "rotation_teams": 39,
+      "score_mae_per_team": 10.619813416666666,
+      "score_n": 20,
+      "total_mae": 18.651572166666668,
+      "winner_accuracy": 0.6
     },
     "NBA ORACLE V1.3.6 (regulation tempo totals)": {
-      "n": 0
+      "brier_multiclass_sum": 0.47353965802222214,
+      "log_loss": 0.6646263938491693,
+      "margin_mae": 15.236971111111112,
+      "n": 3,
+      "rotation_baseline_misallocated_minutes_per_team": 36.22040545970253,
+      "rotation_misallocated_minutes_per_team": 29.78520804423743,
+      "rotation_teams": 6,
+      "score_mae_per_team": 14.390280000000004,
+      "score_n": 3,
+      "total_mae": 24.04636222222223,
+      "winner_accuracy": 0.6666666666666666
     }
   },
   "warnings": []
