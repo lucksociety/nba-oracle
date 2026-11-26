@@ -699,16 +699,36 @@
             "minimum_games": 500,
             "minimum_days": 30
           }
+        },
+        "home": {
+          "n": 1,
+          "wins": 0,
+          "win_rate": 0,
+          "mean_probability": 0.5224933333333334,
+          "brier": 0.2729992833777778,
+          "flat_cost_roi": -1.0,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
         }
       },
-      "n": 1,
+      "n": 2,
       "wins": 1,
-      "win_rate": 1,
-      "mean_probability": 0.6159033333333334,
-      "brier": 0.14753024934444442,
-      "log_loss": 0.4846652541697805,
-      "flat_cost_roi": 0.7174605628118265,
+      "win_rate": 0.5,
+      "mean_probability": 0.5691983333333334,
+      "brier": 0.2102647663611111,
+      "log_loss": 0.6119212058615052,
+      "flat_cost_roi": -0.14126971859408677,
       "reliability": [
+        {
+          "lower_exclusive": 0.5,
+          "upper_inclusive": 0.6,
+          "n": 1,
+          "mean_probability": 0.5224933333333334,
+          "win_rate": 0
+        },
         {
           "lower_exclusive": 0.6,
           "upper_inclusive": 0.7,
@@ -723,26 +743,85 @@
         "minimum_games": 500,
         "minimum_days": 30
       }
+    },
+    "NBA ORACLE V1.3.6 (regulation tempo totals) / participation-roster-quote-stress-v4 / totals": {
+      "by_direction": {
+        "over": {
+          "n": 1,
+          "wins": 1,
+          "win_rate": 1,
+          "mean_probability": 0.7664233333333333,
+          "brier": 0.05455805921111111,
+          "flat_cost_roi": 0.3697129081744468,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        },
+        "under": {
+          "n": 2,
+          "wins": 0,
+          "win_rate": 0,
+          "mean_probability": 0.560905,
+          "brier": 0.31461442625,
+          "flat_cost_roi": -1.0,
+          "calibration_proposal": {
+            "status": "insufficient_forward_sample",
+            "minimum_games": 500,
+            "minimum_days": 30
+          }
+        }
+      },
+      "n": 3,
+      "wins": 1,
+      "win_rate": 0.3333333333333333,
+      "mean_probability": 0.6294111111111111,
+      "brier": 0.22792897057037037,
+      "log_loss": 0.6373665405680164,
+      "flat_cost_roi": -0.5434290306085178,
+      "reliability": [
+        {
+          "lower_exclusive": 0.5,
+          "upper_inclusive": 0.6,
+          "n": 2,
+          "mean_probability": 0.560905,
+          "win_rate": 0
+        },
+        {
+          "lower_exclusive": 0.7,
+          "upper_inclusive": 0.8,
+          "n": 1,
+          "mean_probability": 0.7664233333333333,
+          "win_rate": 1
+        }
+      ],
+      "calibration_status": "monitor_only_no_automatic_probability_changes",
+      "calibration_proposal": {
+        "status": "insufficient_forward_sample",
+        "minimum_games": 500,
+        "minimum_days": 30
+      }
     }
   },
   "model_vs_market": {
-    "n": 64,
-    "model_log_loss": 0.6821006058852069,
-    "market_log_loss": 0.6662519613371379,
-    "log_loss_diff": 0.01584864454806896,
-    "log_loss_diff_se": 0.017632243102544132,
-    "model_accuracy": 0.59375,
-    "market_accuracy": 0.625,
+    "n": 73,
+    "model_log_loss": 0.6663442017297234,
+    "market_log_loss": 0.6613683541995757,
+    "log_loss_diff": 0.004975847530147667,
+    "log_loss_diff_se": 0.016810745113981135,
+    "model_accuracy": 0.6027397260273972,
+    "market_accuracy": 0.6027397260273972,
     "disagree_over_5pts": {
-      "n": 26,
-      "model_side_won": 0.4230769230769231,
-      "model_said": 0.5475083846153846,
-      "market_said": 0.4653846153846154
+      "n": 31,
+      "model_side_won": 0.4838709677419355,
+      "model_said": 0.5403467096774194,
+      "market_said": 0.4553225806451613
     },
     "verdict": "too few games to say"
   },
-  "pending_or_ungradable": 5,
+  "pending_or_ungradable": 0,
   "policy": "Delivered primary recommendation only; last pregame publication per event, including NO BET. Not actual trades. No automatic calibration promotion.",
-  "generated_at": "2026-11-25T20:41:02.311069+00:00",
-  "records": 217
+  "generated_at": "2026-11-26T20:33:36.153873+00:00",
+  "records": 226
 }
